@@ -7,7 +7,7 @@ Apple homekit homebridge accessory for treating Sony Bravia TVs as a series of s
 Mute: sonymutetv.homebridge-sonymutetv
 Volume Up: sonyvolumeuptv.homebridge-sonyvolumeuptv
 Volume Down: sonyvolumedowntv.homebridge-sonyvolumedowntv
-Input 1: sonyhdmi1tv.homebridge-sonyhdmi1tv
+Input 1: sonyhdmi1tv.homebridge-sonyhdmi1tv<br>
 Input 2: sonyhdmi2tv.homebridge-sonyhdmi2tv
 Input 3: sonyhdmi3tv.homebridge-sonyhdmi3tv
 Input 4: sonyhdmi4tv.homebridge-sonyhdmi4tv
