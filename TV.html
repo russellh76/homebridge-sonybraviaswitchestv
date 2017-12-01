@@ -1,0 +1,304 @@
+<html><title>XBR-65X810c sony/system and sony/IRCC HTTP(PSK) commands</title><script>
+var startXML = '<?xml version="1.0"?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><s:Body><u:X_SendIRCC xmlns:u="urn:schemas-sony-com:service:IRCC:1"><IRCCCode>';
+var endXML = '</IRCCCode></u:X_SendIRCC></s:Body></s:Envelope>';
+var startJSON = '{"method":"setPowerStatus","params":[{"status":'
+var endJSON = '}],"id":1,"version":"1.0"}';
+var xhttp = new XMLHttpRequest();
+
+function SonyIRCC(message,label) {
+  xhttp.open("POST", "http://" + document.getElementById("IP").value + "/sony/IRCC", true);
+  xhttp.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
+  xhttp.setRequestHeader("SOAPAction", '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"');
+  xhttp.setRequestHeader("X-Auth-PSK", document.getElementById("PSK").value);
+  xhttp.send(startXML + message + endXML);
+  document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>" + label + "</b>&nbsp;<i>(" + message + ")</i></br>" + document.getElementById("log").innerHTML;
+  window.setTimeout(SonyStatus, 2000);
+}
+function SonySystem(message,label) {
+  xhttp.open("POST", "http://" + document.getElementById("IP").value + "/sony/system", true);
+  xhttp.setRequestHeader("X-Auth-PSK", document.getElementById("PSK").value);
+  xhttp.send(startJSON + message + endJSON);
+  document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>" + label + "</b>&nbsp;<i>(" + message + ")</i></br>" + document.getElementById("log").innerHTML;
+  window.setTimeout(SonyStatus, 2000);
+}
+function SonyStatus() {
+  xhttp = new XMLHttpRequest();
+  xhttp.onload = function () {
+  if (xhttp.responseText.includes("active")){
+    document.getElementById("TVStatus").innerHTML="TV Status: <b>On</b>"; 
+	document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>TV Status</b>&nbsp;<i>(On)</i></br>" + document.getElementById("log").innerHTML;
+	}
+  else if (xhttp.responseText.includes("standby")){
+	document.getElementById("TVStatus").innerHTML="TV Status: <b>Standby</b>";
+	document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>TV Status</b>&nbsp;<i>(Standby)</i></br>" + document.getElementById("log").innerHTML;
+	}
+  };  
+  xhttp.onerror = function () {
+    document.getElementById("TVStatus").innerHTML="TV Status: <b style='color:#FF0000';>Network Error</b>";
+  }
+  xhttp.open("POST", "http://" + document.getElementById("IP").value + "/sony/system", true);
+  xhttp.setRequestHeader("X-Auth-PSK", document.getElementById("PSK").value);
+  xhttp.send('{"method":"getPowerStatus","params":[],"id":1,"version":"1.0"}');
+}
+function SonyIRCC10(message,label) {
+	SonyIRCC(message,label);
+	SonyIRCC(message,label);
+	SonyIRCC(message,label);
+	SonyIRCC(message,label);
+	SonyIRCC(message,label);
+	SonyIRCC(message,label);
+	SonyIRCC(message,label);
+	SonyIRCC(message,label);
+	SonyIRCC(message,label);
+	SonyIRCC(message,label);
+}
+function SonyIRCC100(message,label) {
+	SonyIRCC10(message,label);
+	SonyIRCC10(message,label);
+	SonyIRCC10(message,label);
+	SonyIRCC10(message,label);
+	SonyIRCC10(message,label);
+	SonyIRCC10(message,label);
+	SonyIRCC10(message,label);
+	SonyIRCC10(message,label);
+	SonyIRCC10(message,label);
+	SonyIRCC10(message,label);
+}
+</script>
+<body onload="SonyStatus();">
+<b>XBR-65X810c sony/system and sony/IRCC HTTP(PSK) commands</b>
+</br>
+PSK:<input type=text id=PSK value=0000>&nbsp;&nbsp;&nbsp;TV IP:<input type=text id=IP value=192.168.1.157>&nbsp;<div id="TVStatus">TV Status:</div>
+<hr>
+<table>
+<tr>
+<td><input style="background-color:lightgreen" type=button style="width:125px" value="TvPower" onclick="SonyIRCC('AAAAAQAAAAEAAAAVAw==','TvPower');"/></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="AppleTV (hdmi1)" onclick="SonyIRCC('AAAAAgAAABoAAABaAw==','AppleTV (hdmi1)');"/>&nbsp;</td>
+<td><input type=button style="width:125px" value="Roku (hdmi2)" onclick="SonyIRCC('AAAAAgAAABoAAABbAw==','Roku (hdmi2)');"/>&nbsp;</td>
+<td><input type=button style="width:125px" value="RaspberryPi (hdmi3)" onclick="SonyIRCC('AAAAAgAAABoAAABcAw==','RaspberryPi (hdmi3)');"/>&nbsp;</td>
+<td><input type=button style="width:125px" value="HDMI4" onclick="SonyIRCC('AAAAAgAAABoAAABdAw==','HDMI4');"/></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="VolumeUp" onclick="SonyIRCC('AAAAAQAAAAEAAAASAw==','VolumeUp');"/></td>
+<td><input type=button style="width:125px" value="VolumeDown" onclick="SonyIRCC('AAAAAQAAAAEAAAATAw==','VolumeDown');"/></td>
+<td><input type=button style="width:125px" value="Mute" onclick="SonyIRCC('AAAAAQAAAAEAAAAUAw==','Mute');"/></td>
+<td><input type=button style="width:125px" value="Channels" onclick="SonyIRCC('AAAAAQAAAAEAAAAkAw==','Channels');"/></td>
+</tr><tr>
+<td></br></td>
+</table>
+<hr>
+<table>
+</tr><tr>
+<td><input type=button style="width:125px" value="Input" onclick="SonyIRCC('AAAAAQAAAAEAAAAlAw==','Input');"/></td>
+<td></td><td></td><td><input style="background-color:lightgreen" type=button style="width:125px" value="TvPower" onclick="SonyIRCC('AAAAAQAAAAEAAAAVAw==','TvPower');"/></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="SyncMenu" onclick="SonyIRCC('AAAAAgAAABoAAABYAw==','SyncMenu');"/></td>
+<td><input type=button style="width:125px" value="PAP" onclick="SonyIRCC('AAAAAgAAAKQAAAB3Aw==','PAP');"/></td>
+<td></td>
+<td></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="1" onclick="SonyIRCC('AAAAAQAAAAEAAAAAAw==','Num1');"/></td>
+<td><input type=button style="width:125px" value="2" onclick="SonyIRCC('AAAAAQAAAAEAAAABAw==','Num2');"/></td>
+<td><input type=button style="width:125px" value="3" onclick="SonyIRCC('AAAAAQAAAAEAAAACAw==','Num3');"/></td><td></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="4" onclick="SonyIRCC('AAAAAQAAAAEAAAADAw==','Num4');"/></td>
+<td><input type=button style="width:125px" value="5" onclick="SonyIRCC('AAAAAQAAAAEAAAAEAw==','Num5');"/></td>
+<td><input type=button style="width:125px" value="6" onclick="SonyIRCC('AAAAAQAAAAEAAAAFAw==','Num6');"/></td><td></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="7" onclick="SonyIRCC('AAAAAQAAAAEAAAAGAw==','Num7');"/></td>
+<td><input type=button style="width:125px" value="8" onclick="SonyIRCC('AAAAAQAAAAEAAAAHAw==','Num8');"/></td>
+<td><input type=button style="width:125px" value="9" onclick="SonyIRCC('AAAAAQAAAAEAAAAIAw==','Num9');"/></td>
+<td></td>
+<tr>
+<td><input type=button style="width:125px" value="." onclick="SonyIRCC('AAAAAgAAAJcAAAAdAw==','.');"/></td>
+<td><input type=button style="width:125px" value="0" onclick="SonyIRCC('AAAAAQAAAAEAAAAJAw==','Num0');"/></td>
+<td><input type=button style="width:125px" value="PicOff" onclick="SonyIRCC('AAAAAQAAAAEAAAA+Aw==','PicOff');"/></td>
+<td></td>
+</tr><tr>
+<td><input style="background-color:yellow" type=button style="width:125px" value="Yellow" onclick="SonyIRCC('AAAAAgAAAJcAAAAnAw==','Yellow');"/></td>
+<td><input style="background-color:blue" type=button style="width:125px" value="Blue" onclick="SonyIRCC('AAAAAgAAAJcAAAAkAw==','Blue');"/></td>
+<td><input style="background-color:red" type=button style="width:125px" value="Red" onclick="SonyIRCC('AAAAAgAAAJcAAAAlAw==','Red');"/></td>
+<td><input style="background-color:lightgreen" type=button style="width:125px" value="Green" onclick="SonyIRCC('AAAAAgAAAJcAAAAmAw==','Green');"/></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="Display" onclick="SonyIRCC('AAAAAQAAAAEAAAA6Aw==','Display');"/></td>
+<td><input type=button style="width:125px" value="Netflix" onclick="SonyIRCC('AAAAAgAAABoAAAB8Aw==','Netflix');"/></td>
+<td><input type=button style="width:125px" value="Help" onclick="SonyIRCC('AAAAAgAAAMQAAABNAw==','Help');"/></td>
+<td></td>
+</tr><tr>
+<td></br><input type=button style="width:125px" value="Channels" onclick="SonyIRCC('AAAAAQAAAAEAAAAkAw==','Channels');"/></td>
+<td><input type=button style="width:125px" value="ActionMenu" onclick="SonyIRCC('AAAAAgAAAMQAAABLAw==','ActionMenu');"/></td>
+<td></br><input type=button style="width:125px" value="Guide" onclick="SonyIRCC('AAAAAQAAAAEAAAAOAw==','Guide');"/></td>
+<td></td>
+</tr><tr>
+<td></td>
+<td><input type=button style="width:125px" value="Up" onclick="SonyIRCC('AAAAAgAAAJcAAABPAw==','CursorUp');"/></br>
+<td></td>
+<td></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="Left" onclick="SonyIRCC('AAAAAgAAAJcAAABNAw==','CursorLeft');"/></td>
+<td><input type=button style="width:125px" value="DpadCenter" onclick="SonyIRCC('AAAAAgAAAJcAAABKAw==','DpadCenter');"/></td>
+<td><input type=button style="width:125px" value="Right" onclick="SonyIRCC('AAAAAgAAAJcAAABOAw==','CursorRight');"/></td>
+<td></td>
+<tr></tr>
+<td></td>
+<td><input type=button style="width:125px" value="Down" onclick="SonyIRCC('AAAAAgAAAJcAAABQAw==','CursorDown');"/></td>
+<td></td>
+<td></td>
+<tr></tr>
+<td><input type=button style="width:125px" value="Back" onclick="SonyIRCC('AAAAAQAAAAEAAABjAw==','Back');"/></td>
+<td></br><input type=button style="width:125px" value="Discover" onclick="SonyIRCC('AAAAAgAAABoAAABzAw==','Discover');"/>
+<td><input type=button style="width:125px" value="Home" onclick="SonyIRCC('AAAAAQAAAAEAAABgAw==','Home');"/></td>
+<td></td>
+<tr></tr>
+<td></br><input type=button style="width:125px" value="VolumeUp" onclick="SonyIRCC('AAAAAQAAAAEAAAASAw==','VolumeUp');"/></td>
+<td></br><input type=button style="width:125px" value="Jump" onclick="SonyIRCC('AAAAAQAAAAEAAAA7Aw==','Jump');"/></td>
+<td></br><input type=button style="width:125px" value="ChannelUp" onclick="SonyIRCC('AAAAAQAAAAEAAAAQAw==','ChannelUp');"/></td>
+<td></td>
+<tr></tr>
+<td><input type=button style="width:125px" value="VolumeDown" onclick="SonyIRCC('AAAAAQAAAAEAAAATAw==','VolumeDown');"/></td>
+<td><input type=button style="width:125px" value="Mute" onclick="SonyIRCC('AAAAAQAAAAEAAAAUAw==','Mute');"/></td>
+<td><input type=button style="width:125px" value="ChannelDown" onclick="SonyIRCC('AAAAAQAAAAEAAAARAw==','ChannelDown');"/></td>
+<td></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="Audio" onclick="SonyIRCC('AAAAAQAAAAEAAAAXAw==','Audio');"/></td>
+<td></td>
+<td><input type=button style="width:125px" value="SubTitle" onclick="SonyIRCC('AAAAAgAAAJcAAAAoAw==','SubTitle');"/></td>
+<td></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="Pause" onclick="SonyIRCC('AAAAAgAAAJcAAAAZAw==','Pause');"/></td>
+<td><input type=button style="width:125px" value="Play" onclick="SonyIRCC('AAAAAgAAAJcAAAAaAw==','Play');"/></td>
+<td><input type=button style="width:125px" value="Rewind" onclick="SonyIRCC('AAAAAgAAAJcAAAAbAw==','Rewind');"/></td>
+<td></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="Prev" onclick="SonyIRCC('AAAAAgAAAJcAAAA8Aw==','Prev');"/></td>
+<td><input type=button style="width:125px" value="Pause" onclick="SonyIRCC('AAAAAgAAAJcAAAAZAw==','Pause');"/></td>
+<td><input type=button style="width:125px" value="Next" onclick="SonyIRCC('AAAAAgAAAJcAAAA9Aw==','Next');"/></td>
+<td></td>
+</tr><tr>
+<td><input type=button style="width:125px" value="Wide" onclick="SonyIRCC('AAAAAgAAAKQAAAA9Aw==','Wide');"/></td>
+<td><input type=button style="width:125px" value="Stop" onclick="SonyIRCC('AAAAAgAAAJcAAAAYAw==','Stop');"/></td>
+<td><input type=button style="width:125px" value="FootballMode" onclick="SonyIRCC('AAAAAgAAABoAAAB2Aw==','FootballMode');"/></td>
+<td></td>
+</tr>
+</table>
+</br><hr>
+<input type=button style="width:125px" value="On" onclick="SonySystem('true','On');"/>&nbsp;
+<input type=button style="width:125px" value="Off" onclick="SonySystem('false','Off');"/>&nbsp;</br>
+<input type=button style="width:125px" value="VolumeUp10" onclick="SonyIRCC10('AAAAAQAAAAEAAAASAw==','VolumeUp');"/>&nbsp;
+<input type=button style="width:125px" value="VolumeDown10" onclick="SonyIRCC10('AAAAAQAAAAEAAAATAw==','VolumeDown');"/>&nbsp;</br>
+<input type=button style="width:125px" value="VolumeDown100" onclick="SonyIRCC100('AAAAAQAAAAEAAAATAw==','VolumeDown');"/>&nbsp;</br>
+<input type=button style="width:125px" value="Num1" onclick="SonyIRCC('AAAAAQAAAAEAAAAAAw==','Num1');"/>&nbsp;
+<input type=button style="width:125px" value="Num2" onclick="SonyIRCC('AAAAAQAAAAEAAAABAw==','Num2');"/>&nbsp;
+<input type=button style="width:125px" value="Num3" onclick="SonyIRCC('AAAAAQAAAAEAAAACAw==','Num3');"/>&nbsp;
+<input type=button style="width:125px" value="Num4" onclick="SonyIRCC('AAAAAQAAAAEAAAADAw==','Num4');"/>&nbsp;
+<input type=button style="width:125px" value="Num5" onclick="SonyIRCC('AAAAAQAAAAEAAAAEAw==','Num5');"/>&nbsp;
+<input type=button style="width:125px" value="Num6" onclick="SonyIRCC('AAAAAQAAAAEAAAAFAw==','Num6');"/>&nbsp;</br>
+<input type=button style="width:125px" value="Num7" onclick="SonyIRCC('AAAAAQAAAAEAAAAGAw==','Num7');"/>&nbsp;
+<input type=button style="width:125px" value="Num8" onclick="SonyIRCC('AAAAAQAAAAEAAAAHAw==','Num8');"/>&nbsp;
+<input type=button style="width:125px" value="Num9" onclick="SonyIRCC('AAAAAQAAAAEAAAAIAw==','Num9');"/>&nbsp;
+<input type=button style="width:125px" value="Num0" onclick="SonyIRCC('AAAAAQAAAAEAAAAJAw==','Num10');"/>&nbsp;
+<input type=button style="width:125px" value="Num11" onclick="SonyIRCC('AAAAAQAAAAEAAAAKAw==','Num11');"/>&nbsp;
+<input type=button style="width:125px" value="Num12" onclick="SonyIRCC('AAAAAQAAAAEAAAALAw==','Num12');"/>&nbsp;</br>
+<input type=button style="width:125px" value="Enter" onclick="SonyIRCC('AAAAAQAAAAEAAAALAw==','Enter');"/>&nbsp;
+<input type=button style="width:125px" value="GGuide" onclick="SonyIRCC('AAAAAQAAAAEAAAAOAw==','GGuide');"/>&nbsp;
+<input type=button style="width:125px" value="ChannelUp" onclick="SonyIRCC('AAAAAQAAAAEAAAAQAw==','ChannelUp');"/>&nbsp;
+<input type=button style="width:125px" value="ChannelDown" onclick="SonyIRCC('AAAAAQAAAAEAAAARAw==','ChannelDown');"/>&nbsp;
+<input type=button style="width:125px" value="VolumeUp" onclick="SonyIRCC('AAAAAQAAAAEAAAASAw==','VolumeUp');"/>&nbsp;
+<input type=button style="width:125px" value="VolumeDown" onclick="SonyIRCC('AAAAAQAAAAEAAAATAw==','VolumeDown');"/>&nbsp;</br>
+<input type=button style="width:125px" value="Mute" onclick="SonyIRCC('AAAAAQAAAAEAAAAUAw==','Mute');"/>&nbsp;
+<input type=button style="width:125px" value="TvPower" onclick="SonyIRCC('AAAAAQAAAAEAAAAVAw==','TvPower');"/>&nbsp;
+<input type=button style="width:125px" value="Audio" onclick="SonyIRCC('AAAAAQAAAAEAAAAXAw==','Audio');"/>&nbsp;
+<input type=button style="width:125px" value="MediaAudioTrack" onclick="SonyIRCC('AAAAAQAAAAEAAAAXAw==','MediaAudioTrack');"/>&nbsp;
+<input type=button style="width:125px" value="Tv" onclick="SonyIRCC('AAAAAQAAAAEAAAAkAw==','Tv');"/>&nbsp;
+<input type=button style="width:125px" value="Input" onclick="SonyIRCC('AAAAAQAAAAEAAAAlAw==','Input');"/>&nbsp;</br>
+<input type=button style="width:125px" value="TvInput" onclick="SonyIRCC('AAAAAQAAAAEAAAAlAw==','TvInput');"/>&nbsp;
+<input type=button style="width:125px" value="TvAntennaCable" onclick="SonyIRCC('AAAAAQAAAAEAAAAqAw==','TvAntennaCable');"/>&nbsp;
+<input type=button style="width:125px" value="WakeUp" onclick="SonyIRCC('AAAAAQAAAAEAAAAuAw==','WakeUp');"/>&nbsp;
+<input type=button style="width:125px" value="PowerOff" onclick="SonyIRCC('AAAAAQAAAAEAAAAvAw==','PowerOff');"/>&nbsp;
+<input type=button style="width:125px" value="Sleep" onclick="SonyIRCC('AAAAAQAAAAEAAAAvAw==','Sleep');"/>&nbsp;
+<input type=button style="width:125px" value="Right" onclick="SonyIRCC('AAAAAQAAAAEAAAAzAw==','Right');"/>&nbsp;</br>
+<input type=button style="width:125px" value="Left" onclick="SonyIRCC('AAAAAQAAAAEAAAA0Aw==','Left');"/>&nbsp;
+<input type=button style="width:125px" value="SleepTimer" onclick="SonyIRCC('AAAAAQAAAAEAAAA2Aw==','SleepTimer');"/>&nbsp;
+<input type=button style="width:125px" value="Analog2" onclick="SonyIRCC('AAAAAQAAAAEAAAA4Aw==','Analog2');"/>&nbsp;
+<input type=button style="width:125px" value="TvAnalog" onclick="SonyIRCC('AAAAAQAAAAEAAAA4Aw==','TvAnalog');"/>&nbsp;
+<input type=button style="width:125px" value="Display" onclick="SonyIRCC('AAAAAQAAAAEAAAA6Aw==','Display');"/>&nbsp;
+<input type=button style="width:125px" value="Jump" onclick="SonyIRCC('AAAAAQAAAAEAAAA7Aw==','Jump');"/>&nbsp;</br>
+<input type=button style="width:125px" value="PicOff" onclick="SonyIRCC('AAAAAQAAAAEAAAA+Aw==','PicOff');"/>&nbsp;
+<input type=button style="width:125px" value="PictureOff" onclick="SonyIRCC('AAAAAQAAAAEAAAA+Aw==','PictureOff');"/>&nbsp;
+<input type=button style="width:125px" value="Teletext" onclick="SonyIRCC('AAAAAQAAAAEAAAA/Aw==','Teletext');"/>&nbsp;
+<input type=button style="width:125px" value="Video1" onclick="SonyIRCC('AAAAAQAAAAEAAABAAw==','Video1');"/>&nbsp;
+<input type=button style="width:125px" value="Video2" onclick="SonyIRCC('AAAAAQAAAAEAAABBAw==','Video2');"/>&nbsp;
+<input type=button style="width:125px" value="AnalogRgb1" onclick="SonyIRCC('AAAAAQAAAAEAAABDAw==','AnalogRgb1');"/>&nbsp;</br>
+<input type=button style="width:125px" value="Home" onclick="SonyIRCC('AAAAAQAAAAEAAABgAw==','Home');"/>&nbsp;
+<input type=button style="width:125px" value="Exit" onclick="SonyIRCC('AAAAAQAAAAEAAABjAw==','Exit');"/>&nbsp;
+<input type=button style="width:125px" value="PictureMode" onclick="SonyIRCC('AAAAAQAAAAEAAABkAw==','PictureMode');"/>&nbsp;
+<input type=button style="width:125px" value="Confirm" onclick="SonyIRCC('AAAAAQAAAAEAAABlAw==','Confirm');"/>&nbsp;
+<input type=button style="width:125px" value="Up" onclick="SonyIRCC('AAAAAQAAAAEAAAB0Aw==','Up');"/>&nbsp;
+<input type=button style="width:125px" value="Down" onclick="SonyIRCC('AAAAAQAAAAEAAAB1Aw==','Down');"/>&nbsp;</br>
+<input type=button style="width:125px" value="ClosedCaption" onclick="SonyIRCC('AAAAAgAAAKQAAAAQAw==','ClosedCaption');"/>&nbsp;
+<input type=button style="width:125px" value="Component1" onclick="SonyIRCC('AAAAAgAAAKQAAAA2Aw==','Component1');"/>&nbsp;
+<input type=button style="width:125px" value="Component2" onclick="SonyIRCC('AAAAAgAAAKQAAAA3Aw==','Component2');"/>&nbsp;
+<input type=button style="width:125px" value="Wide" onclick="SonyIRCC('AAAAAgAAAKQAAAA9Aw==','Wide');"/>&nbsp;
+<input type=button style="width:125px" value="EPG" onclick="SonyIRCC('AAAAAgAAAKQAAABbAw==','EPG');"/>&nbsp;
+<input type=button style="width:125px" value="PAP" onclick="SonyIRCC('AAAAAgAAAKQAAAB3Aw==','PAP');"/>&nbsp;</br>
+<input type=button style="width:125px" value="TenKey" onclick="SonyIRCC('AAAAAgAAAJcAAAAMAw==','TenKey');"/>&nbsp;
+<input type=button style="width:125px" value="BSCS" onclick="SonyIRCC('AAAAAgAAAJcAAAAQAw==','BSCS');"/>&nbsp;
+<input type=button style="width:125px" value="Ddata" onclick="SonyIRCC('AAAAAgAAAJcAAAAVAw==','Ddata');"/>&nbsp;
+<input type=button style="width:125px" value="Stop" onclick="SonyIRCC('AAAAAgAAAJcAAAAYAw==','Stop');"/>&nbsp;
+<input type=button style="width:125px" value="Pause" onclick="SonyIRCC('AAAAAgAAAJcAAAAZAw==','Pause');"/>&nbsp;
+<input type=button style="width:125px" value="Play" onclick="SonyIRCC('AAAAAgAAAJcAAAAaAw==','Play');"/>&nbsp;</br>
+<input type=button style="width:125px" value="Rewind" onclick="SonyIRCC('AAAAAgAAAJcAAAAbAw==','Rewind');"/>&nbsp;
+<input type=button style="width:125px" value="Forward" onclick="SonyIRCC('AAAAAgAAAJcAAAAcAw==','Forward');"/>&nbsp;
+<input type=button style="width:125px" value="DOT" onclick="SonyIRCC('AAAAAgAAAJcAAAAdAw==','DOT');"/>&nbsp;
+<input type=button style="width:125px" value="Rec" onclick="SonyIRCC('AAAAAgAAAJcAAAAgAw==','Rec');"/>&nbsp;
+<input type=button style="width:125px" value="Return" onclick="SonyIRCC('AAAAAgAAAJcAAAAjAw==','Return');"/>&nbsp;
+<input type=button style="width:125px" value="Blue" onclick="SonyIRCC('AAAAAgAAAJcAAAAkAw==','Blue');"/>&nbsp;</br>
+<input type=button style="width:125px" value="Red" onclick="SonyIRCC('AAAAAgAAAJcAAAAlAw==','Red');"/>&nbsp;
+<input type=button style="width:125px" value="Green" onclick="SonyIRCC('AAAAAgAAAJcAAAAmAw==','Green');"/>&nbsp;
+<input type=button style="width:125px" value="Yellow" onclick="SonyIRCC('AAAAAgAAAJcAAAAnAw==','Yellow');"/>&nbsp;
+<input type=button style="width:125px" value="SubTitle" onclick="SonyIRCC('AAAAAgAAAJcAAAAoAw==','SubTitle');"/>&nbsp;
+<input type=button style="width:125px" value="CS" onclick="SonyIRCC('AAAAAgAAAJcAAAArAw==','CS');"/>&nbsp;
+<input type=button style="width:125px" value="BS" onclick="SonyIRCC('AAAAAgAAAJcAAAAsAw==','BS');"/>&nbsp;</br>
+<input type=button style="width:125px" value="Digital" onclick="SonyIRCC('AAAAAgAAAJcAAAAyAw==','Digital');"/>&nbsp;
+<input type=button style="width:125px" value="Options" onclick="SonyIRCC('AAAAAgAAAJcAAAA2Aw==','Options');"/>&nbsp;
+<input type=button style="width:125px" value="Media" onclick="SonyIRCC('AAAAAgAAAJcAAAA4Aw==','Media');"/>&nbsp;
+<input type=button style="width:125px" value="Prev" onclick="SonyIRCC('AAAAAgAAAJcAAAA8Aw==','Prev');"/>&nbsp;
+<input type=button style="width:125px" value="Next" onclick="SonyIRCC('AAAAAgAAAJcAAAA9Aw==','Next');"/>&nbsp;
+<input type=button style="width:125px" value="DpadCenter" onclick="SonyIRCC('AAAAAgAAAJcAAABKAw==','DpadCenter');"/>&nbsp;</br>
+<input type=button style="width:125px" value="CursorUp" onclick="SonyIRCC('AAAAAgAAAJcAAABPAw==','CursorUp');"/>&nbsp;
+<input type=button style="width:125px" value="CursorDown" onclick="SonyIRCC('AAAAAgAAAJcAAABQAw==','CursorDown');"/>&nbsp;
+<input type=button style="width:125px" value="CursorLeft" onclick="SonyIRCC('AAAAAgAAAJcAAABNAw==','CursorLeft');"/>&nbsp;
+<input type=button style="width:125px" value="CursorRight" onclick="SonyIRCC('AAAAAgAAAJcAAABOAw==','CursorRight');"/>&nbsp;
+<input type=button style="width:125px" value="FlashPlus" onclick="SonyIRCC('AAAAAgAAAJcAAAB4Aw==','FlashPlus');"/>&nbsp;
+<input type=button style="width:125px" value="WirelessSubwoofer" onclick="SonyIRCC('AAAAAgAAAMQAAAB+Aw==','WirelessSubwoofer');"/>&nbsp;</br>
+<input type=button style="width:125px" value="FlashMinus" onclick="SonyIRCC('AAAAAgAAAJcAAAB5Aw==','FlashMinus');"/>&nbsp;
+<input type=button style="width:125px" value="AudioQualityMode" onclick="SonyIRCC('AAAAAgAAAJcAAAB7Aw==','AudioQualityMode');"/>&nbsp;
+<input type=button style="width:125px" value="DemoMode" onclick="SonyIRCC('AAAAAgAAAJcAAAB8Aw==','DemoMode');"/>&nbsp;
+<input type=button style="width:125px" value="Analog" onclick="SonyIRCC('AAAAAgAAAHcAAAANAw==','Analog');"/>&nbsp;
+<input type=button style="width:125px" value="Mode3D" onclick="SonyIRCC('AAAAAgAAAHcAAABNAw==','Mode3D');"/>&nbsp;
+<input type=button style="width:125px" value="DigitalToggle" onclick="SonyIRCC('AAAAAgAAAHcAAABSAw==','DigitalToggle');"/>&nbsp;</br>
+<input type=button style="width:125px" value="DemoSurround" onclick="SonyIRCC('AAAAAgAAAHcAAAB7Aw==','DemoSurround');"/>&nbsp;
+<input type=button style="width:125px" value="*AD" onclick="SonyIRCC('AAAAAgAAABoAAAA7Aw==','*AD');"/>&nbsp;
+<input type=button style="width:125px" value="AudioMixUp" onclick="SonyIRCC('AAAAAgAAABoAAAA8Aw==','AudioMixUp');"/>&nbsp;
+<input type=button style="width:125px" value="AudioMixDown" onclick="SonyIRCC('AAAAAgAAABoAAAA9Aw==','AudioMixDown');"/>&nbsp;
+<input type=button style="width:125px" value="PhotoFrame" onclick="SonyIRCC('AAAAAgAAABoAAABVAw==','PhotoFrame');"/>&nbsp;
+<input type=button style="width:125px" value="Tv_Radio" onclick="SonyIRCC('AAAAAgAAABoAAABXAw==','Tv_Radio');"/>&nbsp;</br>
+<input type=button style="width:125px" value="SyncMenu" onclick="SonyIRCC('AAAAAgAAABoAAABYAw==','SyncMenu');"/>&nbsp;
+<input type=button style="width:125px" value="HDMI1" onclick="SonyIRCC('AAAAAgAAABoAAABaAw==','HDMI1');"/>&nbsp;
+<input type=button style="width:125px" value="HDMI2" onclick="SonyIRCC('AAAAAgAAABoAAABbAw==','HDMI2');"/>&nbsp;
+<input type=button style="width:125px" value="HDMI3" onclick="SonyIRCC('AAAAAgAAABoAAABcAw==','HDMI3');"/>&nbsp;
+<input type=button style="width:125px" value="HDMI4" onclick="SonyIRCC('AAAAAgAAABoAAABdAw==','HDMI4');"/>&nbsp;
+<input type=button style="width:125px" value="TopMenu" onclick="SonyIRCC('AAAAAgAAABoAAABgAw==','TopMenu');"/>&nbsp;</br>
+<input type=button style="width:125px" value="PopUpMenu" onclick="SonyIRCC('AAAAAgAAABoAAABhAw==','PopUpMenu');"/>&nbsp;
+<input type=button style="width:125px" value="OneTouchView" onclick="SonyIRCC('AAAAAgAAABoAAABlAw==','OneTouchView');"/>&nbsp;
+<input type=button style="width:125px" value="DUX" onclick="SonyIRCC('AAAAAgAAABoAAABzAw==','DUX');"/>&nbsp;
+<input type=button style="width:125px" value="FootballMode" onclick="SonyIRCC('AAAAAgAAABoAAAB2Aw==','FootballMode');"/>&nbsp;
+<input type=button style="width:125px" value="iManual" onclick="SonyIRCC('AAAAAgAAABoAAAB7Aw==','iManual');"/>&nbsp;
+<input type=button style="width:125px" value="OneTouchTimeRec" onclick="SonyIRCC('AAAAAgAAABoAAABkAw==','OneTouchTimeRec');"/>&nbsp;</br>
+<input type=button style="width:125px" value="Netflix" onclick="SonyIRCC('AAAAAgAAABoAAAB8Aw==','Netflix');"/>&nbsp;
+<input type=button style="width:125px" value="Assists" onclick="SonyIRCC('AAAAAgAAAMQAAAA7Aw==','Assists');"/>&nbsp;
+<input type=button style="width:125px" value="ActionMenu" onclick="SonyIRCC('AAAAAgAAAMQAAABLAw==','ActionMenu');"/>&nbsp;
+<input type=button style="width:125px" value="Help" onclick="SonyIRCC('AAAAAgAAAMQAAABNAw==','Help');"/>&nbsp;
+<input type=button style="width:125px" value="TvSatellite" onclick="SonyIRCC('AAAAAgAAAMQAAABOAw==','TvSatellite');"/>&nbsp;</br>
+<input type=button style="width:225px" value="ShopRemoteControlForcedDynamic" onclick="SonyIRCC('AAAAAgAAAJcAAABqAw==','ShopRemoteControlForcedDynamic');"/>&nbsp;</br>
+</br><hr>Log:</br><div id=log></div></body></html>
