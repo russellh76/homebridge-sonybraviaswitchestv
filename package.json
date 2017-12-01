@@ -8,10 +8,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/rwifall/homebridge-sonybraviaswitchestv.git"
+    "url": "git://github.com/russellh76/homebridge-sonybraviaswitchestv.git"
   },
   "bugs": {
-    "url": "http://github.com/rwifall/homebridge-sonybraviaswitchestv/issues"
+    "url": "http://github.com/russellh76/homebridge-sonybraviaswitchestv/issues"
   },
   "engines": {
     "node": ">=0.12.0",
@@ -21,7 +21,7 @@
     "request": "2.49.x",
     "wake_on_lan": "0.0.4"
   },
-  "homepage": "https://github.com/rwifall/homebridge-sonybraviaswitchestv#readme",
+  "homepage": "https://github.com/russellh76/homebridge-sonybraviaswitchestv#readme",
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
