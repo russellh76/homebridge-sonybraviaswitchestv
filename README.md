@@ -3,41 +3,41 @@ Apple homekit homebridge accessory for treating Sony Bravia TVs as a series of s
 
 1. I'm new to this.  Start with a more established project if you are new to homebridge.
 2. This treats sony bravia TVs as a series of switches.  So it's actually many devices.
-3. Currently supported features are:
-Mute: sonymutetv.homebridge-sonymutetv
-Volume Up: sonyvolumeuptv.homebridge-sonyvolumeuptv
-Volume Down: sonyvolumedowntv.homebridge-sonyvolumedowntv
-Input 1: sonyhdmi1tv.homebridge-sonyhdmi1tv<br>
-Input 2: sonyhdmi2tv.homebridge-sonyhdmi2tv
-Input 3: sonyhdmi3tv.homebridge-sonyhdmi3tv
-Input 4: sonyhdmi4tv.homebridge-sonyhdmi4tv
-Input: sonyinputtv.homebridge-sonyinputtv
-Left Arrow: sonylefttv.homebridge-sonylefttv
-Right Arrow: sonyrighttv.homebridge-sonyrighttv
-Down Arrow: sonydowntv.homebridge-sonydowntv
-Up Arrow: sonyuptv.homebridge-sonyuptv
-Ok Button: sonydpadcentertv.homebridge-sonydpadcentertv
-Picture Off: sonypicofftv.homebridge-sonypicofftv
-Netlfix Button: sonynetflixtv.homebridge-sonynetflixtv
-CC Button: sonyclosedcaptiontv.homebridge-sonyclosedcaptiontv
-Subtitle Button: sonysubtitletv.homebridge-sonysubtitletv
-Guide: sonygguidetv.homebridge-sonygguidetv
-Channel Up: sonychanneluptv.homebridge-sonychanneluptv
-Channel Down: sonychanneldowntv.homebridge-sonychanneldowntv
-Stop Button: sonystoptv.homebridge-sonystoptv
-Pause Button: sonypausetv.homebridge-sonypausetv
-Play Button: sonyplaytv.homebridge-sonyplaytv
-System Off: sonysystemofftv.homebridge-sonysystemofftv
-System On: sonysystemontv.homebridge-sonysystemontv
-Wake On Lan: sonywoltv.homebridge-sonywoltv
-Power Toggle (power button on remote): sonypowertoggletv.homebridge-sonypowertoggletv
-Power Off: sonypowerofftv.homebridge-sonypowerofftv
-Wake Up: onywakeuptv.homebridge-sonywakeuptv
-Channel Tune: sonychanneltunetv.homebridge-sonychanneltunetv
-Channels Button: sonychannelstv.homebridge-sonychannelstv
-Jump Button: sonyjumptv.homebridge-sonyjumptv
-All Power On (all on methods in one function): sonyallpowerontv.homebridge-sonyallpowerontv
-Set Volume: sonysetvolumetv.homebridge-sonysetvolumetv
+3. Currently supported features are: <br>
+Mute: sonymutetv.homebridge-sonymutetv <br>
+Volume Up: sonyvolumeuptv.homebridge-sonyvolumeuptv <br>
+Volume Down: sonyvolumedowntv.homebridge-sonyvolumedowntv <br>
+Input 1: sonyhdmi1tv.homebridge-sonyhdmi1tv <br>
+Input 2: sonyhdmi2tv.homebridge-sonyhdmi2tv <br>
+Input 3: sonyhdmi3tv.homebridge-sonyhdmi3tv <br>
+Input 4: sonyhdmi4tv.homebridge-sonyhdmi4tv <br>
+Input: sonyinputtv.homebridge-sonyinputtv <br>
+Left Arrow: sonylefttv.homebridge-sonylefttv <br>
+Right Arrow: sonyrighttv.homebridge-sonyrighttv <br>
+Down Arrow: sonydowntv.homebridge-sonydowntv <br>
+Up Arrow: sonyuptv.homebridge-sonyuptv <br>
+Ok Button: sonydpadcentertv.homebridge-sonydpadcentertv <br>
+Picture Off: sonypicofftv.homebridge-sonypicofftv <br>
+Netlfix Button: sonynetflixtv.homebridge-sonynetflixtv <br>
+CC Button: sonyclosedcaptiontv.homebridge-sonyclosedcaptiontv <br>
+Subtitle Button: sonysubtitletv.homebridge-sonysubtitletv <br>
+Guide: sonygguidetv.homebridge-sonygguidetv <br>
+Channel Up: sonychanneluptv.homebridge-sonychanneluptv <br>
+Channel Down: sonychanneldowntv.homebridge-sonychanneldowntv <br>
+Stop Button: sonystoptv.homebridge-sonystoptv <br>
+Pause Button: sonypausetv.homebridge-sonypausetv <br>
+Play Button: sonyplaytv.homebridge-sonyplaytv <br>
+System Off: sonysystemofftv.homebridge-sonysystemofftv <br>
+System On: sonysystemontv.homebridge-sonysystemontv <br>
+Wake On Lan: sonywoltv.homebridge-sonywoltv <br>
+Power Toggle (power button on remote): sonypowertoggletv.homebridge-sonypowertoggletv <br>
+Power Off: sonypowerofftv.homebridge-sonypowerofftv <br>
+Wake Up: onywakeuptv.homebridge-sonywakeuptv <br>
+Channel Tune: sonychanneltunetv.homebridge-sonychanneltunetv <br>
+Channels Button: sonychannelstv.homebridge-sonychannelstv <br>
+Jump Button: sonyjumptv.homebridge-sonyjumptv <br>
+All Power On (all on methods in one function): sonyallpowerontv.homebridge-sonyallpowerontv <br>
+Set Volume: sonysetvolumetv.homebridge-sonysetvolumetv <br>
 
 As mentioned above, brand spanking new here.  I'll have jacked something up, be gentle.
 I used Bravia because Siri sometimes gets confused by the word TV.
