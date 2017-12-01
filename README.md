@@ -2,7 +2,7 @@
 Apple homekit homebridge accessory for treating Sony Bravia TVs as a series of switches
 
 1. I'm new to this.  Start with a more established project if you are new to homebridge.
-2. This treats sony bravia TVs as a series of switches.  So it's actually many devices.
+2. This treats sony bravia TVs as a series of switches.  So it's actually many devices.  On/off switches can just be mentioned to Siri and she'll toggle them.  So even though it's technically "Bravia Mute On", you can just say "Bravia Mute" and she'll mute it.
 3. Currently supported features are: <br>
 Mute: sonymutetv.homebridge-sonymutetv <br>
 Volume Up: sonyvolumeuptv.homebridge-sonyvolumeuptv <br>
