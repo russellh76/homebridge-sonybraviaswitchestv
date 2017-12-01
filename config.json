@@ -1,0 +1,254 @@
+{
+"bridge": {
+"name": "SonyTVSwitchesTV",
+"username": "CA:22:3D:E3:CE:30",
+"port": 51827,
+"pin": "111-11-111"
+},
+"description": "config.json for DEV purposes",
+  "accessories": [
+    {
+      "accessory": "homebridge-sonyvolumeuptv",
+      "name": "Bravia Louder",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000",
+	  "volumecount": "5"
+    },	    {
+      "accessory": "homebridge-sonypowertv",
+      "name": "Bravia Power",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000",
+	  "polling": "true",
+	  "interval": "10"
+    },
+    {
+      "accessory": "homebridge-sonyvolumeuptv",
+      "name": "Bravia Volume Up",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000",
+	  "volumecount": "5"
+    },	
+    {
+      "accessory": "homebridge-sonyvolumedowntv",
+      "name": "Bravia Quieter",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000",
+	  "volumecount": "10"
+    },	
+    {
+      "accessory": "homebridge-sonyvolumedowntv",
+      "name": "Bravia Volume Down",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000",
+	  "volumecount": "10"
+    },	
+    {
+      "accessory": "homebridge-sonywoltv",
+      "name": "Bravia WOL",
+      "macaddress": "44:1c:a8:91:b3:89",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },	
+    {
+      "accessory": "homebridge-sonymutetv",
+      "name": "Bravia Mute",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonymutetv",
+      "name": "Bravia Unmute",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+		
+    {
+      "accessory": "homebridge-sonyhdmi1tv",
+      "name": "Bravia One",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonyhdmi1tv",
+      "name": "Bravia Apple",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },	
+    {
+      "accessory": "homebridge-sonyhdmi2tv",
+      "name": "Bravia Two",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },	
+    {
+      "accessory": "homebridge-sonyhdmi2tv",
+      "name": "Bravia Roku",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonyhdmi3tv",
+      "name": "Bravia Three",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },	
+    {
+      "accessory": "homebridge-sonyhdmi3tv",
+      "name": "Bravia Raspberry",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },		
+    {
+      "accessory": "homebridge-sonyhdmi4tv",
+      "name": "Bravia Four",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },	
+    {
+      "accessory": "homebridge-sonyinputtv",
+      "name": "Bravia Input",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonylefttv",
+      "name": "Bravia Left",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonyrighttv",
+      "name": "Bravia Right",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonydowntv",
+      "name": "Bravia Down",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonyuptv",
+      "name": "Bravia Up",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonydpadcentertv",
+      "name": "Bravia OK",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonydpadcentertv",
+      "name": "Bravia okay",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },	
+    {
+      "accessory": "homebridge-sonypowerofftv",
+      "name": "Bravia PowerOff",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },	
+    {
+      "accessory": "homebridge-sonywakeuptv",
+      "name": "Bravia Wakeup",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonypicofftv",
+      "name": "Bravia Picture",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonyclosedcaptiontv",
+      "name": "Bravia ClosedCaption",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonysubtitletv",
+      "name": "Bravia Subtitles",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonygguidetv",
+      "name": "Bravia Guide",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonychanneluptv",
+      "name": "Bravia Channel Up",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonychanneldowntv",
+      "name": "Bravia Channel Down",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonynetflixtv",
+      "name": "Bravia Netflix",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonystoptv",
+      "name": "Bravia Stop",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonypausetv",
+      "name": "Bravia Pause",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonyplaytv",
+      "name": "Bravia Play",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonysystemofftv",
+      "name": "Bravia System Off",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonysystemontv",
+      "name": "Bravia System On",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonychannelstv",
+      "name": "Bravia Antenna",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000"
+    },	
+    {
+      "accessory": "homebridge-sonychanneltunetv",
+      "name": "Bravia ABC",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000",
+	  "channel": "2.2"
+    },	
+    {
+      "accessory": "homebridge-sonychanneltunetv",
+      "name": "Bravia NBC",
+      "ipaddress": "192.168.1.157",
+      "presharedkey": "0000",
+	  "channel": "11.1"
+    }	
+  ]
+}
