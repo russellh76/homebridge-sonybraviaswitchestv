@@ -1,6 +1,6 @@
 {
   "name": "homebridge-sonybraviaswitchestv",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Sony Bravia TV support (as a bunch of switches) for Homebridge: https://github.com/nfarina/homebridge",
   "license": "MIT",
   "keywords": [
