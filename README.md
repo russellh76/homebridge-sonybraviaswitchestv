@@ -40,6 +40,8 @@ All Power On (all on methods in one function): sonyallpowerontv.homebridge-sonya
 Set Volume: sonysetvolumetv.homebridge-sonysetvolumetv
 
 As mentioned above, brand spanking new here.  I'll have jacked something up, be gentle.
+I used Bravia because Siri sometimes gets confused by the word TV.
+
 
 
 
