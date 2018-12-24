@@ -1,3 +1,4 @@
+//TODO: Let's pull the Wake On Lan WOL stuff out, dependency doesn't add much value and does add fragility
 //TODO: This TV doesn't have a page down/up button when dealing with guide
 // I tried creating multiple down/ups to behave like paging, but the TV doesn't reliably accept the commands
 // Even when time delayed.  Scratching my head about that one
