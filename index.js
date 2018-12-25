@@ -1,12 +1,9 @@
-//TODO: Add an unmute command that is volume down followed by volume up.
-//TODO: Maybe volume down loops for 1 through 10, that can be done in config.json
-//TODO: This TV doesn't have a page down/up button when dealing with guide.
-//TODO: Let's pull the Wake On Lan WOL stuff out, dependency doesn't add much value and does add fragility
+//TODO: This TV doesn't have a page down/up button when dealing with guide
 // I tried creating multiple down/ups to behave like paging, but the TV doesn't reliably accept the commands
 // Even when time delayed.  Scratching my head about that one
 //Node JS Homebridge add-on for controlling Sony Smart TV: homebridge-sonybraviaswitchestv
 var request = require("request");
-var wol = require("wake_on_lan");
+//var wol = require("wake_on_lan");
 var inherits = require('util').inherits;
 var Service, Characteristic
 var stateError = "Error setting TV state.";
@@ -150,6 +147,7 @@ module.exports = function(homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
     homebridge.registerAccessory("homebridge-sonymutetv", "homebridge-sonymutetv", SonyMuteTV);	
+	homebridge.registerAccessory("homebridge-sonyunmutetv", "homebridge-sonyunmutetv", SonyUnMuteTV);	
 	homebridge.registerAccessory("homebridge-sonyvolumeuptv", "homebridge-sonyvolumeuptv", SonyVolumeUpTV);	
 	homebridge.registerAccessory("homebridge-sonyvolumedowntv", "homebridge-sonyvolumedowntv", SonyVolumeDownTV);	
 	homebridge.registerAccessory("homebridge-sonyhdmi1tv", "homebridge-sonyhdmi1tv", SonyHDMI1TV);
@@ -174,7 +172,7 @@ module.exports = function(homebridge) {
 	homebridge.registerAccessory("homebridge-sonyplaytv", "homebridge-sonyplaytv", SonyPlayTV);		
 	homebridge.registerAccessory("homebridge-sonysystemofftv", "homebridge-sonysystemofftv", SonySystemOffTV);	//off only
 	homebridge.registerAccessory("homebridge-sonysystemontv", "homebridge-sonysystemontv", SonySystemOnTV);	//on only
-	homebridge.registerAccessory("homebridge-sonywoltv", "homebridge-sonywoltv", SonyWOLTV); //on only
+//	homebridge.registerAccessory("homebridge-sonywoltv", "homebridge-sonywoltv", SonyWOLTV); //on only
 	homebridge.registerAccessory("homebridge-sonypowertoggletv", "homebridge-sonypowertoggletv", SonyPowerToggleTV); //toggle off and on
 	homebridge.registerAccessory("homebridge-sonypowerofftv", "homebridge-sonypowerofftv", SonyPowerOffTV); // off only
 	homebridge.registerAccessory("homebridge-sonywakeuptv", "homebridge-sonywakeuptv", SonyWakeUpTV); // on only (wake)
@@ -231,6 +229,72 @@ SonyMuteTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------------------------------
+// Send the TV UnMute command
+//------------------------------------------------------------------------------------------------
+SonyUnMuteTV.prototype.getServices = function() { return [this.service]; }
+function SonyUnMuteTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+    this.psk = config["presharedkey"];
+    this.ipaddress = config["ipaddress"];
+    this.service = new Service.Switch(this.name);
+	this.timer;
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+}
+SonyUnMuteTV.prototype.setOn = function(value, callback) {  
+        var postData = startXML + VolumeDown + endXML;  
+        request.post({
+            url: protocol + this.ipaddress + IRCCURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                //callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+		postData = startXML + VolumeUp + endXML;  
+        request.post({
+            url: protocol + this.ipaddress + IRCCURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));		
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);	
+}
+SonyUnMuteTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyUnMuteTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
+//------------------------------------------------------------------------------------------------
+
+
 
 
 
@@ -386,6 +450,7 @@ function SonySetVolumeTV(log, config) {
     this.psk = config["presharedkey"];
     this.ipaddress = config["ipaddress"];
 	this.volumelevel = config["volumelevel"];
+	this.delay =  config["delay"];
 	this.timer;
     this.service = new Service.Switch(this.name);
 	this.timer;
@@ -396,31 +461,35 @@ function SonySetVolumeTV(log, config) {
 }
 SonySetVolumeTV.prototype.setOn = function(value, callback) {   
 		var postData = startXML + VolumeDown + endXML;  
-		var volumelevel = parseInt(this.volumelevel)-1;
-		for (i = 1; i <= 98; i++) { 
-			//this.log("loop down: "+i);
-			request = require("request");
-			request.post({
-				url: protocol + this.ipaddress + IRCCURL,
-				headers: {
-					'X-Auth-PSK': this.psk,
-					'SOAPAction': SOAPActionVal,
-					'Content-type': ContentTypeVal
-				},
-				form: postData
-			}, function(err, response, body) {
-				if (!err && response.statusCode == 200) {
-					//this.log("loop down success: ");
-					//callback();// success don't callback until last command
-				} else {
-					this.log("loop down error");
-					//this.log(logError, err, body);
-					//callback(err || new Error(stateError));
-				}
-			}.bind(this));
-		}		
+		var volume = parseInt(this.volumelevel);
+		var senddelay = 0;
+		var delay = parseInt(this.delay);  // delay of 07 is the fastest I could get to reliably work
+		var downloop = 120;
+		//this.log("delay:"+delay);
+		//this.log("volume:" + volume);
+		//this.log("volumelevel:" + this.volumelevel);
 		
+		for (i = 0; i <= downloop; i++) { 
+			senddelay = (i*delay);
+			//this.log("timer down:" + i+ " delay:"+senddelay);
+			this.timer = setTimeout(function() {
+				this.runTimerVolumeDown();
+			}.bind(this), senddelay);	
+		}		
+		//now turn volume up to the desired level
+		//Timed function needed here because of 100 POST per second limit!!!
+		for (i = 1; i <= volume; i++) { 
+			senddelay = (i*delay)+(downloop*delay);
+			this.log("timer up:" + i+ " delay:"+senddelay);
+			this.timer = setTimeout(function() {
+				this.runTimerVolumeUp();
+			}.bind(this), senddelay);	
+		}
+		callback();
+}
+SonySetVolumeTV.prototype.runTimerVolumeDown = function() {
 		request = require("request");
+		postData = startXML + VolumeDown + endXML; 
 		request.post({
 			url: protocol + this.ipaddress + IRCCURL,
 			headers: {
@@ -431,43 +500,16 @@ SonySetVolumeTV.prototype.setOn = function(value, callback) {
 			form: postData
 		}, function(err, response, body) {
 			if (!err && response.statusCode == 200) {
-				//this.log("loop down success: ");
-				//callback();// success don't callback until last command
+				//callback(); // success
+				//this.log("Success Down");
 			} else {
-				this.log("last down error");
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));		
-		
-		//now turn volume up to the desired level
-		//Timed function needed here because of 100 POST per second limit!!!
-		for (i = 0; i <= volumelevel; i++) { 
-			//this.log("timer up:" + i);
-			this.timer = setTimeout(function() {
-				this.runTimerVolumeUp();
-			}.bind(this), 750);	
-		}
-		// final volume up command
-		///*
-		request = require("request");
-		//this.log("final up");
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				callback(); // success
-			} else {
-				this.log(logError, err, body);
-				callback(err || new Error(stateError));
-			}
-		}.bind(this));		//*/
+		}.bind(this));	//*/
+//		this.timer = setTimeout(function() {
+//			this.runTimer();
+//		}.bind(this), 1000);		
 }
 SonySetVolumeTV.prototype.runTimerVolumeUp = function() {
 		request = require("request");
@@ -484,6 +526,30 @@ SonySetVolumeTV.prototype.runTimerVolumeUp = function() {
 			if (!err && response.statusCode == 200) {
 				//callback(); // success
 				//this.log("Success Up");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//*/
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 10000);		
+}
+SonySetVolumeTV.prototype.runTimerVolumeUpLast = function() {
+		request = require("request");
+		postData = startXML + VolumeUp + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				this.log("Success Up Last");
 			} else {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
@@ -531,18 +597,18 @@ function SonyHDMI1TV(log, config) {
 }
 SonyHDMI1TV.prototype.setOn = function(value, callback) {    
 		// Wake On Lan
-		wol.wake(this.macaddress, function(error) {
-			if (error) {
-				// handle error
-				this.log("Error '%s' setting TV power state using WOL.", error);
-				callback(error);
-			} else {
-				// done sending packets
-				//this.updateTimer();
-				//this.log("WOL Apparent Success");
-				//callback();
-			}
-		}.bind(this));		
+//		wol.wake(this.macaddress, function(error) {
+//			if (error) {
+//				// handle error
+//				this.log("Error '%s' setting TV power state using WOL.", error);
+//				callback(error);
+//			} else {
+//				// done sending packets
+//				//this.updateTimer();
+//				//this.log("WOL Apparent Success");
+//				//callback();
+//			}
+//		}.bind(this));		
 
 		// Wake up the TV
 		var postData = startXML + WakeUp + endXML; 
@@ -642,18 +708,18 @@ function SonyHDMI2TV(log, config) {
 }
 SonyHDMI2TV.prototype.setOn = function(value, callback) {    
 		// Wake On Lan
-		wol.wake(this.macaddress, function(error) {
-			if (error) {
-				// handle error
-				this.log("Error '%s' setting TV power state using WOL.", error);
-				callback(error);
-			} else {
-				// done sending packets
-				//this.updateTimer();
-				//this.log("WOL Apparent Success");
-				//callback();
-			}
-		}.bind(this));		
+//		wol.wake(this.macaddress, function(error) {
+//			if (error) {
+//				// handle error
+//				this.log("Error '%s' setting TV power state using WOL.", error);
+//				callback(error);
+//			} else {
+//				// done sending packets
+//				//this.updateTimer();
+//				//this.log("WOL Apparent Success");
+//				//callback();
+//			}
+//		}.bind(this));		
 
 		// Wake up the TV
 		var postData = startXML + WakeUp + endXML; 
@@ -752,18 +818,18 @@ function SonyHDMI3TV(log, config) {
 }
 SonyHDMI3TV.prototype.setOn = function(value, callback) {    
 		// Wake On Lan
-		wol.wake(this.macaddress, function(error) {
-			if (error) {
-				// handle error
-				this.log("Error '%s' setting TV power state using WOL.", error);
-				callback(error);
-			} else {
-				// done sending packets
-				//this.updateTimer();
-				//this.log("WOL Apparent Success");
-				//callback();
-			}
-		}.bind(this));		
+//		wol.wake(this.macaddress, function(error) {
+//			if (error) {
+//				// handle error
+//				this.log("Error '%s' setting TV power state using WOL.", error);
+//				callback(error);
+//			} else {
+//				// done sending packets
+//				//this.updateTimer();
+//				//this.log("WOL Apparent Success");
+//				//callback();
+//			}
+//		}.bind(this));		
 
 		// Wake up the TV
 		var postData = startXML + WakeUp + endXML; 
@@ -862,18 +928,18 @@ function SonyHDMI4TV(log, config) {
 }
 SonyHDMI4TV.prototype.setOn = function(value, callback) {    
 		// Wake On Lan
-		wol.wake(this.macaddress, function(error) {
-			if (error) {
-				// handle error
-				this.log("Error '%s' setting TV power state using WOL.", error);
-				callback(error);
-			} else {
-				// done sending packets
-				//this.updateTimer();
-				//this.log("WOL Apparent Success");
-				//callback();
-			}
-		}.bind(this));		
+//		wol.wake(this.macaddress, function(error) {
+//			if (error) {
+//				// handle error
+//				this.log("Error '%s' setting TV power state using WOL.", error);
+//				callback(error);
+//			} else {
+//				// done sending packets
+//				//this.updateTimer();
+//				//this.log("WOL Apparent Success");
+//				//callback();
+//			}
+//		}.bind(this));		
 
 		// Wake up the TV
 		var postData = startXML + WakeUp + endXML; 
@@ -1550,18 +1616,18 @@ function SonyNetflixTV(log, config) {
 }
 SonyNetflixTV.prototype.setOn = function(value, callback) {    
 		// Wake On Lan
-		wol.wake(this.macaddress, function(error) {
-			if (error) {
-				// handle error
-				this.log("Error '%s' setting TV power state using WOL.", error);
-				callback(error);
-			} else {
-				// done sending packets
-				//this.updateTimer();
-				//this.log("WOL Apparent Success");
-				//callback();
-			}
-		}.bind(this));		
+//		wol.wake(this.macaddress, function(error) {
+//			if (error) {
+//				// handle error
+//				this.log("Error '%s' setting TV power state using WOL.", error);
+//				callback(error);
+//			} else {
+//				// done sending packets
+//				//this.updateTimer();
+//				//this.log("WOL Apparent Success");
+//				//callback();
+//			}
+//		}.bind(this));		
 
 		// Wake up the TV
 		var postData = startXML + WakeUp + endXML; 
@@ -1892,7 +1958,7 @@ SonyChannelDownTV.prototype.runTimer = function() {
 //------------------------------------------------------------------------------------------------
 // Send the TV Wake On LAN command
 //------------------------------------------------------------------------------------------------
-SonyWOLTV.prototype.getServices = function() { return [this.service]; }
+/*//SonyWOLTV.prototype.getServices = function() { return [this.service]; }
 function SonyWOLTV(log, config) {  // only turns on
     this.log = log;
     this.name = config["name"];
@@ -1917,7 +1983,7 @@ SonyWOLTV.prototype.setOn = function(value, callback) {
                 callback();
             }
         }.bind(this));
-}//*/
+}//
 SonyWOLTV.prototype.getOn = function(callback) {  
         var postData = PowerStatus;
         request.post({
@@ -1946,9 +2012,9 @@ SonyWOLTV.prototype.getOn = function(callback) {
                 callback(err, false);
             }
         }.bind(this));
-}
+}//
 //------------------------------------------------------------------------------------------------
-
+*/
 
 
 
@@ -2298,20 +2364,19 @@ SonyAllPowerOnTV.prototype.setOn = function(value, callback) {    //Tune to spec
 				}
 			}.bind(this));			
 			
-			
-			// Wake On Lan
-			wol.wake(this.macaddress, function(error) {
-				if (error) {
-					// handle error
-					this.log("Error '%s' setting TV power state using WOL.", error);
-					callback(error);
-				} else {
-					// done sending packets
-					//this.updateTimer();
-					//this.log("WOL Apparent Success");
-					//callback();
-				}
-			}.bind(this));		
+//			// Wake On Lan
+//			wol.wake(this.macaddress, function(error) {
+//				if (error) {
+//					// handle error
+//					this.log("Error '%s' setting TV power state using WOL.", error);
+//					callback(error);
+//				} else {
+//					// done sending packets
+//					//this.updateTimer();
+//					//this.log("WOL Apparent Success");
+//					//callback();
+//				}
+//			}.bind(this));		
 
 			// Wake up the TV
 			var postData = startXML + WakeUp + endXML; 
@@ -2513,17 +2578,17 @@ function SonyChannelTuneTV(log, config) {  // only turns on
 }
 SonyChannelTuneTV.prototype.setOn = function(value, callback) {    //Tune to specified channel
 		// Wake On Lan
-        wol.wake(this.macaddress, function(error) {
-            if (error) {
-                // handle error
-                this.log("Error '%s' setting TV power state using WOL.", error);
-                callback(error);
-            } else {
-                // done sending packets
-                //this.updateTimer();
-                //callback();
-            }
-        }.bind(this));		
+//        wol.wake(this.macaddress, function(error) {
+//            if (error) {
+//                // handle error
+//                this.log("Error '%s' setting TV power state using WOL.", error);
+//                callback(error);
+//           } else {
+//                // done sending packets
+//                //this.updateTimer();
+//                //callback();
+//            }
+//        }.bind(this));		
 
 		// Wake up the TV
 		var postData = startXML + WakeUp + endXML; 
@@ -2582,7 +2647,7 @@ SonyChannelTuneTV.prototype.setOn = function(value, callback) {    //Tune to spe
                 this.log(logError, err, body);
                 callback(err || new Error(stateError));
             }
-        }.bind(this));   //*/
+        }.bind(this));   //
 		//this.log("First",this.channel,"");
 		for (var i = 0, len = this.channel.length; i < len; i++) {
 			//clearTimeout(this.timer);	
@@ -2674,7 +2739,7 @@ SonyChannelTuneTV.prototype.runTimer0 = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimer1 = function() {
 		this.log("send 1");
@@ -2696,7 +2761,7 @@ SonyChannelTuneTV.prototype.runTimer1 = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimer2 = function() {
 		this.log("send 2");
@@ -2718,7 +2783,7 @@ SonyChannelTuneTV.prototype.runTimer2 = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimer3 = function() {
 		this.log("send 3");
@@ -2740,7 +2805,7 @@ SonyChannelTuneTV.prototype.runTimer3 = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimer4 = function() {
 		this.log("send 4");
@@ -2762,7 +2827,7 @@ SonyChannelTuneTV.prototype.runTimer4 = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimer5 = function() {
 		this.log("send 5");
@@ -2784,7 +2849,7 @@ SonyChannelTuneTV.prototype.runTimer5 = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimer6 = function() {
 		this.log("send 6");
@@ -2806,7 +2871,7 @@ SonyChannelTuneTV.prototype.runTimer6 = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimer7 = function() {
 		this.log("send 7");
@@ -2828,7 +2893,7 @@ SonyChannelTuneTV.prototype.runTimer7 = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimer8 = function() {
 		this.log("send 8");
@@ -2850,7 +2915,7 @@ SonyChannelTuneTV.prototype.runTimer8 = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimer9 = function() {
 		this.log("send 9");
@@ -2872,7 +2937,7 @@ SonyChannelTuneTV.prototype.runTimer9 = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimerDot = function() {
 		this.log("send .");
@@ -2894,7 +2959,7 @@ SonyChannelTuneTV.prototype.runTimerDot = function() {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
 			}
-		}.bind(this));	//*/
+		}.bind(this));	//
 }
 SonyChannelTuneTV.prototype.runTimerDpadCenter = function() {
 		this.log("send dpadcenter");
