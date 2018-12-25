@@ -2,22 +2,22 @@
 Apple homekit homebridge accessory for treating Sony Bravia TVs as a series of switches
 
 1. I'm new to this.  Start with a more established project if you are new to homebridge.
-2. This treats sony bravia TVs as a series of switches.  So it's actually many devices.  On/off switches can just be mentioned to Siri and she'll toggle them.  So even though it's technically "Bravia Mute On", you can just say "Bravia Mute" and she'll mute it.
+2. This treats sony bravia TVs as a series of switches.  So it's actually many devices.  On/off switches can just be mentioned to Siri and she'll toggle them.  So even though it's technically "Bravia Mute On", you can just say "Bravia Mute" and she'll mute it.  I currently have all TV devices in their own room in Homekit.  Helps preserve my sanity.
 3. Currently supported features are: <br>
-Mute: sonymutetv.homebridge-sonymutetv <br>
-UnMute: sonyunmutetv.homebridge-sonyunmutetv <br>
-Volume Up: sonyvolumeuptv.homebridge-sonyvolumeuptv <br>
-Volume Down: sonyvolumedowntv.homebridge-sonyvolumedowntv <br>
-Input 1: sonyhdmi1tv.homebridge-sonyhdmi1tv <br>
+Mute: sonymutetv.homebridge-sonymutetv "Hey Siri Bravia Mute"<br>
+UnMute: sonyunmutetv.homebridge-sonyunmutetv "Hey Siri Bravia Mute Off"<br>
+Volume Up: sonyvolumeuptv.homebridge-sonyvolumeuptv "Hey Siri Bravia Volume Up 10"<br>
+Volume Down: sonyvolumedowntv.homebridge-sonyvolumedowntv "Hey Siri Bravia Volume Down 10"<br>
+Input 1: sonyhdmi1tv.homebridge-sonyhdmi1tv "Hey Siri Bravia HDMI One"<br>
 Input 2: sonyhdmi2tv.homebridge-sonyhdmi2tv <br>
 Input 3: sonyhdmi3tv.homebridge-sonyhdmi3tv <br>
 Input 4: sonyhdmi4tv.homebridge-sonyhdmi4tv <br>
-Input: sonyinputtv.homebridge-sonyinputtv <br>
-Left Arrow: sonylefttv.homebridge-sonylefttv <br>
+Input: sonyinputtv.homebridge-sonyinputtv "Hey Siri Bravia Input"<br>
+Left Arrow: sonylefttv.homebridge-sonylefttv "Hey Sirir Bravia Left Arrow"<br>
 Right Arrow: sonyrighttv.homebridge-sonyrighttv <br>
 Down Arrow: sonydowntv.homebridge-sonydowntv <br>
 Up Arrow: sonyuptv.homebridge-sonyuptv <br>
-Ok Button: sonydpadcentertv.homebridge-sonydpadcentertv <br>
+Ok Button: sonydpadcentertv.homebridge-sonydpadcentertv "Hey Siri Bravia OK"<br>
 Picture Off: sonypicofftv.homebridge-sonypicofftv <br>
 Netlfix Button: sonynetflixtv.homebridge-sonynetflixtv <br>
 CC Button: sonyclosedcaptiontv.homebridge-sonyclosedcaptiontv <br>
