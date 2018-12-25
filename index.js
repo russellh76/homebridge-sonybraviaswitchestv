@@ -1,4 +1,5 @@
 //TODO: Add an unmute command that is volume down followed by volume up.
+//TODO: Maybe volume down loops for 1 through 10, that can be done in config.json
 //TODO: This TV doesn't have a page down/up button when dealing with guide.
 //TODO: Let's pull the Wake On Lan WOL stuff out, dependency doesn't add much value and does add fragility
 // I tried creating multiple down/ups to behave like paging, but the TV doesn't reliably accept the commands
