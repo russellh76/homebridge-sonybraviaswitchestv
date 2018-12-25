@@ -42,7 +42,12 @@ Set Volume: sonysetvolumetv.homebridge-sonysetvolumetv <br>
 As mentioned above, brand spanking new here.  I'll have jacked something up, be gentle.
 I used Bravia because Siri sometimes gets confused by the word TV.
 
+TODO:
+Should I do numbers? That would allow Siri user to call out channels to TV with voice commands.
+Probably makes more sense to just add all possible channel combinations to the existing config.
 
+DONE:
+Removed Wake On LAN functionality.  It was complexity and fragility that didn't really add anything.  Fewer dependencies now.
 
 
 
