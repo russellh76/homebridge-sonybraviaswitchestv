@@ -66,16 +66,19 @@ function SonyStatus() {
   var xhttp2 = new XMLHttpRequest();
   xhttp2.onload = function () {
   //alert(xhttp2.responseText);
-  if (xhttp2.responseText.includes('"title":"')){
+  if (xhttp2.responseText.includes('"}],"id":103}')){
     pos = xhttp2.responseText.indexOf('"title":"');
 	pos2 = xhttp2.responseText.indexOf('"}],"id":103}');
 	len = pos2-pos;
     document.getElementById("InputStatus").innerHTML="&nbsp;&nbsp;Input:&nbsp;<b>"+xhttp2.responseText.substring(pos+9,pos+len)+"</b>"; 
 	document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>TV Status</b>&nbsp;<i>(On)</i></br>" + document.getElementById("log").innerHTML;
 	}
-  else {
-	document.getElementById("InputStatus").innerHTML="&nbsp;&nbsp;Input:&nbsp;<b>Standby</b>";
-	document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>Input Status</b>&nbsp;<i>(Standby)</i></br>" + document.getElementById("log").innerHTML;
+  else if (xhttp2.responseText.includes('dispNum=')){
+	pos = xhttp2.responseText.indexOf('dispNum=');
+	pos2 = xhttp2.responseText.indexOf('&trip=');
+	len = pos2-pos;
+    document.getElementById("InputStatus").innerHTML="&nbsp;&nbsp;Input:&nbsp;<b>"+xhttp2.responseText.substring(pos+8,pos+len)+"</b>"; 
+	document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>TV Status</b>&nbsp;<i>(On)</i></br>" + document.getElementById("log").innerHTML;
 	}
   };  
   xhttp2.onerror = function () {
