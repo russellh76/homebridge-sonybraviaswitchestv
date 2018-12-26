@@ -1,6 +1,3 @@
-//TODO: This TV doesn't have a page down/up button when dealing with guide
-// I tried creating multiple down/ups to behave like paging, but the TV doesn't reliably accept the commands
-// Even when time delayed.  Scratching my head about that one
 //Node JS Homebridge add-on for controlling Sony Smart TV: homebridge-sonybraviaswitchestv
 var request = require("request");
 //var wol = require("wake_on_lan");
@@ -191,6 +188,8 @@ module.exports = function(homebridge) {
 	homebridge.registerAccessory("homebridge-sonyallpowerontv", "homebridge-sonyallpowerontv", SonyAllPowerOnTV);	
 	homebridge.registerAccessory("homebridge-sonysetvolumetv", "homebridge-sonysetvolumetv", SonySetVolumeTV);	
 	homebridge.registerAccessory("homebridge-sonyvolumetv", "homebridge-sonyvolumetv", SonyVolumeTV);	
+	homebridge.registerAccessory("homebridge-sonyvolumeplustv", "homebridge-sonyvolumeplustv", SonyVolumePlusTV);
+	homebridge.registerAccessory("homebridge-sonyvolumeminustv", "homebridge-sonyvolumeminustv", SonyVolumeMinusTV);
 	homebridge.registerAccessory("homebridge-sonychanneltv", "homebridge-sonychanneltv", SonyChannelTV);	
 }
 
@@ -649,11 +648,171 @@ SonyChannelTV.prototype.runTimerDpadCenter = function() {
 }
 //------------------------------------------------------------------------------------------------
 
+
+
+
+
+//------------------------------------------------------------------------------------------------
+// Send the TV Volume Minus command
+//------------------------------------------------------------------------------------------------
+SonyVolumeMinusTV.prototype.getServices = function() { return [this.service]; }
+function SonyVolumeMinusTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+    this.psk = config["presharedkey"];
+    this.ipaddress = config["ipaddress"];
+	this.volume = config["volume"];
+    //this.service = new Service.Switch(this.name);
+	this.service = new Service.Lightbulb(this.name);
+	this.timer;
+	
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+		
+    this.service
+		.addCharacteristic(new Characteristic.Brightness())
+		.on('get', this.getBrightness.bind(this))
+		.on('set', this.setBrightness.bind(this));	
+}
+SonyVolumeMinusTV.prototype.setBrightness = function(value, callback) {  
+		this.log("value:"+value);
+		var volume = parseInt(this.volume);
+        var postData = startAudioJSON + "-" + value + endAudioJSON;  
+        request.post({
+            url: protocol + this.ipaddress + AudioURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);	
+}
+SonyVolumeMinusTV.prototype.getBrightness = function(callback) { callback(null, false);  }
+SonyVolumeMinusTV.prototype.setOn = function(value, callback) {  
+		var volume = parseInt(this.volume);
+        var postData = startAudioJSON + volume + endAudioJSON;  
+        request.post({
+            url: protocol + this.ipaddress + AudioURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);	
+}
+SonyVolumeMinusTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyVolumeMinusTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
 //------------------------------------------------------------------------------------------------
 
 
 
-
+//------------------------------------------------------------------------------------------------
+// Send the TV Volume Plus command
+//------------------------------------------------------------------------------------------------
+SonyVolumePlusTV.prototype.getServices = function() { return [this.service]; }
+function SonyVolumePlusTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+    this.psk = config["presharedkey"];
+    this.ipaddress = config["ipaddress"];
+	this.volume = config["volume"];
+    //this.service = new Service.Switch(this.name);
+	this.service = new Service.Lightbulb(this.name);
+	this.timer;
+	
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+		
+    this.service
+		.addCharacteristic(new Characteristic.Brightness())
+		.on('get', this.getBrightness.bind(this))
+		.on('set', this.setBrightness.bind(this));	
+}
+SonyVolumePlusTV.prototype.setBrightness = function(value, callback) {  
+		this.log("value:"+value);
+		var volume = parseInt(this.volume);
+        var postData = startAudioJSON + "+" + value + endAudioJSON;  
+        request.post({
+            url: protocol + this.ipaddress + AudioURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);	
+}
+SonyVolumePlusTV.prototype.getBrightness = function(callback) { callback(null, false);  }
+SonyVolumePlusTV.prototype.setOn = function(value, callback) {  
+		var volume = parseInt(this.volume);
+        var postData = startAudioJSON + volume + endAudioJSON;  
+        request.post({
+            url: protocol + this.ipaddress + AudioURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);	
+}
+SonyVolumePlusTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyVolumePlusTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
+//------------------------------------------------------------------------------------------------
 
 
 
