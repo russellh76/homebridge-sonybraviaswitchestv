@@ -30,8 +30,8 @@ Pause Button: sonypausetv.homebridge-sonypausetv <i>"Hey Siri Bravia Pause"</i><
 Play Button: sonyplaytv.homebridge-sonyplaytv <i>"Hey Siri Bravia Play"</i><br>
 System Off: sonysystemofftv.homebridge-sonysystemofftv <i>"Hey Siri Bravia Off"</i><br>
 System On: sonysystemontv.homebridge-sonysystemontv <i>"Hey Siri Bravia On"</i><br>
-Power Toggle (power button on remote): sonypowertoggletv.homebridge-sonypowertoggletv <i>"Hey Siri Bravia Power Toggle"</i><br>
-Power Off: sonypowerofftv.homebridge-sonypowerofftv </i><br>
+Power Toggle: sonypowertoggletv.homebridge-sonypowertoggletv <i>"Hey Siri Bravia Power Toggle"</i><br>
+Power Off: sonypowerofftv.homebridge-sonypowerofftv <i>"Hey Siri Bravia Power Off"</i><br>
 Wake Up: onywakeuptv.homebridge-sonywakeuptv <i>"Hey Siri Bravia WakeUp"</i><br>
 Channel Tune: sonychanneltunetv.homebridge-sonychanneltunetv <i>"Hey Siri Bravia ABC"</i><br>
 Channels Button: sonychannelstv.homebridge-sonychannelstv <i>"Hey Siri Bravia Channels"</i><br>
