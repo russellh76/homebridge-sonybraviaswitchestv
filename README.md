@@ -23,16 +23,16 @@ Netlfix Button: sonynetflixtv.homebridge-sonynetflixtv  <i>"Hey Siri Bravia Netf
 CC Button: sonyclosedcaptiontv.homebridge-sonyclosedcaptiontv </i><br>
 Subtitle Button: sonysubtitletv.homebridge-sonysubtitletv </i><br>
 Guide: sonygguidetv.homebridge-sonygguidetv <i>"Hey Siri Bravia Guide"</i><br>
-Channel Up: sonychanneluptv.homebridge-sonychanneluptv </i><br>
-Channel Down: sonychanneldowntv.homebridge-sonychanneldowntv </i><br>
-Stop Button: sonystoptv.homebridge-sonystoptv </i><br>
-Pause Button: sonypausetv.homebridge-sonypausetv </i><br>
-Play Button: sonyplaytv.homebridge-sonyplaytv </i><br>
-System Off: sonysystemofftv.homebridge-sonysystemofftv </i><br>
-System On: sonysystemontv.homebridge-sonysystemontv </i><br>
-Power Toggle (power button on remote): sonypowertoggletv.homebridge-sonypowertoggletv </i><br>
+Channel Up: sonychanneluptv.homebridge-sonychanneluptv <i>"Hey Siri Bravia Channel Up"</i><br>
+Channel Down: sonychanneldowntv.homebridge-sonychanneldowntv <i>"Hey Siri Bravia Channel Down"</i><br>
+Stop Button: sonystoptv.homebridge-sonystoptv <i>"Hey Siri Bravia Stop"</i><br>
+Pause Button: sonypausetv.homebridge-sonypausetv <i>"Hey Siri Bravia Pause"</i><br>
+Play Button: sonyplaytv.homebridge-sonyplaytv <i>"Hey Siri Bravia Play"</i><br>
+System Off: sonysystemofftv.homebridge-sonysystemofftv <i>"Hey Siri Bravia Off"</i><br>
+System On: sonysystemontv.homebridge-sonysystemontv <i>"Hey Siri Bravia On"</i><br>
+Power Toggle (power button on remote): sonypowertoggletv.homebridge-sonypowertoggletv <i>"Hey Siri Bravia Power Toggle"</i><br>
 Power Off: sonypowerofftv.homebridge-sonypowerofftv </i><br>
-Wake Up: onywakeuptv.homebridge-sonywakeuptv </i><br>
+Wake Up: onywakeuptv.homebridge-sonywakeuptv <i>"Hey Siri Bravia WakeUp"</i><br>
 Channel Tune: sonychanneltunetv.homebridge-sonychanneltunetv <i>"Hey Siri Bravia ABC"</i><br>
 Channels Button: sonychannelstv.homebridge-sonychannelstv <i>"Hey Siri Bravia Channels"</i><br>
 Jump Button: sonyjumptv.homebridge-sonyjumptv <i>"Hey Siri Bravia Jump"</i><br>
