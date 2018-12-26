@@ -1,3 +1,6 @@
+//TODO: This TV doesn't have a page down/up button when dealing with guide
+// I tried creating multiple down/ups to behave like paging, but the TV doesn't reliably accept the commands
+// Even when time delayed.  Scratching my head about that one
 //Node JS Homebridge add-on for controlling Sony Smart TV: homebridge-sonybraviaswitchestv
 var request = require("request");
 //var wol = require("wake_on_lan");
@@ -11,7 +14,10 @@ var startXML = '<?xml version="1.0"?><s:Envelope xmlns:s="http://schemas.xmlsoap
 var endXML = '</IRCCCode></u:X_SendIRCC></s:Body></s:Envelope>';
 var startJSON = '{"method":"setPowerStatus","params":[{"status":'
 var endJSON = '}],"id":1,"version":"1.0"}';
+var startAudioJSON = '{"method":"setAudioVolume","id":98,"params":[{"volume": "'
+var endAudioJSON = '","ui": "on","target": "speaker"}],"version": "1.2"}';
 var systemURL = "/sony/system";
+var AudioURL = "/sony/audio";
 var IRCCURL = "/sony/IRCC";
 var protocol = "http://";
 var SOAPActionVal = '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"';
@@ -60,6 +66,8 @@ var Num0 = "AAAAAQAAAAEAAAAJAw==";
 var Channels = "AAAAAQAAAAEAAAAkAw==";
 var Jump = "AAAAAQAAAAEAAAA7Aw==";
 var PictureOff = "AAAAAQAAAAEAAAA+Aw==";
+var Exit = "AAAAAQAAAAEAAABjAw==";
+var Back = "AAAAAQAAAAEAAABjAw==";
 
 //unimplemented sony command constants
 var Num11 = "AAAAAQAAAAEAAAAKAw==";
@@ -82,8 +90,6 @@ var Video1 = "AAAAAQAAAAEAAABAAw==";
 var Video2 = "AAAAAQAAAAEAAABBAw==";
 var AnalogRgb1 = "AAAAAQAAAAEAAABDAw==";
 var Home = "AAAAAQAAAAEAAABgAw==";
-var Exit = "AAAAAQAAAAEAAABjAw==";
-var Back = "AAAAAQAAAAEAAABjAw==";
 var PictureMode = "AAAAAQAAAAEAAABkAw==";
 var Confirm = "AAAAAQAAAAEAAABlAw==";
 var Up = "AAAAAQAAAAEAAAB0Aw==";
@@ -184,7 +190,553 @@ module.exports = function(homebridge) {
 	homebridge.registerAccessory("homebridge-sonyjumptv", "homebridge-sonyjumptv", SonyJumpTV);	
 	homebridge.registerAccessory("homebridge-sonyallpowerontv", "homebridge-sonyallpowerontv", SonyAllPowerOnTV);	
 	homebridge.registerAccessory("homebridge-sonysetvolumetv", "homebridge-sonysetvolumetv", SonySetVolumeTV);	
+	homebridge.registerAccessory("homebridge-sonyvolumetv", "homebridge-sonyvolumetv", SonyVolumeTV);	
+	homebridge.registerAccessory("homebridge-sonychanneltv", "homebridge-sonychanneltv", SonyChannelTV);	
 }
+
+
+
+
+
+//------------------------------------------------------------------------------------------------
+// Send the TV Channel command
+//------------------------------------------------------------------------------------------------
+SonyChannelTV.prototype.getServices = function() { return [this.service]; }
+function SonyChannelTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+    this.psk = config["presharedkey"];
+    this.ipaddress = config["ipaddress"];
+    //this.service = new Service.Switch(this.name);
+	this.service = new Service.Lightbulb(this.name);
+	this.timer;
+	
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+		
+    this.service
+		.addCharacteristic(new Characteristic.Brightness())
+		.on('get', this.getBrightness.bind(this))
+		.on('set', this.setBrightness.bind(this));	
+}
+SonyChannelTV.prototype.setBrightness = function(value, callback) {  
+		this.log("Channel 1: "+value);
+		var postData = startXML + WakeUp + endXML; 
+		var delay = 50;
+		request = require("request");
+        request.post({
+            url: protocol + this.ipaddress + IRCCURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                //callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+ 
+		// system on
+		postData = startJSON + SystemOn + endJSON; 
+		request = require("request");
+        request.post({
+            url: protocol + this.ipaddress + systemURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                //callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+
+		postData = startXML + Channels + endXML; 
+		senddelay = 0;
+		request.post({
+            url: protocol + this.ipaddress + IRCCURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                //callback(); // success so keep going
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));   //
+		//this.log("First",this.channel,"");
+		//this.log("Channel:"+this.channel);
+		this.log("Channel 2: "+value);
+		for (var i = 0, len = value.length; i < len; i++) {
+			//clearTimeout(this.timer);	
+			var senddelay = (i*delay)+1000;
+			var dpaddelay = (this.channel.length*delay)+1000;
+			switch(this.channel[i]){
+				case "0":
+					this.timer = setTimeout(function() {
+						this.runTimer0();
+					}.bind(this), senddelay);	
+				break;
+				case "1":
+					this.timer = setTimeout(function() {
+						this.runTimer1();
+					}.bind(this), senddelay);		
+				break;
+				case "2":
+					this.timer = setTimeout(function() {
+						this.runTimer2();	
+					}.bind(this), senddelay);							
+				break;
+				case "3":
+					this.timer = setTimeout(function() {
+						this.runTimer3();
+					}.bind(this), senddelay);						
+				break;
+				case "4":
+					this.timer = setTimeout(function() {
+						this.runTimer4();
+					}.bind(this), senddelay);						
+				break;
+				case "5":
+					this.timer = setTimeout(function() {
+						this.runTimer5();
+					}.bind(this), senddelay);						
+				break;
+				case "6":
+					this.timer = setTimeout(function() {
+						this.runTimer6();
+					}.bind(this), senddelay);						
+				break;
+				case "7":
+					this.timer = setTimeout(function() {
+						this.runTimer7();
+					}.bind(this), senddelay);							
+				break;
+				case "8":
+					this.timer = setTimeout(function() {
+						this.runTimer8();
+					}.bind(this), senddelay);						
+				break;
+				case "9":
+					this.timer = setTimeout(function() {
+						this.runTimer9();
+					}.bind(this), senddelay);						
+				break;		
+				case ".":
+					this.timer = setTimeout(function() {
+						this.runTimerDot();
+					}.bind(this), senddelay);						
+				break;		
+				default:
+					this.log("Well that ain't right. I'm ignoring this portion:","'"+this.channel[i]+"' of ",this.channel);
+			}
+		}
+		this.timer = setTimeout(function() {
+			this.runTimerDpadCenter();
+		}.bind(this), dpaddelay);	
+		callback(); // success
+}
+SonyChannelTV.prototype.getBrightness = function(callback) { callback(null, false);  }
+SonyChannelTV.prototype.setOn = function(value, callback) {  
+		var volume = parseInt(this.volume);
+        var postData = startAudioJSON + volume + endAudioJSON;  
+        request.post({
+            url: protocol + this.ipaddress + AudioURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);	
+}
+SonyChannelTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyChannelTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
+SonyChannelTV.prototype.runTimer0 = function() {
+		//this.log("send 0");
+		request = require("request");
+		postData = startXML + Num0 + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimer1 = function() {
+		//this.log("send 1");
+		request = require("request");
+		postData = startXML + Num1 + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimer2 = function() {
+		//this.log("send 2");
+		request = require("request");
+		postData = startXML + Num2 + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimer3 = function() {
+		//this.log("send 3");
+		request = require("request");
+		postData = startXML + Num3 + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimer4 = function() {
+		//this.log("send 4");
+		request = require("request");
+		postData = startXML + Num4 + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimer5 = function() {
+		//this.log("send 5");
+		request = require("request");
+		postData = startXML + Num5 + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimer6 = function() {
+		//this.log("send 6");
+		request = require("request");
+		postData = startXML + Num6 + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimer7 = function() {
+		//this.log("send 7");
+		request = require("request");
+		postData = startXML + Num7 + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimer8 = function() {
+		//this.log("send 8");
+		request = require("request");
+		postData = startXML + Num8 + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimer9 = function() {
+		//this.log("send 9");
+		request = require("request");
+		postData = startXML + Num9 + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimerDot = function() {
+		//this.log("send .");
+		request = require("request");
+		postData = startXML + DOT + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//
+}
+SonyChannelTV.prototype.runTimerDpadCenter = function() {
+		//this.log("send dpadcenter");
+		request = require("request");
+		postData = startXML + DpadCenter + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Success");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//*/
+}
+//------------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+//------------------------------------------------------------------------------------------------
+// Send the TV Volume command
+//------------------------------------------------------------------------------------------------
+SonyVolumeTV.prototype.getServices = function() { return [this.service]; }
+function SonyVolumeTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+    this.psk = config["presharedkey"];
+    this.ipaddress = config["ipaddress"];
+	this.volume = config["volume"];
+    //this.service = new Service.Switch(this.name);
+	this.service = new Service.Lightbulb(this.name);
+	this.timer;
+	
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+		
+    this.service
+		.addCharacteristic(new Characteristic.Brightness())
+		.on('get', this.getBrightness.bind(this))
+		.on('set', this.setBrightness.bind(this));	
+}
+SonyVolumeTV.prototype.setBrightness = function(value, callback) {  
+		this.log("value:"+value);
+		var volume = parseInt(this.volume);
+        var postData = startAudioJSON + value + endAudioJSON;  
+        request.post({
+            url: protocol + this.ipaddress + AudioURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);	
+}
+SonyVolumeTV.prototype.getBrightness = function(callback) { callback(null, false);  }
+SonyVolumeTV.prototype.setOn = function(value, callback) {  
+		var volume = parseInt(this.volume);
+        var postData = startAudioJSON + volume + endAudioJSON;  
+        request.post({
+            url: protocol + this.ipaddress + AudioURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);	
+}
+SonyVolumeTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyVolumeTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
+//------------------------------------------------------------------------------------------------
 
 
 //------------------------------------------------------------------------------------------------
