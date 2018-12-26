@@ -9,20 +9,20 @@ UnMute: sonyunmutetv.homebridge-sonyunmutetv "Hey Siri Bravia Mute Off"<br>
 Volume Up: sonyvolumeuptv.homebridge-sonyvolumeuptv "Hey Siri Bravia Volume Up 10"<br>
 Volume Down: sonyvolumedowntv.homebridge-sonyvolumedowntv "Hey Siri Bravia Volume Down 10"<br>
 Input 1: sonyhdmi1tv.homebridge-sonyhdmi1tv "Hey Siri Bravia HDMI One"<br>
-Input 2: sonyhdmi2tv.homebridge-sonyhdmi2tv <br>
-Input 3: sonyhdmi3tv.homebridge-sonyhdmi3tv <br>
-Input 4: sonyhdmi4tv.homebridge-sonyhdmi4tv <br>
+Input 2: sonyhdmi2tv.homebridge-sonyhdmi2tv "Hey Siri Bravia HDMI Two"<br>
+Input 3: sonyhdmi3tv.homebridge-sonyhdmi3tv "Hey Siri Bravia HDMI Three"<br>
+Input 4: sonyhdmi4tv.homebridge-sonyhdmi4tv "Hey Siri Bravia HDMI Four"<br>
 Input: sonyinputtv.homebridge-sonyinputtv "Hey Siri Bravia Input"<br>
-Left Arrow: sonylefttv.homebridge-sonylefttv "Hey Sirir Bravia Left Arrow"<br>
-Right Arrow: sonyrighttv.homebridge-sonyrighttv <br>
-Down Arrow: sonydowntv.homebridge-sonydowntv <br>
-Up Arrow: sonyuptv.homebridge-sonyuptv <br>
+Left Arrow: sonylefttv.homebridge-sonylefttv "Hey Siri Bravia Left Arrow"<br>
+Right Arrow: sonyrighttv.homebridge-sonyrighttv "Hey Siri Bravia Right Arrow"<br>
+Down Arrow: sonydowntv.homebridge-sonydowntv "Hey Siri Bravia Down Arrow"<br>
+Up Arrow: sonyuptv.homebridge-sonyuptv "Hey Siri Bravia Up Arrow"<br>
 Ok Button: sonydpadcentertv.homebridge-sonydpadcentertv "Hey Siri Bravia OK"<br>
-Picture Off: sonypicofftv.homebridge-sonypicofftv <br>
-Netlfix Button: sonynetflixtv.homebridge-sonynetflixtv <br>
+Picture Off: sonypicofftv.homebridge-sonypicofftv "Hey Siri Bravia Picture Off"<br>
+Netlfix Button: sonynetflixtv.homebridge-sonynetflixtv "Hey Siri Bravia Netflix"<br>
 CC Button: sonyclosedcaptiontv.homebridge-sonyclosedcaptiontv <br>
 Subtitle Button: sonysubtitletv.homebridge-sonysubtitletv <br>
-Guide: sonygguidetv.homebridge-sonygguidetv <br>
+Guide: sonygguidetv.homebridge-sonygguidetv "Hey Siri Bravia Guide"<br>
 Channel Up: sonychanneluptv.homebridge-sonychanneluptv <br>
 Channel Down: sonychanneldowntv.homebridge-sonychanneldowntv <br>
 Stop Button: sonystoptv.homebridge-sonystoptv <br>
