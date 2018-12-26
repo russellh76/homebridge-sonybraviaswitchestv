@@ -1,6 +1,6 @@
 {
 "bridge": {
-"name": "SonyTVSwitchesTV",
+"name": "SonyBraviaSwitchesTV",
 "username": "CA:22:3D:E3:CE:30",
 "port": 51827,
 "pin": "111-11-111"
