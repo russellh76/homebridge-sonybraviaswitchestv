@@ -86,6 +86,7 @@ var Video2 = "AAAAAQAAAAEAAABBAw==";
 var AnalogRgb1 = "AAAAAQAAAAEAAABDAw==";
 var Home = "AAAAAQAAAAEAAABgAw==";
 var Exit = "AAAAAQAAAAEAAABjAw==";
+var Back = "AAAAAQAAAAEAAABjAw==";
 var PictureMode = "AAAAAQAAAAEAAABkAw==";
 var Confirm = "AAAAAQAAAAEAAABlAw==";
 var Up = "AAAAAQAAAAEAAAB0Aw==";
@@ -174,6 +175,7 @@ module.exports = function(homebridge) {
 	homebridge.registerAccessory("homebridge-sonystoptv", "homebridge-sonystoptv", SonyStopTV);	
 	homebridge.registerAccessory("homebridge-sonypausetv", "homebridge-sonypausetv", SonyPauseTV);	
 	homebridge.registerAccessory("homebridge-sonyplaytv", "homebridge-sonyplaytv", SonyPlayTV);		
+	homebridge.registerAccessory("homebridge-sonybacktv", "homebridge-sonybacktv", SonyBackTV);	
 	homebridge.registerAccessory("homebridge-sonysystemofftv", "homebridge-sonysystemofftv", SonySystemOffTV);	//off only
 	homebridge.registerAccessory("homebridge-sonysystemontv", "homebridge-sonysystemontv", SonySystemOnTV);	//on only
 //	homebridge.registerAccessory("homebridge-sonywoltv", "homebridge-sonywoltv", SonyWOLTV); //on only
@@ -2520,6 +2522,60 @@ SonyPlayTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+//------------------------------------------------------------------------------------------------
+// Send the TV Back command
+//------------------------------------------------------------------------------------------------
+SonyBackTV.prototype.getServices = function() { return [this.service]; }
+function SonyBackTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+    this.psk = config["presharedkey"];
+    this.ipaddress = config["ipaddress"];
+    this.service = new Service.Switch(this.name);
+	this.timer;
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+}
+SonyBackTV.prototype.setOn = function(value, callback) {    
+		var postData = startXML + Back + endXML; 
+        request.post({
+            url: protocol + this.ipaddress + IRCCURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);		
+}
+SonyBackTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyBackTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
+//------------------------------------------------------------------------------------------------
+
+
+
 
 
 
