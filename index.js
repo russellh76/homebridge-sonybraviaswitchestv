@@ -1,6 +1,3 @@
-//TODO: This TV doesn't have a page down/up button when dealing with guide
-// I tried creating multiple down/ups to behave like paging, but the TV doesn't reliably accept the commands
-// Even when time delayed.  Scratching my head about that one
 //Node JS Homebridge add-on for controlling Sony Smart TV: homebridge-sonybraviaswitchestv
 var request = require("request");
 //var wol = require("wake_on_lan");
