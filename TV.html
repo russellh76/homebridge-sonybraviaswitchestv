@@ -8,8 +8,22 @@ var startXML = '<?xml version="1.0"?><s:Envelope xmlns:s="http://schemas.xmlsoap
 var endXML = '</IRCCCode></u:X_SendIRCC></s:Body></s:Envelope>';
 var startJSON = '{"method":"setPowerStatus","params":[{"status":'
 var endJSON = '}],"id":1,"version":"1.0"}';
+var startAudioJSON = '{"method":"setAudioVolume","id":98,"params":[{"volume": "'
+var endAudioJSON = '","ui": "on","target": "speaker"}],"version": "1.2"}';
+var AudioStatus = '{"method":"getVolumeInformation","id":33,"params":[],"version": "1.0"}';
+var InputStatus = '{"method":"getPlayingContentInfo","id":103,"params":[],"version": "1.0"}';
+var PowerStatus = '{"method":"getPowerStatus","params":[],"id":1,"version":"1.0"}';
 var xhttp = new XMLHttpRequest();
 
+function SonyAudio(message,label) {
+  xhttp.open("POST", "http://" + document.getElementById("IP").value + "/sony/audio", true);
+  xhttp.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
+  xhttp.setRequestHeader("SOAPAction", '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"');
+  xhttp.setRequestHeader("X-Auth-PSK", document.getElementById("PSK").value);
+  xhttp.send(startAudioJSON + message + endAudioJSON);
+  document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>" + label + "</b>&nbsp;<i>(" + message + ")</i></br>" + document.getElementById("log").innerHTML;
+  window.setTimeout(SonyStatus, 2000);
+}
 function SonyIRCC(message,label) {
   xhttp.open("POST", "http://" + document.getElementById("IP").value + "/sony/IRCC", true);
   xhttp.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
@@ -27,14 +41,17 @@ function SonySystem(message,label) {
   window.setTimeout(SonyStatus, 2000);
 }
 function SonyStatus() {
+  var pos = 0;
+  var pos2 = 0;
+  var len = 0;
   xhttp = new XMLHttpRequest();
   xhttp.onload = function () {
   if (xhttp.responseText.includes("active")){
-    document.getElementById("TVStatus").innerHTML="TV Status: <b>On</b>"; 
+    document.getElementById("TVStatus").innerHTML="&nbsp;&nbsp;TV Status: <b>On</b>"; 
 	document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>TV Status</b>&nbsp;<i>(On)</i></br>" + document.getElementById("log").innerHTML;
 	}
   else if (xhttp.responseText.includes("standby")){
-	document.getElementById("TVStatus").innerHTML="TV Status: <b>Standby</b>";
+	document.getElementById("TVStatus").innerHTML="&nbsp;&nbsp;TV Status: <b>Standby</b>";
 	document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>TV Status</b>&nbsp;<i>(Standby)</i></br>" + document.getElementById("log").innerHTML;
 	}
   };  
@@ -43,7 +60,62 @@ function SonyStatus() {
   }
   xhttp.open("POST", "http://" + document.getElementById("IP").value + "/sony/system", true);
   xhttp.setRequestHeader("X-Auth-PSK", document.getElementById("PSK").value);
-  xhttp.send('{"method":"getPowerStatus","params":[],"id":1,"version":"1.0"}');
+  xhttp.send(PowerStatus);
+  
+  
+  var xhttp2 = new XMLHttpRequest();
+  xhttp2.onload = function () {
+  //alert(xhttp2.responseText);
+  if (xhttp2.responseText.includes('"title":"')){
+    pos = xhttp2.responseText.indexOf('"title":"');
+	pos2 = xhttp2.responseText.indexOf('"}],"id":103}');
+	len = pos2-pos;
+    document.getElementById("InputStatus").innerHTML="&nbsp;&nbsp;Input:&nbsp;<b>"+xhttp2.responseText.substring(pos+9,pos+len)+"</b>"; 
+	document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>TV Status</b>&nbsp;<i>(On)</i></br>" + document.getElementById("log").innerHTML;
+	}
+  else {
+	document.getElementById("InputStatus").innerHTML="&nbsp;&nbsp;Input:&nbsp;<b>Standby</b>";
+	document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>Input Status</b>&nbsp;<i>(Standby)</i></br>" + document.getElementById("log").innerHTML;
+	}
+  };  
+  xhttp2.onerror = function () {
+    document.getElementById("InputStatus").innerHTML="Input Status: <b style='color:#FF0000';>Network Error</b>";
+  }
+  xhttp2.open("POST", "http://" + document.getElementById("IP").value + "/sony/avContent", true);
+  xhttp2.setRequestHeader("X-Auth-PSK", document.getElementById("PSK").value);
+  xhttp2.send(InputStatus);
+
+
+  var xhttp3 = new XMLHttpRequest();
+  xhttp3.onload = function () {
+  //alert(xhttp3.responseText);
+  if (xhttp3.responseText.includes('speaker')){
+    pos = xhttp3.responseText.indexOf('speaker');
+	pos2 = xhttp3.responseText.indexOf(',"mute":');
+	len = pos2-pos;
+	pos2 = xhttp3.responseText.indexOf(',"mute":true');
+	if (pos2 > 0){
+	  document.getElementById("AudioStatus").innerHTML="&nbsp;&nbsp;Volume:&nbsp;<b>"+xhttp3.responseText.substring(pos+18,pos+len)+" (Muted)</b>";
+	}
+	else {
+	  document.getElementById("AudioStatus").innerHTML="&nbsp;&nbsp;Volume:&nbsp;<b>"+xhttp3.responseText.substring(pos+18,pos+len)+"</b>";
+	}
+     
+	document.getElementById("log").innerHTML = new Date() + "&nbsp;&nbsp;<b>Volume Status</b>&nbsp;<i>(On)</i></br>" + document.getElementById("log").innerHTML;
+	}
+  else {
+	document.getElementById("AudioStatus").innerHTML="TV Status: <b>Standby</b>";
+	document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>Volume Status</b>&nbsp;<i>(Standby)</i></br>" + document.getElementById("log").innerHTML;
+	}
+  };  
+  xhttp3.onerror = function () {
+    document.getElementById("AudioStatus").innerHTML="TV Status: <b style='color:#FF0000';>Network Error</b>";
+  }
+  xhttp3.open("POST", "http://" + document.getElementById("IP").value + "/sony/audio", true);
+  xhttp3.setRequestHeader("X-Auth-PSK", document.getElementById("PSK").value);
+  xhttp3.send(AudioStatus);
+
+
 }
 function SonyIRCC10(message,label) {
 	SonyIRCC(message,label);
@@ -71,9 +143,10 @@ function SonyIRCC100(message,label) {
 }
 </script>
 <body onload="SonyStatus();">
-<b>XBR-65X810c sony/system and sony/IRCC HTTP(PSK) commands</b>
+<b>&nbsp;&nbsp;XBR-65X810c sony/system and sony/IRCC HTTP(PSK) commands</b>
 </br>
-PSK:<input type=text id=PSK value=0000>&nbsp;&nbsp;&nbsp;TV IP:<input type=text id=IP value=192.168.1.238>&nbsp;<div id="TVStatus">TV Status:</div>
+&nbsp;&nbsp;PSK:<input type=text id=PSK value=0000>&nbsp;&nbsp;&nbsp;TV IP:<input type=text id=IP value=192.168.1.238>&nbsp;<div id="TVStatus">TV Status:</div>
+<div id="InputStatus">&nbsp;&nbsp;Input:</div><div id="AudioStatus">&nbsp;&nbsp;Volume:</div>
 <hr>
 <table>
 <tr>
