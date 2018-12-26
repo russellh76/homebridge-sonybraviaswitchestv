@@ -20,8 +20,8 @@ Up Arrow: sonyuptv.homebridge-sonyuptv  <i>"Hey Siri Bravia Up Arrow"</i><br>
 Ok Button: sonydpadcentertv.homebridge-sonydpadcentertv  <i>"Hey Siri Bravia OK"</i><br>
 Picture Off: sonypicofftv.homebridge-sonypicofftv  <i>"Hey Siri Bravia Picture Off"</i><br>
 Netlfix Button: sonynetflixtv.homebridge-sonynetflixtv  <i>"Hey Siri Bravia Netflix"</i><br>
-CC Button: sonyclosedcaptiontv.homebridge-sonyclosedcaptiontv </i><br>
-Subtitle Button: sonysubtitletv.homebridge-sonysubtitletv </i><br>
+CC Button: sonyclosedcaptiontv.homebridge-sonyclosedcaptiontv <i>"Hey Siri Bravia ClosedCaption"</i><br>
+Subtitle Button: sonysubtitletv.homebridge-sonysubtitletv <i>"Hey Siri Bravia Subtitles"</i><br>
 Guide: sonygguidetv.homebridge-sonygguidetv <i>"Hey Siri Bravia Guide"</i><br>
 Channel Up: sonychanneluptv.homebridge-sonychanneluptv <i>"Hey Siri Bravia Channel Up"</i><br>
 Channel Down: sonychanneldowntv.homebridge-sonychanneldowntv <i>"Hey Siri Bravia Channel Down"</i><br>
