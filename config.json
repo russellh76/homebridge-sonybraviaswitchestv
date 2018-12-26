@@ -8,6 +8,54 @@
 "description": "config.json for DEV purposes",
   "accessories": [
     {
+      "accessory": "homebridge-sonypageuptv",
+      "name": "Bravia Page Up",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "7",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedowntv",
+      "name": "Bravia Page Down",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "7",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageuptv",
+      "name": "Bravia Up 2",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagelefttv",
+      "name": "Bravia Left 2",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerighttv",
+      "name": "Bravia Right 2",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedowntv",
+      "name": "Bravia Down 2",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },		
+    {
       "accessory": "homebridge-sonyvolumeuptv",
       "name": "Bravia Louder",
       "ipaddress": "192.168.1.238",
@@ -23,84 +71,84 @@
     },	
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up One",
+      "name": "Bravia Volume Up 1",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "1"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Two",
+      "name": "Bravia Volume Up 2",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "2"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Three",
+      "name": "Bravia Volume Up 3",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "3"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Four",
+      "name": "Bravia Volume Up 4",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "4"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Five",
+      "name": "Bravia Volume Up 5",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "5"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Six",
+      "name": "Bravia Volume Up 6",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "6"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Seven",
+      "name": "Bravia Volume Up 7",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "7"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Eight",
+      "name": "Bravia Volume Up 8",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "8"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Nine",
+      "name": "Bravia Volume Up 9",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "9"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Ten",
+      "name": "Bravia Volume Up 10",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "10"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Fifteen",
+      "name": "Bravia Volume Up 15",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "15"
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Twenty",
+      "name": "Bravia Volume Up 20",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "20"
@@ -114,7 +162,7 @@
     },	
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Thirty",
+      "name": "Bravia Volume Up 30",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "30"
@@ -128,7 +176,7 @@
     },
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Forty",
+      "name": "Bravia Volume Up 40",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "40"
@@ -142,7 +190,7 @@
     },	
     {
       "accessory": "homebridge-sonyvolumeuptv",
-      "name": "Bravia Volume Up Fifty",
+      "name": "Bravia Volume Up 50",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "50"
@@ -163,98 +211,98 @@
     },	
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down One",
+      "name": "Bravia Volume Down 1",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "1"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Two",
+      "name": "Bravia Volume Down 2",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "2"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Three",
+      "name": "Bravia Volume Down 3",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "3"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Four",
+      "name": "Bravia Volume Down 4",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "4"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Five",
+      "name": "Bravia Volume Down 5",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "5"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Six",
+      "name": "Bravia Volume Down 6",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "6"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Seven",
+      "name": "Bravia Volume Down 7",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "7"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Eight",
+      "name": "Bravia Volume Down 8",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "8"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Nine",
+      "name": "Bravia Volume Down 9",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "9"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Ten",
+      "name": "Bravia Volume Down 10",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "10"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Twenty",
+      "name": "Bravia Volume Down 20",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "20"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Thirty",
+      "name": "Bravia Volume Down 30",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "30"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Fifty",
+      "name": "Bravia Volume Down 50",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "50"
     },
     {
       "accessory": "homebridge-sonyvolumedowntv",
-      "name": "Bravia Volume Down Forty",
+      "name": "Bravia Volume Down 40",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
       "volumecount": "40"
@@ -425,19 +473,19 @@
     },	
     {
       "accessory": "homebridge-sonyhdmi1tv",
-      "name": "Bravia One",
+      "name": "Bravia 1",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
     {
       "accessory": "homebridge-sonyhdmi1tv",
-      "name": "Bravia Input One",
+      "name": "Bravia Input 1",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
     {
       "accessory": "homebridge-sonyhdmi1tv",
-      "name": "Bravia HDMI One",
+      "name": "Bravia HDMI 1",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
@@ -455,19 +503,19 @@
     },	
     {
       "accessory": "homebridge-sonyhdmi2tv",
-      "name": "Bravia Two",
+      "name": "Bravia 2",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },	
     {
       "accessory": "homebridge-sonyhdmi2tv",
-      "name": "Bravia Input Two",
+      "name": "Bravia Input 2",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
     {
       "accessory": "homebridge-sonyhdmi2tv",
-      "name": "Bravia HDMI Two",
+      "name": "Bravia HDMI 2",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
@@ -479,19 +527,19 @@
     },
     {
       "accessory": "homebridge-sonyhdmi3tv",
-      "name": "Bravia Three",
+      "name": "Bravia 3",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },	
     {
       "accessory": "homebridge-sonyhdmi3tv",
-      "name": "Bravia Input Three",
+      "name": "Bravia Input 3",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
     {
       "accessory": "homebridge-sonyhdmi3tv",
-      "name": "Bravia HDMI Three",
+      "name": "Bravia HDMI 3",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
@@ -503,19 +551,19 @@
     },		
     {
       "accessory": "homebridge-sonyhdmi4tv",
-      "name": "Bravia Four",
+      "name": "Bravia 4",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },	
     {
       "accessory": "homebridge-sonyhdmi4tv",
-      "name": "Bravia Input Four",
+      "name": "Bravia Input 4",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
     {
       "accessory": "homebridge-sonyhdmi4tv",
-      "name": "Bravia HDMI Four",
+      "name": "Bravia HDMI 4",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
@@ -689,35 +737,35 @@
     },	
     {
       "accessory": "homebridge-sonychanneltunetv",
-      "name": "Bravia Two Dot One",
+      "name": "Bravia 2 Dot 1",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
 	  "channel": "2.1"
     },
     {
       "accessory": "homebridge-sonychanneltunetv",
-      "name": "Bravia Two Dot Two",
+      "name": "Bravia 2 Dot 2",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
 	  "channel": "2.2"
     },
     {
       "accessory": "homebridge-sonychanneltunetv",
-      "name": "Bravia Two Dot Three",
+      "name": "Bravia 2 Dot 3",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
 	  "channel": "2.3"
     },
     {
       "accessory": "homebridge-sonychanneltunetv",
-      "name": "Bravia Five Dot Two",
+      "name": "Bravia 5 Dot 2",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
 	  "channel": "5.2"
     },	
     {
       "accessory": "homebridge-sonychanneltunetv",
-      "name": "Bravia Five Dot Three",
+      "name": "Bravia 5 Dot 3",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
 	  "channel": "5.3"
