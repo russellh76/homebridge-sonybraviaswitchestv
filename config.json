@@ -6,7 +6,7 @@
 "pin": "111-11-111"
 },
 "description": "config.json for DEV purposes",
-  "accessories": [
+   "accessories": [
     {
       "accessory": "homebridge-sonychanneltv",
       "name": "Bravia Channel",
@@ -16,6 +16,18 @@
     {
       "accessory": "homebridge-sonyvolumetv",
       "name": "Bravia Volume",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonyvolumeplustv",
+      "name": "Bravia Volume Plus",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonyvolumeminustv",
+      "name": "Bravia Volume Minus",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
@@ -195,6 +207,188 @@
 	  "pagecount": "1",
 	  "delay": "300"
     },
+
+	
+	
+
+
+    {
+      "accessory": "homebridge-sonypageupplaytv",
+      "name": "Bravia Up 2 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageleftplaytv",
+      "name": "Bravia Left 2 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerightplaytv",
+      "name": "Bravia Right 2 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedownplaytv",
+      "name": "Bravia Down 2 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },		
+    {
+      "accessory": "homebridge-sonypageupplaytv",
+      "name": "Bravia Up 3 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "3",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageleftplaytv",
+      "name": "Bravia Left 3 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "3",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerightplaytv",
+      "name": "Bravia Right 3 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "3",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedownplaytv",
+      "name": "Bravia Down 3 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "3",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypageupplaytv",
+      "name": "Bravia Up 4 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "4",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageleftplaytv",
+      "name": "Bravia Left 4 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "4",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerightplaytv",
+      "name": "Bravia Right 4 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "4",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedownplaytv",
+      "name": "Bravia Down 4 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "4",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypageupplaytv",
+      "name": "Bravia Up 1 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageleftplaytv",
+      "name": "Bravia Left 1 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerightplaytv",
+      "name": "Bravia Right 1 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedownplaytv",
+      "name": "Bravia Down 1 Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageupplaytv",
+      "name": "Bravia Up Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageleftplaytv",
+      "name": "Bravia Left Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerightplaytv",
+      "name": "Bravia Right Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedownplaytv",
+      "name": "Bravia Down Play",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     {
       "accessory": "homebridge-sonymutetv",
       "name": "Bravia Mute",
