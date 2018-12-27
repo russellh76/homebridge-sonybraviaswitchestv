@@ -1,6 +1,5 @@
 //Node JS Homebridge add-on for controlling Sony Smart TV: homebridge-sonybraviaswitchestv
 var request = require("request");
-//var wol = require("wake_on_lan");
 var inherits = require('util').inherits;
 var Service, Characteristic
 var stateError = "Error setting TV state.";
@@ -16,6 +15,7 @@ var endAudioJSON = '","ui": "on","target": "speaker"}],"version": "1.2"}';
 var systemURL = "/sony/system";
 var AudioURL = "/sony/audio";
 var IRCCURL = "/sony/IRCC";
+var AppleTvURL = "/login?pairing-guid=";
 var protocol = "http://";
 var SOAPActionVal = '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"';
 var ContentTypeVal = "text/xml; charset=UTF-8";
@@ -145,10 +145,47 @@ var Help = "AAAAAgAAAMQAAABNAw==";
 var TvSatellite = "AAAAAgAAAMQAAABOAw==";
 var WirelessSubwoofer = "AAAAAgAAAMQAAAB+Aw==";
 
+//updates?  Do these work on my TV model? XBR-65X810c
+var Teletext2 = "AAAAAQAAAAEAAAA\/Aw==";
+var FeaturedApp = "AAAAAgAAAMQAAABEAw==";
+var FeaturedAppVOD = "AAAAAgAAAMQAAABFAw==";
+var GooglePlay = "AAAAAgAAAMQAAABGAw==";
+var AndroidMenu = "AAAAAgAAAMQAAABPAw==";
+var RecorderMenu = "AAAAAgAAAMQAAABIAw==";
+var STBMenu = "AAAAAgAAAMQAAABJAw==";
+var MuteOn = "AAAAAgAAAMQAAAAsAw==";
+var MuteOff = "AAAAAgAAAMQAAAAtAw==";
+var AudioOutput_AudioSystem = "AAAAAgAAAMQAAAAiAw==";
+var AudioOutput_TVSpeaker = "AAAAAgAAAMQAAAAjAw==";
+var AudioOutput_Toggle = "AAAAAgAAAMQAAAAkAw==";
+var ApplicationLauncher = "AAAAAgAAAMQAAAAqAw==";
+var YouTube = "AAAAAgAAAMQAAABHAw==";
+var PartnerApp1 = "AAAAAgAACB8AAAAAAw==";
+var PartnerApp2 = "AAAAAgAACB8AAAABAw==";
+var PartnerApp3 = "AAAAAgAACB8AAAACAw==";
+var PartnerApp4 = "AAAAAgAACB8AAAADAw==";
+var PartnerApp5 = "AAAAAgAACB8AAAAEAw==";
+var PartnerApp6 = "AAAAAgAACB8AAAAFAw==";
+var PartnerApp7 = "AAAAAgAACB8AAAAGAw==";
+var PartnerApp8 = "AAAAAgAACB8AAAAHAw==";
+var PartnerApp9 = "AAAAAgAACB8AAAAIAw==";
+var PartnerApp10 = "AAAAAgAACB8AAAAJAw==";
+var PartnerApp11 = "AAAAAgAACB8AAAAKAw==";
+var PartnerApp12 = "AAAAAgAACB8AAAALAw==";
+var PartnerApp13 = "AAAAAgAACB8AAAAMAw==";
+var PartnerApp14 = "AAAAAgAACB8AAAANAw==";
+var PartnerApp15 = "AAAAAgAACB8AAAAOAw==";
+var PartnerApp16 = "AAAAAgAACB8AAAAPAw==";
+var PartnerApp17 = "AAAAAgAACB8AAAAQAw==";
+var PartnerApp18 = "AAAAAgAACB8AAAARAw==";
+var PartnerApp19 = "AAAAAgAACB8AAAASAw==";
+var PartnerApp20 = "AAAAAgAACB8AAAATAw==";
+
 //main
 module.exports = function(homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
+    homebridge.registerAccessory("homebridge-appletv", "homebridge-appletv", AppleTV);	
     homebridge.registerAccessory("homebridge-sonymutetv", "homebridge-sonymutetv", SonyMuteTV);	
 	homebridge.registerAccessory("homebridge-sonyunmutetv", "homebridge-sonyunmutetv", SonyUnMuteTV);	
 	homebridge.registerAccessory("homebridge-sonyhdmi1tv", "homebridge-sonyhdmi1tv", SonyHDMI1TV);
@@ -178,7 +215,6 @@ module.exports = function(homebridge) {
 	homebridge.registerAccessory("homebridge-sonybacktv", "homebridge-sonybacktv", SonyBackTV);	
 	homebridge.registerAccessory("homebridge-sonysystemofftv", "homebridge-sonysystemofftv", SonySystemOffTV);	//off only
 	homebridge.registerAccessory("homebridge-sonysystemontv", "homebridge-sonysystemontv", SonySystemOnTV);	//on only
-//	homebridge.registerAccessory("homebridge-sonywoltv", "homebridge-sonywoltv", SonyWOLTV); //on only
 	homebridge.registerAccessory("homebridge-sonypowertoggletv", "homebridge-sonypowertoggletv", SonyPowerToggleTV); //toggle off and on
 	homebridge.registerAccessory("homebridge-sonypowerofftv", "homebridge-sonypowerofftv", SonyPowerOffTV); // off only
 	homebridge.registerAccessory("homebridge-sonywakeuptv", "homebridge-sonywakeuptv", SonyWakeUpTV); // on only (wake)
@@ -191,6 +227,62 @@ module.exports = function(homebridge) {
 	homebridge.registerAccessory("homebridge-sonyvolumeminustv", "homebridge-sonyvolumeminustv", SonyVolumeMinusTV);
 	homebridge.registerAccessory("homebridge-sonychanneltv", "homebridge-sonychanneltv", SonyChannelTV);	
 }
+
+
+//------------------------------------------------------------------------------------------------
+// Send the Apple TV command
+//------------------------------------------------------------------------------------------------
+AppleTV.prototype.getServices = function() { return [this.service]; }
+function AppleTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+	this.psk = config["psk"];
+    this.ipaddress = config["ipaddress"];
+// /*
+	this.pairingguid = config["pairingguid"];
+    this.port = config["port"];  //*/
+    this.service = new Service.Switch(this.name);
+	this.timer;
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+}
+AppleTV.prototype.setOn = function(value, callback) {  
+        var postData = startXML + Mute + endXML;  
+		this.log(protocol + this.ipaddress + ":" + this.port + AppleTvURL + this.pairingguid);
+		///*
+        request.get({
+            url: protocol + this.ipaddress + ":" + this.port + AppleTvURL + this.pairingguid,
+            headers: {
+				'User-Agent': 'Remote/1.0'
+            }
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+				this.log("success");
+                callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));
+		//*/
+		
+		//this.log("2");
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);	
+}
+AppleTV.prototype.getOn = function(callback) { callback(null, false);  }
+AppleTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
+//------------------------------------------------------------------------------------------------
+
+
+
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Channel command
