@@ -20,6 +20,8 @@ var protocol = "http://";
 var SOAPActionVal = '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"';
 var ContentTypeVal = "text/xml; charset=UTF-8";
 var PowerStatus = '{"method":"getPowerStatus","params":[],"id":1,"version":"1.0"}';
+var AudioStatus = '{"method":"getVolumeInformation","id":33,"params":[],"version": "1.0"}';
+var InputStatus = '{"method":"getPlayingContentInfo","id":103,"params":[],"version": "1.0"}';
 
 //implemented sony command constants
 var SystemOn = "true";  //Only turns TV on
@@ -149,21 +151,19 @@ module.exports = function(homebridge) {
     Characteristic = homebridge.hap.Characteristic;
     homebridge.registerAccessory("homebridge-sonymutetv", "homebridge-sonymutetv", SonyMuteTV);	
 	homebridge.registerAccessory("homebridge-sonyunmutetv", "homebridge-sonyunmutetv", SonyUnMuteTV);	
-	homebridge.registerAccessory("homebridge-sonyvolumeuptv", "homebridge-sonyvolumeuptv", SonyVolumeUpTV);	
-	homebridge.registerAccessory("homebridge-sonyvolumedowntv", "homebridge-sonyvolumedowntv", SonyVolumeDownTV);	
 	homebridge.registerAccessory("homebridge-sonyhdmi1tv", "homebridge-sonyhdmi1tv", SonyHDMI1TV);
 	homebridge.registerAccessory("homebridge-sonyhdmi2tv", "homebridge-sonyhdmi2tv", SonyHDMI2TV);
 	homebridge.registerAccessory("homebridge-sonyhdmi3tv", "homebridge-sonyhdmi3tv", SonyHDMI3TV);
 	homebridge.registerAccessory("homebridge-sonyhdmi4tv", "homebridge-sonyhdmi4tv", SonyHDMI4TV);
 	homebridge.registerAccessory("homebridge-sonyinputtv", "homebridge-sonyinputtv", SonyInputTV);
-	homebridge.registerAccessory("homebridge-sonylefttv", "homebridge-sonylefttv", SonyLeftTV);
-	homebridge.registerAccessory("homebridge-sonyrighttv", "homebridge-sonyrighttv", SonyRightTV);
 	homebridge.registerAccessory("homebridge-sonypagelefttv", "homebridge-sonypagelefttv", SonyPageLeftTV);
 	homebridge.registerAccessory("homebridge-sonypagerighttv", "homebridge-sonypagerighttv", SonyPageRightTV);
-	homebridge.registerAccessory("homebridge-sonydowntv", "homebridge-sonydowntv", SonyDownTV);
 	homebridge.registerAccessory("homebridge-sonypagedowntv", "homebridge-sonypagedowntv", SonyPageDownTV);
-	homebridge.registerAccessory("homebridge-sonyuptv", "homebridge-sonyuptv", SonyUpTV);
 	homebridge.registerAccessory("homebridge-sonypageuptv", "homebridge-sonypageuptv", SonyPageUpTV);
+	homebridge.registerAccessory("homebridge-sonypageleftplaytv", "homebridge-sonypageleftplaytv", SonyPageLeftPlayTV);
+	homebridge.registerAccessory("homebridge-sonypagerightplaytv", "homebridge-sonypagerightplaytv", SonyPageRightPlayTV);
+	homebridge.registerAccessory("homebridge-sonypagedownplaytv", "homebridge-sonypagedownplaytv", SonyPageDownPlayTV);
+	homebridge.registerAccessory("homebridge-sonypageupplaytv", "homebridge-sonypageupplaytv", SonyPageUpPlayTV);	
 	homebridge.registerAccessory("homebridge-sonydpadcentertv", "homebridge-sonydpadcentertv", SonyDpadCenterTV);
 	homebridge.registerAccessory("homebridge-sonypicofftv", "homebridge-sonypicofftv", SonyPicOffTV);
 	homebridge.registerAccessory("homebridge-sonynetflixtv", "homebridge-sonynetflixtv", SonyNetflixTV);
@@ -185,17 +185,12 @@ module.exports = function(homebridge) {
 	homebridge.registerAccessory("homebridge-sonychanneltunetv", "homebridge-sonychanneltunetv", SonyChannelTuneTV);
 	homebridge.registerAccessory("homebridge-sonychannelstv", "homebridge-sonychannelstv", SonyChannelsTV);	
 	homebridge.registerAccessory("homebridge-sonyjumptv", "homebridge-sonyjumptv", SonyJumpTV);	
-	homebridge.registerAccessory("homebridge-sonyallpowerontv", "homebridge-sonyallpowerontv", SonyAllPowerOnTV);	
-	homebridge.registerAccessory("homebridge-sonysetvolumetv", "homebridge-sonysetvolumetv", SonySetVolumeTV);	
+	homebridge.registerAccessory("homebridge-sonyallpowerontv", "homebridge-sonyallpowerontv", SonyAllPowerOnTV);
 	homebridge.registerAccessory("homebridge-sonyvolumetv", "homebridge-sonyvolumetv", SonyVolumeTV);	
 	homebridge.registerAccessory("homebridge-sonyvolumeplustv", "homebridge-sonyvolumeplustv", SonyVolumePlusTV);
 	homebridge.registerAccessory("homebridge-sonyvolumeminustv", "homebridge-sonyvolumeminustv", SonyVolumeMinusTV);
 	homebridge.registerAccessory("homebridge-sonychanneltv", "homebridge-sonychanneltv", SonyChannelTV);	
 }
-
-
-
-
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Channel command
@@ -648,10 +643,6 @@ SonyChannelTV.prototype.runTimerDpadCenter = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Volume Minus command
 //------------------------------------------------------------------------------------------------
@@ -732,8 +723,6 @@ SonyVolumeMinusTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Volume Plus command
 //------------------------------------------------------------------------------------------------
@@ -743,8 +732,6 @@ function SonyVolumePlusTV(log, config) {
     this.name = config["name"];
     this.psk = config["presharedkey"];
     this.ipaddress = config["ipaddress"];
-	this.volume = config["volume"];
-    //this.service = new Service.Switch(this.name);
 	this.service = new Service.Lightbulb(this.name);
 	this.timer;
 	
@@ -814,9 +801,6 @@ SonyVolumePlusTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Volume command
 //------------------------------------------------------------------------------------------------
@@ -826,8 +810,6 @@ function SonyVolumeTV(log, config) {
     this.name = config["name"];
     this.psk = config["presharedkey"];
     this.ipaddress = config["ipaddress"];
-	this.volume = config["volume"];
-    //this.service = new Service.Switch(this.name);
 	this.service = new Service.Lightbulb(this.name);
 	this.timer;
 	
@@ -897,7 +879,6 @@ SonyVolumeTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Mute command
 //------------------------------------------------------------------------------------------------
@@ -943,7 +924,6 @@ SonyMuteTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------------------------
 // Send the TV UnMute command
@@ -1009,9 +989,97 @@ SonyUnMuteTV.prototype.runTimer = function() {
 //------------------------------------------------------------------------------------------------
 
 
-
-
-
+//------------------------------------------------------------------------------------------------
+// Send the TV Right Arrow command multiple times and then play
+//------------------------------------------------------------------------------------------------
+SonyPageRightPlayTV.prototype.getServices = function() { return [this.service]; }
+function SonyPageRightPlayTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+    this.psk = config["presharedkey"];
+    this.ipaddress = config["ipaddress"];
+	this.pagecount = config["pagecount"];
+	this.delay = config["delay"];
+    this.service = new Service.Switch(this.name);
+	this.timer;
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+}
+SonyPageRightPlayTV.prototype.setOn = function(value, callback) {   
+		var pagecounter = parseInt(this.pagecount);
+		var delay = parseInt(this.delay);
+		for (i = 0; i < pagecounter; i++) { 
+			senddelay = (i*delay);
+			//this.log("timer up:" + i+ " delay:"+senddelay);
+			this.timer = setTimeout(function() {
+				this.runTimerPageRight();
+			}.bind(this), senddelay);	
+		}		
+		this.timer = setTimeout(function() {
+				this.runTimerPageRightPlay();
+			}.bind(this), senddelay+500);	
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);
+		callback();
+}
+SonyPageRightPlayTV.prototype.runTimerPageRight = function() {
+		var request = require("request");
+		var postData = startXML + Right + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Page Down");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//*/
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);		
+}
+SonyPageRightPlayTV.prototype.runTimerPageRightPlay = function() {
+		var request = require("request");
+		var postData = startXML + Play + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Page Down");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//*/
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);		
+}
+SonyPageRightPlayTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyPageRightPlayTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
+//------------------------------------------------------------------------------------------------
 
 
 
@@ -1081,11 +1149,103 @@ SonyPageRightTV.prototype.runTimer = function() {
 //------------------------------------------------------------------------------------------------
 
 
+//------------------------------------------------------------------------------------------------
+// Send the TV Left Arrow and Play command multiple times
+//------------------------------------------------------------------------------------------------
+SonyPageLeftPlayTV.prototype.getServices = function() { return [this.service]; }
+function SonyPageLeftPlayTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+    this.psk = config["presharedkey"];
+    this.ipaddress = config["ipaddress"];
+	this.pagecount = config["pagecount"];
+	this.delay = config["delay"];
+    this.service = new Service.Switch(this.name);
+	this.timer;
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+}
+SonyPageLeftPlayTV.prototype.setOn = function(value, callback) {   
+		var pagecounter = parseInt(this.pagecount);
+		var delay = parseInt(this.delay);
+		for (i = 0; i < pagecounter; i++) { 
+			senddelay = (i*delay);
+			//this.log("timer up:" + i+ " delay:"+senddelay);
+			this.timer = setTimeout(function() {
+				this.runTimerPageLeft();
+			}.bind(this), senddelay);	
+		}		
+		this.timer = setTimeout(function() {
+				this.runTimerPageLeftPlay();
+			}.bind(this), senddelay+1000);	
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);
+		callback();
+}
+SonyPageLeftPlayTV.prototype.runTimerPageLeft = function() {
+		var request = require("request");
+		var postData = startXML + Left + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Page Down");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//*/
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);		
+}
+SonyPageLeftPlayTV.prototype.runTimerPageLeftPlay = function() {
+		var request = require("request");
+		var postData = startXML + Play + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Page Down");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//*/
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);		
+}
+SonyPageLeftPlayTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyPageLeftPlayTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
+//------------------------------------------------------------------------------------------------
+
 
 
 
 //------------------------------------------------------------------------------------------------
-// Send the TV Right Arrow command multiple times
+// Send the TV Left Arrow command multiple times
 //------------------------------------------------------------------------------------------------
 SonyPageLeftTV.prototype.getServices = function() { return [this.service]; }
 function SonyPageLeftTV(log, config) {
@@ -1148,9 +1308,6 @@ SonyPageLeftTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
-
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Down Arrow command multiple times
@@ -1217,8 +1374,162 @@ SonyPageDownTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
+//------------------------------------------------------------------------------------------------
+// Send the TV Down Arrow command multiple times and play
+//------------------------------------------------------------------------------------------------
+SonyPageDownPlayTV.prototype.getServices = function() { return [this.service]; }
+function SonyPageDownPlayTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+    this.psk = config["presharedkey"];
+    this.ipaddress = config["ipaddress"];
+	this.pagecount = config["pagecount"];
+	this.delay = config["delay"];
+    this.service = new Service.Switch(this.name);
+	this.timer;
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+}
+SonyPageDownPlayTV.prototype.setOn = function(value, callback) {   
+		var pagecounter = parseInt(this.pagecount);
+		var delay = parseInt(this.delay);
+		for (i = 0; i < pagecounter; i++) { 
+			senddelay = (i*delay);
+			//this.log("timer up:" + i+ " delay:"+senddelay);
+			this.timer = setTimeout(function() {
+				this.runTimerPageDown();
+			}.bind(this), senddelay);	
+		}		
+		this.timer = setTimeout(function() {
+				this.runTimerPageDownPlay();
+			}.bind(this), senddelay+1000);	
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);
+		callback();
+}
+SonyPageDownPlayTV.prototype.runTimerPageDown = function() {
+		var request = require("request");
+		var postData = startXML + Down + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Page Down");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//*/
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);		
+}
+SonyPageDownPlayTV.prototype.runTimerPageDownPlay = function() {
+		var request = require("request");
+		var postData = startXML + Play + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Page Down");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//*/
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);		
+}
+SonyPageDownPlayTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyPageDownPlayTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
+//------------------------------------------------------------------------------------------------
 
-
+//------------------------------------------------------------------------------------------------
+// Send the TV Down Arrow command multiple times
+//------------------------------------------------------------------------------------------------
+SonyPageDownTV.prototype.getServices = function() { return [this.service]; }
+function SonyPageDownTV(log, config) {
+    this.log = log;
+    this.name = config["name"];
+    this.psk = config["presharedkey"];
+    this.ipaddress = config["ipaddress"];
+	this.pagecount = config["pagecount"];
+	this.delay = config["delay"];
+    this.service = new Service.Switch(this.name);
+	this.timer;
+    this.service
+        .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
+        .on('set', this.setOn.bind(this));
+}
+SonyPageDownTV.prototype.setOn = function(value, callback) {   
+		var pagecounter = parseInt(this.pagecount);
+		var delay = parseInt(this.delay);
+		for (i = 0; i < pagecounter; i++) { 
+			senddelay = (i*delay);
+			//this.log("timer up:" + i+ " delay:"+senddelay);
+			this.timer = setTimeout(function() {
+				this.runTimerPageDown();
+			}.bind(this), senddelay);	
+		}		
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);
+		callback();
+}
+SonyPageDownTV.prototype.runTimerPageDown = function() {
+		var request = require("request");
+		var postData = startXML + Down + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Page Down");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//*/
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);		
+}
+SonyPageDownTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyPageDownTV.prototype.runTimer = function() {
+            //this.log("turn the button back off");
+            this.service.getCharacteristic(Characteristic.On).updateValue(false);
+            this.isOn = false;
+}
+//------------------------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Up Arrow command multiple times
@@ -1285,18 +1596,17 @@ SonyPageUpTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------------------------
-// Send the TV Volume Up command multiple times
+// Send the TV Up Arrow command multiple times and then play
 //------------------------------------------------------------------------------------------------
-SonyVolumeUpTV.prototype.getServices = function() { return [this.service]; }
-function SonyVolumeUpTV(log, config) {
+SonyPageUpPlayTV.prototype.getServices = function() { return [this.service]; }
+function SonyPageUpPlayTV(log, config) {
     this.log = log;
     this.name = config["name"];
     this.psk = config["presharedkey"];
     this.ipaddress = config["ipaddress"];
-	this.volumecount = config["volumecount"];
+	this.pagecount = config["pagecount"];
+	this.delay = config["delay"];
     this.service = new Service.Switch(this.name);
 	this.timer;
     this.service
@@ -1304,98 +1614,27 @@ function SonyVolumeUpTV(log, config) {
 		.on('get', this.getOn.bind(this))
         .on('set', this.setOn.bind(this));
 }
-SonyVolumeUpTV.prototype.setOn = function(value, callback) {   
-		var postData = startXML + VolumeUp + endXML;  
-		var volumecounter = parseInt(this.volumecount);
-		for (i = 0; i < volumecounter-1; i++) { 
-			request.post({
-				url: protocol + this.ipaddress + IRCCURL,
-				headers: {
-					'X-Auth-PSK': this.psk,
-					'SOAPAction': SOAPActionVal,
-					'Content-type': ContentTypeVal
-				},
-				form: postData
-			}, function(err, response, body) {
-				if (!err && response.statusCode == 200) {
-					//callback();// success don't callback until last command
-				} else {
-					this.log(logError, err, body);
-					callback(err || new Error(stateError));
-				}
-			}.bind(this));
-			request = require("request");
+SonyPageUpPlayTV.prototype.setOn = function(value, callback) {   
+		var pagecounter = parseInt(this.pagecount);
+		var delay = parseInt(this.delay);
+		for (i = 0; i < pagecounter; i++) { 
+			senddelay = (i*delay);
+			//this.log("timer up:" + i+ " delay:"+senddelay);
+			this.timer = setTimeout(function() {
+				this.runTimerPageUp();
+			}.bind(this), senddelay);	
 		}		
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				callback(); // success
-			} else {
-				this.log(logError, err, body);
-				callback(err || new Error(stateError));
-			}
-		}.bind(this));		
+		this.timer = setTimeout(function() {
+				this.runTimerPageUpPlay();
+			}.bind(this), senddelay);
 		this.timer = setTimeout(function() {
 			this.runTimer();
 		}.bind(this), 1000);
-}
-SonyVolumeUpTV.prototype.getOn = function(callback) { callback(null, false);  }
-SonyVolumeUpTV.prototype.runTimer = function() {
-            //this.log("turn the button back off");
-            this.service.getCharacteristic(Characteristic.On).updateValue(false);
-            this.isOn = false;
-}
-//------------------------------------------------------------------------------------------------
-
-
-
-
-//------------------------------------------------------------------------------------------------
-// Send the TV Volume Down command multiple times
-//------------------------------------------------------------------------------------------------
-SonyVolumeDownTV.prototype.getServices = function() { return [this.service]; }
-function SonyVolumeDownTV(log, config) {
-    this.log = log;
-    this.name = config["name"];
-    this.psk = config["presharedkey"];
-    this.ipaddress = config["ipaddress"];
-	this.volumecount = config["volumecount"];	
-    this.service = new Service.Switch(this.name);
-	this.timer;
-    this.service
-        .getCharacteristic(Characteristic.On)
-		.on('get', this.getOn.bind(this))
-        .on('set', this.setOn.bind(this));
-}
-SonyVolumeDownTV.prototype.setOn = function(value, callback) {    
-		var postData = startXML + VolumeDown + endXML; 
-		var volumecounter = parseInt(this.volumecount);
-		var delay = 10;
-		var senddelay=0;
-		this.timer = setTimeout(function() { this.runTimerVolumeUp();}.bind(this), 1);  //knock mute off
-		
-		for (i = 1; i < volumecounter+1; i++) { 
-			senddelay = (i*delay);
-			//this.log("timer down:" + i+ " delay:"+senddelay);
-			this.timer = setTimeout(function() {
-				this.runTimerVolumeDown();
-			}.bind(this), senddelay);	
-		}
-		this.timer = setTimeout(function() {
-			this.runTimer();
-		}.bind(this), 1000);	
 		callback();
 }
-SonyVolumeDownTV.prototype.runTimerVolumeDown = function() {
-		request = require("request");
-		postData = startXML + VolumeDown + endXML; 
+SonyPageUpPlayTV.prototype.runTimerPageUp = function() {
+		var request = require("request");
+		var postData = startXML + Up + endXML; 
 		request.post({
 			url: protocol + this.ipaddress + IRCCURL,
 			headers: {
@@ -1407,163 +1646,7 @@ SonyVolumeDownTV.prototype.runTimerVolumeDown = function() {
 		}, function(err, response, body) {
 			if (!err && response.statusCode == 200) {
 				//callback(); // success
-				//this.log("Success Down");
-			} else {
-				this.log(logError, err, body);
-				//callback(err || new Error(stateError));
-			}
-		}.bind(this));	//*/
-//		this.timer = setTimeout(function() {
-//			this.runTimer();
-//		}.bind(this), 1000);		
-}
-SonyVolumeDownTV.prototype.runTimerVolumeUp = function() {
-		request = require("request");
-		postData = startXML + VolumeUp + endXML; 
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				//callback(); // success
-				//this.log("Success Up");
-			} else {
-				this.log(logError, err, body);
-				//callback(err || new Error(stateError));
-			}
-		}.bind(this));	//*/
-		this.timer = setTimeout(function() {
-			this.runTimer();
-		}.bind(this), 10000);		
-}
-SonyVolumeDownTV.prototype.getOn = function(callback) { callback(null, false);  }
-SonyVolumeDownTV.prototype.runTimer = function() {
-            //this.log("turn the button back off");
-            this.service.getCharacteristic(Characteristic.On).updateValue(false);
-            this.isOn = false;
-}
-//------------------------------------------------------------------------------------------------
-
-
-
-
-
-//------------------------------------------------------------------------------------------------
-// Set the TV Volume to a defined level
-//------------------------------------------------------------------------------------------------
-SonySetVolumeTV.prototype.getServices = function() { return [this.service]; }
-function SonySetVolumeTV(log, config) {
-    this.log = log;
-    this.name = config["name"];
-    this.psk = config["presharedkey"];
-    this.ipaddress = config["ipaddress"];
-	this.volumelevel = config["volumelevel"];
-	this.delay =  config["delay"];
-	this.timer;
-    this.service = new Service.Switch(this.name);
-	this.timer;
-    this.service
-        .getCharacteristic(Characteristic.On)
-		.on('get', this.getOn.bind(this))
-        .on('set', this.setOn.bind(this));
-}
-SonySetVolumeTV.prototype.setOn = function(value, callback) {   
-		var postData = startXML + VolumeDown + endXML;  
-		var volume = parseInt(this.volumelevel);
-		var senddelay = 0;
-		var delay = parseInt(this.delay);  // delay of 07 is the fastest I could get to reliably work
-		var downloop = 120;
-		//this.log("delay:"+delay);
-		//this.log("volume:" + volume);
-		//this.log("volumelevel:" + this.volumelevel);
-		this.timer = setTimeout(function() { this.runTimerVolumeUp();}.bind(this), 1);  //knock mute off
-		
-		for (i = 1; i <= downloop; i++) { 
-			senddelay = (i*delay);
-			//this.log("timer down:" + i+ " delay:"+senddelay);
-			this.timer = setTimeout(function() {
-				this.runTimerVolumeDown();
-			}.bind(this), senddelay);	
-		}		
-		//now turn volume up to the desired level
-		//Timed function needed here because of 100 POST per second limit!!!
-		for (i = 1; i <= volume; i++) { 
-			senddelay = (i*delay)+(downloop*delay);
-			//this.log("timer up:" + i+ " delay:"+senddelay);
-			this.timer = setTimeout(function() {
-				this.runTimerVolumeUp();
-			}.bind(this), senddelay);	
-		}
-		callback();
-}
-SonySetVolumeTV.prototype.runTimerVolumeDown = function() {
-		request = require("request");
-		postData = startXML + VolumeDown + endXML; 
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				//callback(); // success
-				//this.log("Success Down");
-			} else {
-				this.log(logError, err, body);
-				//callback(err || new Error(stateError));
-			}
-		}.bind(this));	//*/
-//		this.timer = setTimeout(function() {
-//			this.runTimer();
-//		}.bind(this), 1000);		
-}
-SonySetVolumeTV.prototype.runTimerVolumeUp = function() {
-		request = require("request");
-		postData = startXML + VolumeUp + endXML; 
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				//callback(); // success
-				//this.log("Success Up");
-			} else {
-				this.log(logError, err, body);
-				//callback(err || new Error(stateError));
-			}
-		}.bind(this));	//*/
-		this.timer = setTimeout(function() {
-			this.runTimer();
-		}.bind(this), 10000);		
-}
-SonySetVolumeTV.prototype.runTimerVolumeUpLast = function() {
-		request = require("request");
-		postData = startXML + VolumeUp + endXML; 
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				//callback(); // success
-				this.log("Success Up Last");
+				//this.log("Page Up");
 			} else {
 				this.log(logError, err, body);
 				//callback(err || new Error(stateError));
@@ -1573,16 +1656,37 @@ SonySetVolumeTV.prototype.runTimerVolumeUpLast = function() {
 			this.runTimer();
 		}.bind(this), 1000);		
 }
-SonySetVolumeTV.prototype.getOn = function(callback) { callback(null, false);  }
-SonySetVolumeTV.prototype.runTimer = function() {
+SonyPageUpPlayTV.prototype.runTimerPageUpPlay = function() {
+		var request = require("request");
+		var postData = startXML + Play + endXML; 
+		request.post({
+			url: protocol + this.ipaddress + IRCCURL,
+			headers: {
+				'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+			},
+			form: postData
+		}, function(err, response, body) {
+			if (!err && response.statusCode == 200) {
+				//callback(); // success
+				//this.log("Page Up");
+			} else {
+				this.log(logError, err, body);
+				//callback(err || new Error(stateError));
+			}
+		}.bind(this));	//*/
+		this.timer = setTimeout(function() {
+			this.runTimer();
+		}.bind(this), 1000);		
+}
+SonyPageUpPlayTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyPageUpPlayTV.prototype.runTimer = function() {
             //this.log("turn the button back off");
             this.service.getCharacteristic(Characteristic.On).updateValue(false);
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
-
 
 
 
@@ -1696,8 +1800,6 @@ SonyHDMI1TV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------------------------
 /*
 1. Turn the TV on with WOL
@@ -1805,8 +1907,6 @@ SonyHDMI2TV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
 
 //------------------------------------------------------------------------------------------------
 /*
@@ -1916,8 +2016,6 @@ SonyHDMI3TV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------------------------
 /*
 1. Turn the TV on with WOL
@@ -2026,10 +2124,6 @@ SonyHDMI4TV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Input command
 //------------------------------------------------------------------------------------------------
@@ -2076,273 +2170,6 @@ SonyInputTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-//------------------------------------------------------------------------------------------------
-// Send the TV Left command
-//------------------------------------------------------------------------------------------------
-SonyLeftTV.prototype.getServices = function() { return [this.service]; }
-function SonyLeftTV(log, config) {
-    this.log = log;
-    this.name = config["name"];
-    this.psk = config["presharedkey"];
-    this.ipaddress = config["ipaddress"];
-    this.service = new Service.Switch(this.name);
-	this.timer;
-    this.service
-        .getCharacteristic(Characteristic.On)
-		.on('get', this.getOn.bind(this))
-        .on('set', this.setOn.bind(this));
-}
-SonyLeftTV.prototype.setOn = function(value, callback) {    
-		var postData = startXML + CursorLeft + endXML; 
-        request.post({
-            url: protocol + this.ipaddress + IRCCURL,
-            headers: {
-                'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-            },
-            form: postData
-        }, function(err, response, body) {
-            if (!err && response.statusCode == 200) {
-                callback(); // success
-            } else {
-                this.log(logError, err, body);
-                callback(err || new Error(stateError));
-            }
-        }.bind(this));
-		this.timer = setTimeout(function() {
-			this.runTimer();
-		}.bind(this), 1000);		
-}
-SonyLeftTV.prototype.getOn = function(callback) { callback(null, false);  }
-SonyLeftTV.prototype.runTimer = function() {
-            //this.log("turn the button back off");
-            this.service.getCharacteristic(Characteristic.On).updateValue(false);
-            this.isOn = false;
-}
-//------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-//------------------------------------------------------------------------------------------------
-// Send the TV Right command
-//------------------------------------------------------------------------------------------------
-SonyRightTV.prototype.getServices = function() { return [this.service]; }
-function SonyRightTV(log, config) {
-    this.log = log;
-    this.name = config["name"];
-    this.psk = config["presharedkey"];
-    this.ipaddress = config["ipaddress"];
-    this.service = new Service.Switch(this.name);
-	this.timer;
-    this.service
-        .getCharacteristic(Characteristic.On)
-		.on('get', this.getOn.bind(this))
-        .on('set', this.setOn.bind(this));
-}
-SonyRightTV.prototype.setOn = function(value, callback) {    
-		var postData = startXML + CursorRight + endXML; 
-        request.post({
-            url: protocol + this.ipaddress + IRCCURL,
-            headers: {
-                'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-            },
-            form: postData
-        }, function(err, response, body) {
-            if (!err && response.statusCode == 200) {
-                callback(); // success
-            } else {
-                this.log(logError, err, body);
-                callback(err || new Error(stateError));
-            }
-        }.bind(this));
-		this.timer = setTimeout(function() {
-			this.runTimer();
-		}.bind(this), 1000);		
-}
-SonyRightTV.prototype.getOn = function(callback) { callback(null, false);  }
-SonyRightTV.prototype.runTimer = function() {
-            //this.log("turn the button back off");
-            this.service.getCharacteristic(Characteristic.On).updateValue(false);
-            this.isOn = false;
-}
-//------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-//------------------------------------------------------------------------------------------------
-// Send the TV Down command multiple times (this is grumpy, TV ignores some of them even if they're delayed)
-//------------------------------------------------------------------------------------------------
-SonyDownTV.prototype.getServices = function() { return [this.service]; }
-function SonyDownTV(log, config) {
-    this.log = log;
-    this.name = config["name"];
-    this.psk = config["presharedkey"];
-    this.ipaddress = config["ipaddress"];
-	this.downcount = config["downcount"];	
-    this.service = new Service.Switch(this.name);
-	this.timer;
-    this.service
-        .getCharacteristic(Characteristic.On)
-		.on('get', this.getOn.bind(this))
-        .on('set', this.setOn.bind(this));
-}
-SonyDownTV.prototype.setOn = function(value, callback) {    
-		var downcounter = parseInt(this.downcount);
-		for (i = 1; i < downcounter+1; i++) { 
-			this.timer = setTimeout(function() {
-				this.runTimerDownButton();
-			}.bind(this), i*250);	
-		}		
-		request = require("request");
-		postData = startXML + CursorDown + endXML; 
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				callback(); // success
-				//this.log("Final Down button");
-			} else {
-				this.log(logError, err, body);
-				callback(err || new Error(stateError));
-			}
-		}.bind(this));	//*/		
-		this.timer = setTimeout(function() {
-			this.runTimer();
-		}.bind(this), 1000);	//*/		
-}
-SonyDownTV.prototype.runTimerDownButton = function() {
-		request = require("request");
-		postData = startXML + CursorDown + endXML; 
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				//callback(); // success
-				//this.log("Down button");
-			} else {
-				this.log(logError, err, body);
-				//callback(err || new Error(stateError));
-			}
-		}.bind(this));	//*/		
-}
-SonyDownTV.prototype.getOn = function(callback) { callback(null, false);  }
-SonyDownTV.prototype.runTimer = function() {
-            //this.log("turn the button back off");
-            this.service.getCharacteristic(Characteristic.On).updateValue(false);
-            this.isOn = false;
-}
-//------------------------------------------------------------------------------------------------
-
-
-
-
-
-//------------------------------------------------------------------------------------------------
-// Send the TV Up command multiple times (this is grumpy, TV ignores some of them even if they're delayed)
-//------------------------------------------------------------------------------------------------
-SonyUpTV.prototype.getServices = function() { return [this.service]; }
-function SonyUpTV(log, config) {
-    this.log = log;
-    this.name = config["name"];
-    this.psk = config["presharedkey"];
-    this.ipaddress = config["ipaddress"];
-	this.upcount = config["upcount"];	
-    this.service = new Service.Switch(this.name);
-	this.timer;
-    this.service
-        .getCharacteristic(Characteristic.On)
-		.on('get', this.getOn.bind(this))
-        .on('set', this.setOn.bind(this));
-}
-SonyUpTV.prototype.setOn = function(value, callback) {    
-		var upcounter = parseInt(this.upcount);
-		for (i = 1; i < upcounter; i++) { 
-			this.timer = setTimeout(function() {
-				this.runTimerUpButton();
-			}.bind(this), i*250);	
-		}	
-		request = require("request");
-		postData = startXML + CursorUp + endXML; 
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				callback(); // success
-				//this.log("Final Up button");
-			} else {
-				this.log(logError, err, body);
-				callback(err || new Error(stateError));
-			}
-		}.bind(this));	//*/	
-		this.timer = setTimeout(function() {
-			this.runTimer();
-		}.bind(this), 1000);	//*/			
-}
-SonyUpTV.prototype.runTimerUpButton = function() {
-		request = require("request");
-		postData = startXML + CursorUp + endXML; 
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				//callback(); // success
-				//this.log("Up button");
-			} else {
-				this.log(logError, err, body);
-				//callback(err || new Error(stateError));
-			}
-		}.bind(this));	//*/	
-}
-SonyUpTV.prototype.getOn = function(callback) { callback(null, false);  }
-SonyUpTV.prototype.runTimer = function() {
-            //this.log("turn the button back off");
-            this.service.getCharacteristic(Characteristic.On).updateValue(false);
-            this.isOn = false;
-}
-//------------------------------------------------------------------------------------------------
-
-
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV DpadCenter command
 //------------------------------------------------------------------------------------------------
@@ -2388,10 +2215,6 @@ SonyDpadCenterTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
-
-
 
 //------------------------------------------------------------------------------------------------
 /*
@@ -2505,10 +2328,6 @@ SonyPowerOffTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Wake Up command
 //------------------------------------------------------------------------------------------------
@@ -2555,9 +2374,6 @@ SonyWakeUpTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Picture toggle command
 //------------------------------------------------------------------------------------------------
@@ -2603,8 +2419,6 @@ SonyPicOffTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
 
 //------------------------------------------------------------------------------------------------
 /*
@@ -2722,8 +2536,6 @@ SonyNetflixTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Closed Caption command
 //------------------------------------------------------------------------------------------------
@@ -2769,9 +2581,6 @@ SonyClosedCaptionTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
-
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Subtitle command
@@ -2819,9 +2628,6 @@ SonySubTitleTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV GGuide command
 //------------------------------------------------------------------------------------------------
@@ -2867,9 +2673,6 @@ SonyGGuideTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
-
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Channel Up command
@@ -2917,9 +2720,6 @@ SonyChannelUpTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Channel Down command
 //------------------------------------------------------------------------------------------------
@@ -2965,74 +2765,6 @@ SonyChannelDownTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
-
-
-//------------------------------------------------------------------------------------------------
-// Send the TV Wake On LAN command
-//------------------------------------------------------------------------------------------------
-/*//SonyWOLTV.prototype.getServices = function() { return [this.service]; }
-function SonyWOLTV(log, config) {  // only turns on
-    this.log = log;
-    this.name = config["name"];
-    this.psk = config["presharedkey"];
-    this.ipaddress = config["ipaddress"];
-    this.macaddress = config["macaddress"];
-    this.service = new Service.Switch(this.name);
-    this.service
-        .getCharacteristic(Characteristic.On)
-		.on('get', this.getOn.bind(this))
-        .on('set', this.setOn.bind(this));
-}
-SonyWOLTV.prototype.setOn = function(value, callback) {  
-        wol.wake(this.macaddress, function(error) {
-            if (error) {
-                // handle error
-                this.log("Error '%s' setting TV power state using WOL.", error);
-                callback(error);
-            } else {
-                // done sending packets
-                //this.updateTimer();
-                callback();
-            }
-        }.bind(this));
-}//
-SonyWOLTV.prototype.getOn = function(callback) {  
-        var postData = PowerStatus;
-        request.post({
-            url: protocol + this.ipaddress + systemURL,
-            headers: {
-                'X-Auth-PSK': this.psk,
-            },
-            form: postData
-        }, function(err, response, body) {
-            if (!err && response.statusCode == 200) {
-				if (response.body.includes("active")){
-					//this.log("Active", "Active", response.body);
-					callback(null, true);
-				}
-				else if (response.body.includes("standby")){
-					//this.log("Standby", "Standby", response.body);
-					callback(null, false);
-				}
-                else {
-					this.log(response.statusCode.toString(), "[Off]", response.body);
-					callback(null, false);
-				}
-            } else {
-                //this.log(logError, err, body);
-				this.log(response.statusCode.toString(), err, response.body);
-                callback(err, false);
-            }
-        }.bind(this));
-}//
-//------------------------------------------------------------------------------------------------
-*/
-
-
-
-
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Stop command
@@ -3080,10 +2812,6 @@ SonyStopTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Pause command
 //------------------------------------------------------------------------------------------------
@@ -3129,10 +2857,6 @@ SonyPauseTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
-
-
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Jump command
@@ -3180,11 +2904,6 @@ SonyJumpTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Play command
 //------------------------------------------------------------------------------------------------
@@ -3230,11 +2949,6 @@ SonyPlayTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
-
-
-
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Back command
@@ -3282,14 +2996,6 @@ SonyBackTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV SystemOff command
 //------------------------------------------------------------------------------------------------
@@ -3336,10 +3042,6 @@ SonySystemOffTV.prototype.runTimer = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV SystemOn command
 //------------------------------------------------------------------------------------------------
@@ -3374,9 +3076,6 @@ SonySystemOnTV.prototype.setOn = function(value, callback) {    //Only turns on
         }.bind(this));
 }
 //------------------------------------------------------------------------------------------------
-
-
-
 
 //------------------------------------------------------------------------------------------------
 /*
@@ -3614,10 +3313,6 @@ SonyAllPowerOnTV.prototype.updateTimer = function() {
     }
 }//*/
 //------------------------------------------------------------------------------------------------
-
-
-
-
 
 //------------------------------------------------------------------------------------------------
 /*
@@ -4055,9 +3750,6 @@ SonyChannelTuneTV.prototype.runTimerDpadCenter = function() {
 }
 //------------------------------------------------------------------------------------------------
 
-
-
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Channels command
 //------------------------------------------------------------------------------------------------
@@ -4103,10 +3795,6 @@ SonyChannelsTV.prototype.runTimer = function() {
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
-
-
 
 //------------------------------------------------------------------------------------------------
 // Send the TV PowerToggle command
@@ -4210,6 +3898,3 @@ SonyPowerToggleTV.prototype.updateTimer = function() {
     }
 }
 //------------------------------------------------------------------------------------------------
-
-
-
