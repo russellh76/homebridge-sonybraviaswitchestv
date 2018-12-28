@@ -6,7 +6,7 @@
 "pin": "111-11-111"
 },
 "description": "config.json for DEV purposes",
-   "accessories": [
+  "accessories": [
     {
       "accessory": "homebridge-sonychanneltv",
       "name": "Bravia Channel",
@@ -26,154 +26,22 @@
       "presharedkey": "0000"
     },
     {
+      "accessory": "homebridge-sonyvolumeplustv",
+      "name": "Bravia Volume +",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000"
+    },
+    {
       "accessory": "homebridge-sonyvolumeminustv",
       "name": "Bravia Volume Minus",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
-	{
-      "accessory": "homebridge-sonypageuptv",
-      "name": "Bravia Page Up",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "7",
-	  "delay": "300"
-    },
     {
-      "accessory": "homebridge-sonypagedowntv",
-      "name": "Bravia Page Down",
+      "accessory": "homebridge-sonyvolumeminustv",
+      "name": "Bravia Volume -",
       "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "7",
-	  "delay": "300"
-    },
-    {
-      "accessory": "homebridge-sonypageuptv",
-      "name": "Bravia Up 2",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "2",
-	  "delay": "300"
-    },
-    {
-      "accessory": "homebridge-sonypagelefttv",
-      "name": "Bravia Left 2",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "2",
-	  "delay": "300"
-    },	
-    {
-      "accessory": "homebridge-sonypagerighttv",
-      "name": "Bravia Right 2",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "2",
-	  "delay": "300"
-    },
-    {
-      "accessory": "homebridge-sonypagedowntv",
-      "name": "Bravia Down 2",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "2",
-	  "delay": "300"
-    },		
-    {
-      "accessory": "homebridge-sonypageuptv",
-      "name": "Bravia Up 3",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "3",
-	  "delay": "300"
-    },
-    {
-      "accessory": "homebridge-sonypagelefttv",
-      "name": "Bravia Left 3",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "3",
-	  "delay": "300"
-    },	
-    {
-      "accessory": "homebridge-sonypagerighttv",
-      "name": "Bravia Right 3",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "3",
-	  "delay": "300"
-    },
-    {
-      "accessory": "homebridge-sonypagedowntv",
-      "name": "Bravia Down 3",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "3",
-	  "delay": "300"
-    },	
-    {
-      "accessory": "homebridge-sonypageuptv",
-      "name": "Bravia Up 4",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "4",
-	  "delay": "300"
-    },
-    {
-      "accessory": "homebridge-sonypagelefttv",
-      "name": "Bravia Left 4",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "4",
-	  "delay": "300"
-    },	
-    {
-      "accessory": "homebridge-sonypagerighttv",
-      "name": "Bravia Right 4",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "4",
-	  "delay": "300"
-    },
-    {
-      "accessory": "homebridge-sonypagedowntv",
-      "name": "Bravia Down 4",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "4",
-	  "delay": "300"
-    },	
-    {
-      "accessory": "homebridge-sonypageuptv",
-      "name": "Bravia Up 1",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "1",
-	  "delay": "300"
-    },
-    {
-      "accessory": "homebridge-sonypagelefttv",
-      "name": "Bravia Left 1",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "1",
-	  "delay": "300"
-    },	
-    {
-      "accessory": "homebridge-sonypagerighttv",
-      "name": "Bravia Right 1",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "1",
-	  "delay": "300"
-    },
-    {
-      "accessory": "homebridge-sonypagedowntv",
-      "name": "Bravia Down 1",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "pagecount": "1",
-	  "delay": "300"
+      "presharedkey": "0000"
     },
     {
       "accessory": "homebridge-sonypageuptv",
@@ -211,7 +79,166 @@
 	
 	
 
-
+    {
+      "accessory": "homebridge-sonypageupoktv",
+      "name": "Bravia Up 2 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageleftoktv",
+      "name": "Bravia Left 2 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerightoktv",
+      "name": "Bravia Right 2 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedownoktv",
+      "name": "Bravia Down 2 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "2",
+	  "delay": "300"
+    },		
+    {
+      "accessory": "homebridge-sonypageupoktv",
+      "name": "Bravia Up 3 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "3",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageleftoktv",
+      "name": "Bravia Left 3 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "3",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerightoktv",
+      "name": "Bravia Right 3 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "3",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedownoktv",
+      "name": "Bravia Down 3 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "3",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypageupoktv",
+      "name": "Bravia Up 4 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "4",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageleftoktv",
+      "name": "Bravia Left 4 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "4",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerightoktv",
+      "name": "Bravia Right 4 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "4",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedownoktv",
+      "name": "Bravia Down 4 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "4",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypageupoktv",
+      "name": "Bravia Up 1 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageleftoktv",
+      "name": "Bravia Left 1 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerightoktv",
+      "name": "Bravia Right 1 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedownoktv",
+      "name": "Bravia Down 1 Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageupoktv",
+      "name": "Bravia Up Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageleftoktv",
+      "name": "Bravia Left Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },	
+    {
+      "accessory": "homebridge-sonypagerightoktv",
+      "name": "Bravia Right Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedownoktv",
+      "name": "Bravia Down Ok",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
     {
       "accessory": "homebridge-sonypageupplaytv",
       "name": "Bravia Up 2 Play",
@@ -375,20 +402,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     {
       "accessory": "homebridge-sonymutetv",
       "name": "Bravia Mute",
@@ -517,7 +530,13 @@
     },	
     {
       "accessory": "homebridge-sonypowerofftv",
-      "name": "Bravia PowerOff",
+      "name": "Bravia Off",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000"
+    },	
+    {
+      "accessory": "homebridge-sonypowerofftv",
+      "name": "Bravia Power Off",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },	
@@ -604,18 +623,6 @@
       "name": "Bravia Back",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
-    },
-    {
-      "accessory": "homebridge-sonysystemofftv",
-      "name": "Bravia Off",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
-    },
-    {
-      "accessory": "homebridge-sonysystemofftv",
-      "name": "Bravia Power Off",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
     },	
     {
       "accessory": "homebridge-sonysystemontv",
@@ -629,13 +636,6 @@
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },		
-    {
-      "accessory": "homebridge-sonychanneltunetv",
-      "name": "Bravia CBS",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000",
-	  "channel": "46.1"
-    },
     {
       "accessory": "homebridge-sonychanneltunetv",
       "name": "Bravia ABC",
@@ -652,24 +652,59 @@
     },	
     {
       "accessory": "homebridge-sonychanneltunetv",
-      "name": "Bravia PBS",
+      "name": "Bravia GPBS",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
 	  "channel": "8.1"
     },	
     {
       "accessory": "homebridge-sonychanneltunetv",
-      "name": "Bravia Ion",
+      "name": "Bravia Georgia Public Broadcasting",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
-	  "channel": "14.1"
-    },		
+	  "channel": "8.1"
+    },	
     {
       "accessory": "homebridge-sonychanneltunetv",
       "name": "Bravia NBC",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
 	  "channel": "11.1"
-    }	
+    },
+    {
+      "accessory": "homebridge-sonychanneltunetv",
+      "name": "Bravia Ion",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "channel": "14.1"
+    },
+    {
+      "accessory": "homebridge-sonychanneltunetv",
+      "name": "Bravia Peachtree TV",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "channel": "17.1"
+    },	
+    {
+      "accessory": "homebridge-sonychanneltunetv",
+      "name": "Bravia PBS",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "channel": "30.1"
+    },
+    {
+      "accessory": "homebridge-sonychanneltunetv",
+      "name": "Bravia CBS",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "channel": "46.1"
+    },
+    {
+      "accessory": "homebridge-sonychanneltunetv",
+      "name": "Bravia CW",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "channel": "69.1"
+    }
   ]
 }
