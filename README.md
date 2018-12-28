@@ -6,8 +6,11 @@ https://www.npmjs.com/package/homebridge-sonybravia-platform
 
 
 1. I'm somewhat new to this.  Start with a more established project if you are new to homebridge.
+
 2. This treats sony bravia TVs as a series of switches.  So it's actually many devices.  On/off switches can just be mentioned to Siri and she'll toggle them.  So even though it's technically "Bravia Mute On", you can just say "Bravia Mute" and she'll mute it.  I currently have all TV devices in their own room in Homekit.  Helps preserve my sanity.
+
 3. Currently supported features are: </i><br>
+
 Mute: sonymutetv.homebridge-sonymutetv <i>"Hey Siri Bravia Mute"</i><br>
 UnMute: sonyunmutetv.homebridge-sonyunmutetv  <i>"Hey Siri Bravia Mute Off"</i><br>
 Volume Up: sonyvolumeuptv.homebridge-sonyvolumeuptv  <i>"Hey Siri Bravia Volume Up 10"</i><br>
@@ -50,11 +53,14 @@ TODO 1:
 Should I do numbers? That would allow Siri user to call out channels to TV with voice commands.
 Probably makes more sense to just add all possible channel combinations to the existing config.
 
-TODO 2:Set arrow commands to repeat, which will ease navigation.
+DONE:
+Expanded navigation commands to append a PLAY or OK to the end.
+
+DONE:
+Volume and navigation are now treated as bulds so they can take a numeric argument.
+
+DONE:
+Set arrow commands to repeat, which will ease navigation.
 
 DONE:
 Removed Wake On LAN functionality.  It was complexity and fragility that didn't really add anything.  Fewer dependencies now.
-
-
-
-
