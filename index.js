@@ -1289,15 +1289,25 @@ function SonyPageRightTV(log, config) {
     this.ipaddress = config["ipaddress"];
 	this.pagecount = config["pagecount"];
 	this.delay = config["delay"];
-    this.service = new Service.Switch(this.name);
 	this.timer;
+    //this.service = new Service.Switch(this.name);
+	this.service = new Service.Lightbulb(this.name);
     this.service
         .getCharacteristic(Characteristic.On)
 		.on('get', this.getOn.bind(this))
         .on('set', this.setOn.bind(this));
+    this.service
+		.addCharacteristic(new Characteristic.Brightness())
+		.on('get', this.getBrightness.bind(this))
+		.on('set', this.setBrightness.bind(this));
 }
-SonyPageRightTV.prototype.setOn = function(value, callback) {   
-		var pagecounter = parseInt(this.pagecount);
+SonyPageRightTV.prototype.setBrightness = function(value, callback) {   
+		//var pagecounter = parseInt(this.pagecount);
+		var pagecounter = parseInt(value);
+		if (isNaN(pagecounter)){
+			pagecounter=1;
+		}
+		this.log("value:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 0; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -1311,6 +1321,7 @@ SonyPageRightTV.prototype.setOn = function(value, callback) {
 		}.bind(this), 1000);
 		callback();
 }
+SonyPageRightTV.prototype.setOn = function(value, callback) { callback(null, false);  }
 SonyPageRightTV.prototype.runTimerPageRight = function() {
 		var request = require("request");
 		var postData = startXML + Right + endXML; 
@@ -1336,6 +1347,7 @@ SonyPageRightTV.prototype.runTimerPageRight = function() {
 		}.bind(this), 1000);		
 }
 SonyPageRightTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyPageRightTV.prototype.getBrightness = function(callback) { callback(null, false);  }
 SonyPageRightTV.prototype.runTimer = function() {
             //this.log("turn the button back off");
             this.service.getCharacteristic(Characteristic.On).updateValue(false);
@@ -1550,15 +1562,25 @@ function SonyPageLeftTV(log, config) {
     this.ipaddress = config["ipaddress"];
 	this.pagecount = config["pagecount"];
 	this.delay = config["delay"];
-    this.service = new Service.Switch(this.name);
 	this.timer;
+    //this.service = new Service.Switch(this.name);
+	this.service = new Service.Lightbulb(this.name);
     this.service
         .getCharacteristic(Characteristic.On)
 		.on('get', this.getOn.bind(this))
         .on('set', this.setOn.bind(this));
+    this.service
+		.addCharacteristic(new Characteristic.Brightness())
+		.on('get', this.getBrightness.bind(this))
+		.on('set', this.setBrightness.bind(this));
 }
-SonyPageLeftTV.prototype.setOn = function(value, callback) {   
-		var pagecounter = parseInt(this.pagecount);
+SonyPageLeftTV.prototype.setBrightness = function(value, callback) {   
+		//var pagecounter = parseInt(this.pagecount);
+		var pagecounter = parseInt(value);
+		if (isNaN(pagecounter)){
+			pagecounter=1;
+		}
+		this.log("value:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 0; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -1572,6 +1594,7 @@ SonyPageLeftTV.prototype.setOn = function(value, callback) {
 		}.bind(this), 1000);
 		callback();
 }
+SonyPageLeftTV.prototype.setOn = function(value, callback){ callback(null, false);  }
 SonyPageLeftTV.prototype.runTimerPageLeft = function() {
 		var request = require("request");
 		var postData = startXML + Left + endXML; 
@@ -1596,6 +1619,7 @@ SonyPageLeftTV.prototype.runTimerPageLeft = function() {
 			this.runTimer();
 		}.bind(this), 1000);		
 }
+SonyPageLeftTV.prototype.getBrightness = function(callback) { callback(null, false);  }
 SonyPageLeftTV.prototype.getOn = function(callback) { callback(null, false);  }
 SonyPageLeftTV.prototype.runTimer = function() {
             //this.log("turn the button back off");
@@ -1615,15 +1639,25 @@ function SonyPageDownTV(log, config) {
     this.ipaddress = config["ipaddress"];
 	this.pagecount = config["pagecount"];
 	this.delay = config["delay"];
-    this.service = new Service.Switch(this.name);
 	this.timer;
+    //this.service = new Service.Switch(this.name);
+	this.service = new Service.Lightbulb(this.name);
     this.service
         .getCharacteristic(Characteristic.On)
 		.on('get', this.getOn.bind(this))
         .on('set', this.setOn.bind(this));
+    this.service
+		.addCharacteristic(new Characteristic.Brightness())
+		.on('get', this.getBrightness.bind(this))
+		.on('set', this.setBrightness.bind(this));
 }
-SonyPageDownTV.prototype.setOn = function(value, callback) {   
-		var pagecounter = parseInt(this.pagecount);
+SonyPageDownTV.prototype.setBrightness = function(value, callback) {   
+		//var pagecounter = parseInt(this.pagecount);
+		var pagecounter = parseInt(value);
+		if (isNaN(pagecounter)){
+			pagecounter=1;
+		}
+		this.log("value:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 0; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -1637,6 +1671,7 @@ SonyPageDownTV.prototype.setOn = function(value, callback) {
 		}.bind(this), 1000);
 		callback();
 }
+SonyPageDownTV.prototype.setOn = function(value, callback) { callback(null, false);  }
 SonyPageDownTV.prototype.runTimerPageDown = function() {
 		var request = require("request");
 		var postData = startXML + Down + endXML; 
@@ -1662,6 +1697,7 @@ SonyPageDownTV.prototype.runTimerPageDown = function() {
 		}.bind(this), 1000);		
 }
 SonyPageDownTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyPageDownTV.prototype.getBrightness = function(callback) { callback(null, false);  }
 SonyPageDownTV.prototype.runTimer = function() {
             //this.log("turn the button back off");
             this.service.getCharacteristic(Characteristic.On).updateValue(false);
@@ -1858,72 +1894,6 @@ SonyPageDownOkTV.prototype.runTimer = function() {
 //------------------------------------------------------------------------------------------------
 
 
-
-//------------------------------------------------------------------------------------------------
-// Send the TV Down Arrow command multiple times
-//------------------------------------------------------------------------------------------------
-SonyPageDownTV.prototype.getServices = function() { return [this.service]; }
-function SonyPageDownTV(log, config) {
-    this.log = log;
-    this.name = config["name"];
-    this.psk = config["presharedkey"];
-    this.ipaddress = config["ipaddress"];
-	this.pagecount = config["pagecount"];
-	this.delay = config["delay"];
-    this.service = new Service.Switch(this.name);
-	this.timer;
-    this.service
-        .getCharacteristic(Characteristic.On)
-		.on('get', this.getOn.bind(this))
-        .on('set', this.setOn.bind(this));
-}
-SonyPageDownTV.prototype.setOn = function(value, callback) {   
-		var pagecounter = parseInt(this.pagecount);
-		var delay = parseInt(this.delay);
-		for (i = 0; i < pagecounter; i++) { 
-			senddelay = (i*delay);
-			//this.log("timer up:" + i+ " delay:"+senddelay);
-			this.timer = setTimeout(function() {
-				this.runTimerPageDown();
-			}.bind(this), senddelay);	
-		}		
-		this.timer = setTimeout(function() {
-			this.runTimer();
-		}.bind(this), 1000);
-		callback();
-}
-SonyPageDownTV.prototype.runTimerPageDown = function() {
-		var request = require("request");
-		var postData = startXML + Down + endXML; 
-		request.post({
-			url: protocol + this.ipaddress + IRCCURL,
-			headers: {
-				'X-Auth-PSK': this.psk,
-				'SOAPAction': SOAPActionVal,
-				'Content-type': ContentTypeVal
-			},
-			form: postData
-		}, function(err, response, body) {
-			if (!err && response.statusCode == 200) {
-				//callback(); // success
-				//this.log("Page Down");
-			} else {
-				this.log(logError, err, body);
-				//callback(err || new Error(stateError));
-			}
-		}.bind(this));	//*/
-		this.timer = setTimeout(function() {
-			this.runTimer();
-		}.bind(this), 1000);		
-}
-SonyPageDownTV.prototype.getOn = function(callback) { callback(null, false);  }
-SonyPageDownTV.prototype.runTimer = function() {
-            //this.log("turn the button back off");
-            this.service.getCharacteristic(Characteristic.On).updateValue(false);
-            this.isOn = false;
-}
-//------------------------------------------------------------------------------------------------
-
 //------------------------------------------------------------------------------------------------
 // Send the TV Up Arrow command multiple times
 //------------------------------------------------------------------------------------------------
@@ -1935,15 +1905,25 @@ function SonyPageUpTV(log, config) {
     this.ipaddress = config["ipaddress"];
 	this.pagecount = config["pagecount"];
 	this.delay = config["delay"];
-    this.service = new Service.Switch(this.name);
 	this.timer;
+    //this.service = new Service.Switch(this.name);
+	this.service = new Service.Lightbulb(this.name);
     this.service
         .getCharacteristic(Characteristic.On)
 		.on('get', this.getOn.bind(this))
         .on('set', this.setOn.bind(this));
+    this.service
+		.addCharacteristic(new Characteristic.Brightness())
+		.on('get', this.getBrightness.bind(this))
+		.on('set', this.setBrightness.bind(this));			
 }
-SonyPageUpTV.prototype.setOn = function(value, callback) {   
-		var pagecounter = parseInt(this.pagecount);
+SonyPageUpTV.prototype.setBrightness = function(value, callback) {   
+		//var pagecounter = parseInt(this.pagecount);
+		var pagecounter = parseInt(value);
+		if (isNaN(pagecounter)){
+			pagecounter=1;
+		}
+		this.log("value:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 0; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -1957,6 +1937,7 @@ SonyPageUpTV.prototype.setOn = function(value, callback) {
 		}.bind(this), 1000);
 		callback();
 }
+SonyPageUpTV.prototype.setOn = function(value, callback) { callback(null, false);  }
 SonyPageUpTV.prototype.runTimerPageUp = function() {
 		var request = require("request");
 		var postData = startXML + Up + endXML; 
@@ -1982,14 +1963,13 @@ SonyPageUpTV.prototype.runTimerPageUp = function() {
 		}.bind(this), 1000);		
 }
 SonyPageUpTV.prototype.getOn = function(callback) { callback(null, false);  }
+SonyPageUpTV.prototype.getBrightness = function(callback) { callback(null, false);  }
 SonyPageUpTV.prototype.runTimer = function() {
             //this.log("turn the button back off");
             this.service.getCharacteristic(Characteristic.On).updateValue(false);
             this.isOn = false;
 }
 //------------------------------------------------------------------------------------------------
-
-
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Up Arrow command multiple times and then ok
