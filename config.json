@@ -6,10 +6,11 @@
 "pin": "111-11-111"
 },
 "description": "config.json for DEV purposes",
+
   "accessories": [
     {
       "accessory": "homebridge-sonychanneltv",
-      "name": "Bravia Channel",
+      "name": "Bravia Tune",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
@@ -529,13 +530,13 @@
       "presharedkey": "0000"
     },	
     {
-      "accessory": "homebridge-sonypowerofftv",
+      "accessory": "homebridge-sonypoweroffonlytv",
       "name": "Bravia Off",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },	
     {
-      "accessory": "homebridge-sonypowerofftv",
+      "accessory": "homebridge-sonypoweroffonlytv",
       "name": "Bravia Power Off",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
@@ -625,8 +626,14 @@
       "presharedkey": "0000"
     },	
     {
-      "accessory": "homebridge-sonysystemontv",
+      "accessory": "homebridge-sonypowerononlytv",
       "name": "Bravia On",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonyallpowerontv",
+      "name": "Bravia Power On",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },
