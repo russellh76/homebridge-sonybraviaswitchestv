@@ -45,6 +45,8 @@ Channels Button: sonychannelstv.homebridge-sonychannelstv <i>"Hey Siri Bravia Ch
 Jump Button: sonyjumptv.homebridge-sonyjumptv <i>"Hey Siri Bravia Jump"</i><br>
 All Power On (all on methods in one function): sonyallpowerontv.homebridge-sonyallpowerontv <i>"Hey Siri Bravia On"</i><br>
 Set Volume: sonysetvolumetv.homebridge-sonysetvolumetv <i>"Hey Siri Bravia Set Volume 40"</i><br>
+Plus Volume: sonysetvolumeplustv.homebridge-sonysetvolumeplustv <i>"Hey Siri Bravia Volume plus 12"</i><br>
+Minus Volume: sonysetvolumeminustv.homebridge-sonysetvolumeminustv <i>"Hey Siri Bravia Set minus 20"</i><br>
 
 I'll have jacked something up, be gentle.
 I used Bravia because Siri sometimes gets confused by the word TV.
