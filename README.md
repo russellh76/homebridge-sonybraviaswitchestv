@@ -53,6 +53,12 @@ TODO 1:
 Should I do numbers? That would allow Siri user to call out channels to TV with voice commands.
 Probably makes more sense to just add all possible channel combinations to the existing config.
 
+TODO 2:
+I can implement polling for status on volume, mute, the input options.
+
+DONE: 
+Finally figured out the status checking for TV Power.
+
 DONE:
 Expanded navigation commands to append a PLAY or OK to the end.
 
