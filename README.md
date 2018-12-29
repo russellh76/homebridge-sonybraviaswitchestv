@@ -13,8 +13,6 @@ https://www.npmjs.com/package/homebridge-sonybravia-platform
 
 Mute: sonymutetv.homebridge-sonymutetv <i>"Hey Siri Bravia Mute"</i><br>
 UnMute: sonyunmutetv.homebridge-sonyunmutetv  <i>"Hey Siri Bravia Mute Off"</i><br>
-Volume Up: sonyvolumeuptv.homebridge-sonyvolumeuptv  <i>"Hey Siri Bravia Volume Up 10"</i><br>
-Volume Down: sonyvolumedowntv.homebridge-sonyvolumedowntv  <i>"Hey Siri Bravia Volume Down 10"</i><br>
 Input 1: sonyhdmi1tv.homebridge-sonyhdmi1tv  <i>"Hey Siri Bravia HDMI One"</i><br>
 Input 2: sonyhdmi2tv.homebridge-sonyhdmi2tv  <i>"Hey Siri Bravia HDMI Two"</i><br>
 Input 3: sonyhdmi3tv.homebridge-sonyhdmi3tv  <i>"Hey Siri Bravia HDMI Three"</i><br>
