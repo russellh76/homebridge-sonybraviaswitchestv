@@ -6,7 +6,6 @@
 "pin": "111-11-111"
 },
 "description": "config.json for DEV purposes",
-
   "accessories": [
     {
       "accessory": "homebridge-sonychanneltv",
