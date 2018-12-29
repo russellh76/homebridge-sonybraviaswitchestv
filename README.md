@@ -56,6 +56,9 @@ Probably makes more sense to just add all possible channel combinations to the e
 TODO 2:
 I can implement polling for status on volume, mute, the input options.
 
+TODO 3:
+I've left Video1 and Video2 out.
+
 DONE: 
 Finally figured out the status checking for TV Power.
 
