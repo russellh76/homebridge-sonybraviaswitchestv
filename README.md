@@ -49,30 +49,30 @@ Minus Volume: sonysetvolumeminustv.homebridge-sonysetvolumeminustv <i>"Hey Siri 
 I'll have jacked something up, be gentle.
 I used Bravia because Siri sometimes gets confused by the word TV.
 
-TODO 1:
+TODO 1: </br>
 Should I do numbers? That would allow Siri user to call out channels to TV with voice commands.
 Probably makes more sense to just add all possible channel combinations to the existing config.
 
-DONE: 
+DONE: </br>
 Finally figured out the status checking for TV Power, Inputs, Mute and Volume.
 
-DONE:
+DONE:</br>
 I can implement polling for status on volume, mute, the input options.  Set a polling value in config.json for off/on timing.
 
-DONE:
+DONE:</br>
 I've left Video1 and Video2 out.
 
-DONE: 
+DONE: </br>
 Finally figured out the status checking for TV Power.
 
-DONE:
+DONE:</br>
 Expanded navigation commands to append a PLAY or OK to the end.
 
-DONE:
+DONE:</br>
 Volume and navigation are now treated as bulds so they can take a numeric argument.
 
-DONE:
+DONE:</br>
 Set arrow commands to repeat, which will ease navigation.
 
-DONE:
+DONE:</br>
 Removed Wake On LAN functionality.  It was complexity and fragility that didn't really add anything.  Fewer dependencies now.
