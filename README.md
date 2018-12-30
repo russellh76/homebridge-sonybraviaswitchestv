@@ -16,6 +16,8 @@ Input 1: sonyhdmi1tv.homebridge-sonyhdmi1tv  <i>"Hey Siri Bravia HDMI One"</i><b
 Input 2: sonyhdmi2tv.homebridge-sonyhdmi2tv  <i>"Hey Siri Bravia HDMI Two"</i><br>
 Input 3: sonyhdmi3tv.homebridge-sonyhdmi3tv  <i>"Hey Siri Bravia HDMI Three"</i><br>
 Input 4: sonyhdmi4tv.homebridge-sonyhdmi4tv  <i>"Hey Siri Bravia HDMI Four"</i><br>
+Video 1: sonyvideo1tv.homebridge-sonyvideo1tv  <i>"Hey Siri Bravia Video 1"</i><br>
+Video 2: sonyvideo2tv.homebridge-sonyvideo2tv  <i>"Hey Siri Bravia Video 2"</i><br>
 Input: sonyinputtv.homebridge-sonyinputtv  <i>"Hey Siri Bravia Input"</i><br>
 Left Arrow: sonylefttv.homebridge-sonylefttv  <i>"Hey Siri Bravia Left Arrow"</i><br>
 Right Arrow: sonyrighttv.homebridge-sonyrighttv  <i>"Hey Siri Bravia Right Arrow"</i><br>
