@@ -52,6 +52,9 @@ TODO 1: </br>
 Should I do numbers? That would allow Siri user to call out channels to TV with voice commands.
 Probably makes more sense to just add all possible channel combinations to the existing config.
 
+TODO 2: </br>
+The current blub characteristics are integer only.  This keeps me from easil building a module for changing channel and also leads to issues where Siri confuses for/4 to/2.  Could be resolved if I figured out string characteristics.  I don't know how much is involved.
+
 DONE: </br>
 Finally figured out the status checking for TV Power, Inputs, Mute and Volume.
 
