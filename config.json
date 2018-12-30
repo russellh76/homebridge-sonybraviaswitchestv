@@ -6,18 +6,17 @@
 "pin": "111-11-111"
 },
 "description": "config.json for DEV purposes",
-  "accessories": [
+  "accessories": [  
     {
-      "accessory": "homebridge-sonychanneltv",
-      "name": "Bravia Tune",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
+      "accessory": "homebridge-crash",
+      "name": "Crash Homebridge"
     },
     {
       "accessory": "homebridge-sonyvolumetv",
       "name": "Bravia Volume",
       "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
+      "presharedkey": "0000",
+	  "polldelay": "3"
     },
     {
       "accessory": "homebridge-sonyvolumeplustv",
@@ -75,10 +74,6 @@
 	  "pagecount": "1",
 	  "delay": "300"
     },
-
-	
-	
-
     {
       "accessory": "homebridge-sonypageupoktv",
       "name": "Bravia Up 2 Ok",
@@ -399,14 +394,12 @@
 	  "pagecount": "1",
 	  "delay": "300"
     },
-
-
-
     {
       "accessory": "homebridge-sonymutetv",
       "name": "Bravia Mute",
       "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
+      "presharedkey": "0000",
+	  "polldelay": "6"
     },
     {
       "accessory": "homebridge-sonyunmutetv",
@@ -418,13 +411,28 @@
       "accessory": "homebridge-sonyhdmi1tv",
       "name": "Bravia 1",
       "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
+      "presharedkey": "0000",
+	  "polldelay": "6"
     },
     {
       "accessory": "homebridge-sonyhdmi1tv",
       "name": "Bravia Input 1",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
+    },
+    {
+      "accessory": "homebridge-sonyvideo1tv",
+      "name": "Bravia Video 1",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "polldelay": "6"
+    },
+    {
+      "accessory": "homebridge-sonyvideo2tv",
+      "name": "Bravia Video 2",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "polldelay": "6"
     },
     {
       "accessory": "homebridge-sonyhdmi1tv",
@@ -448,7 +456,8 @@
       "accessory": "homebridge-sonyhdmi2tv",
       "name": "Bravia 2",
       "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
+      "presharedkey": "0000",
+	  "polldelay": "6"
     },	
     {
       "accessory": "homebridge-sonyhdmi2tv",
@@ -472,7 +481,8 @@
       "accessory": "homebridge-sonyhdmi3tv",
       "name": "Bravia 3",
       "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
+      "presharedkey": "0000",
+	  "polldelay": "6"
     },	
     {
       "accessory": "homebridge-sonyhdmi3tv",
@@ -496,7 +506,8 @@
       "accessory": "homebridge-sonyhdmi4tv",
       "name": "Bravia 4",
       "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
+      "presharedkey": "0000",
+	  "polldelay": "6"
     },	
     {
       "accessory": "homebridge-sonyhdmi4tv",
@@ -527,19 +538,7 @@
       "name": "Bravia okay",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
-    },	
-    {
-      "accessory": "homebridge-sonypoweroffonlytv",
-      "name": "Bravia Off",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
-    },	
-    {
-      "accessory": "homebridge-sonypoweroffonlytv",
-      "name": "Bravia Power Off",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
-    },	
+    },		
     {
       "accessory": "homebridge-sonywakeuptv",
       "name": "Bravia Wakeup",
@@ -625,17 +624,18 @@
       "presharedkey": "0000"
     },	
     {
-      "accessory": "homebridge-sonypowerononlytv",
-      "name": "Bravia On",
-      "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
-    },
-    {
       "accessory": "homebridge-sonyallpowerontv",
       "name": "Bravia Power On",
       "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
+      "presharedkey": "0000",
+	  "polldelay": "6"
     },
+    {
+      "accessory": "homebridge-sonypoweroffonlytv",
+      "name": "Bravia Power Off",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000"
+    },	
     {
       "accessory": "homebridge-sonychannelstv",
       "name": "Bravia Channels",
