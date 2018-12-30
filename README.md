@@ -55,7 +55,7 @@ Should I do numbers? That would allow Siri user to call out channels to TV with 
 Probably makes more sense to just add all possible channel combinations to the existing config (homebridge didn't like that many accessories).
 
 TODO 2: </br>
-The current bulb characteristics are integer only.  This keeps me from easily building a module for changing channel and also leads to issues where Siri confuses for/4 to/2.  Could be resolved if I figured out string characteristics.  I don't know how much is involved.
+The current bulb characteristics are integer only.  This keeps me from easily building an accessory for changing channel and also leads to issues where Siri confuses for/4 to/2.  Could be resolved if I figured out string characteristics.  I don't know how much is involved.
 
 DONE: </br>
 Finally figured out the status checking for TV Power, Inputs, Mute and Volume.
