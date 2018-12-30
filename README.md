@@ -73,7 +73,7 @@ DONE:</br>
 Expanded navigation commands to append a PLAY or OK to the end.
 
 DONE:</br>
-Volume and navigation are now treated as bulds so they can take a numeric argument.
+Volume and navigation are now treated as bulbs so they can take a numeric argument.
 
 DONE:</br>
 Set arrow commands to repeat, which will ease navigation.
