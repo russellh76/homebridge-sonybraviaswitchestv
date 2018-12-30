@@ -4,10 +4,9 @@ Apple homekit homebridge accessory for treating Sony Bravia TVs as a series of s
 NOTE: There's now a platform available for these Televisions.  I don't yet know how well it works or how much functionality overlaps.
 https://www.npmjs.com/package/homebridge-sonybravia-platform
 
-
 1. I'm somewhat new to this.  Start with a more established project if you are new to homebridge.
 
-2. This treats sony bravia TVs as a series of switches and bulbs.  So it's actually many accessories.  On/off switches can just be mentioned to Siri and she'll toggle them.  So even though it's technically "Bravia Mute On", you can just say "Bravia Mute" and she'll mute it.  I currently have all TV devices in their own room in Homekit.  Helps preserve my sanity.
+2. This treats sony bravia TVs as a series of SWITCHES and BULBS.  So it's actually many accessories.  On/off switches can just be mentioned to Siri and she'll toggle them.  So even though it's technically "Bravia Mute On", you can just say "Bravia Mute" and she'll mute it.  I currently have all TV devices in their own room in Homekit.  Helps preserve my sanity.
 
 3. Currently supported features are: </i><br>
 
