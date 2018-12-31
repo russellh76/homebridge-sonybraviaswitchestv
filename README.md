@@ -58,6 +58,9 @@ TODO 2: </br>
 The current bulb characteristics are integer only.  This keeps me from easily building an accessory for changing channel and also leads to issues where Siri confuses for/4 to/2.  Could be resolved if I figured out string characteristics.  I don't know how much is involved.
 
 DONE: </br>
+Added status checking for channels that are identified in config.json.
+
+DONE: </br>
 Finally figured out the status checking for TV Power, Inputs, Mute and Volume.
 
 DONE:</br>
