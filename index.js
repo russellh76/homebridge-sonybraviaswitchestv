@@ -1192,7 +1192,6 @@ SonyMuteTV.prototype.setOn = function(value, callback) {
 //		}.bind(this), 1000);	
 }
 SonyMuteTV.prototype.getOn = function(callback) {
-		//this.log("getOn");
         var postData = AudioStatus;
         request.post({
             url: protocol + this.ipaddress + AudioURL,
@@ -1203,21 +1202,21 @@ SonyMuteTV.prototype.getOn = function(callback) {
         }, function(err, response, body) {
             if (!err && response.statusCode == 200) {
 				if (response.body.includes(',"mute":true')){
-					this.log("getOn: Mute:True");
+					//this.log("getOn: Mute:True");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(true);
 					this.isOn = true;
 					callback(null, true);
 				}
 				else if (response.body.includes(',"mute":false')){
-					this.log("getOn: Mute:False");
+					//this.log("getOn: Mute:False");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
 					callback(null, false);
 				}
                 else {
-					this.log("getOn: Standby");
+					//this.log("getOn: Standby");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
@@ -1555,10 +1554,13 @@ function SonyPageRightTV(log, config) {
 SonyPageRightTV.prototype.setBrightness = function(value, callback) {   
 		//var pagecounter = parseInt(this.pagecount);
 		var pagecounter = parseInt(value);
-		if (isNaN(pagecounter)){
-			pagecounter=1;
+		if (this.name.includes("Right 2")){ //provides an optional work around for to/too/2
+			pagecounter=2;
 		}
-		this.log("value:"+value+" pagecounter:"+pagecounter);
+		if (this.name.includes("Right 4")){ //provides an optional work around for for/4
+			pagecounter=4;
+		}
+		this.log("setBrightness:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 1; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -1576,9 +1578,15 @@ SonyPageRightTV.prototype.setOn = function(value, callback) {
 		//var pagecounter = parseInt(this.pagecount);
 		var pagecounter = parseInt(value);
 		if (isNaN(pagecounter)){
-			pagecounter=1;
+			pagecounter=1
 		}
-		this.log("value:"+value+" pagecounter:"+pagecounter);
+		if (this.name.includes("Right 2")){ //provides an optional work around for to/too/2
+			pagecounter=2;
+		}
+		if (this.name.includes("Right 4")){ //provides an optional work around for for/4
+			pagecounter=4;
+		}
+		//this.log("setOn:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 0; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -1839,10 +1847,13 @@ function SonyPageLeftTV(log, config) {
 SonyPageLeftTV.prototype.setBrightness = function(value, callback) {   
 		//var pagecounter = parseInt(this.pagecount);
 		var pagecounter = parseInt(value);
-		if (isNaN(pagecounter)){
-			pagecounter=1;
+		if (this.name.includes("Left 2")){ //provides an optional work around for to/too/2
+			pagecounter=2;
 		}
-		this.log("value:"+value+" pagecounter:"+pagecounter);
+		if (this.name.includes("Left 4")){ //provides an optional work around for for/4
+			pagecounter=4;
+		}
+		this.log("setBrightness:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 1; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -1860,9 +1871,15 @@ SonyPageLeftTV.prototype.setOn = function(value, callback){
 		//var pagecounter = parseInt(this.pagecount);
 		var pagecounter = parseInt(value);
 		if (isNaN(pagecounter)){
-			pagecounter=1;
+			pagecounter=1
 		}
-		this.log("value:"+value+" pagecounter:"+pagecounter);
+		if (this.name.includes("Left 2")){ //provides an optional work around for to/too/2
+			pagecounter=2;
+		}
+		if (this.name.includes("Left 4")){ //provides an optional work around for for/4
+			pagecounter=4;
+		}
+		//this.log("setOn:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 0; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -1925,16 +1942,21 @@ function SonyPageDownTV(log, config) {
         .on('set', this.setOn.bind(this));
     this.service
 		.addCharacteristic(new Characteristic.Brightness())
-
 		.on('set', this.setBrightness.bind(this));
 }
 SonyPageDownTV.prototype.setBrightness = function(value, callback) {   
-		//var pagecounter = parseInt(this.pagecount);
 		var pagecounter = parseInt(value);
+		//this.log(this.name);
 		if (isNaN(pagecounter)){
 			pagecounter=1;
 		}
-		this.log("value:"+value+" pagecounter:"+pagecounter);
+		if (this.name.includes("Down 2")){ //provides an optional work around for to/too/2
+			pagecounter=2;
+		}
+		if (this.name.includes("Down 4")){ //provides an optional work around for for/4
+			pagecounter=4;
+		}
+		this.log("setBrightness:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 1; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -1954,7 +1976,13 @@ SonyPageDownTV.prototype.setOn = function(value, callback) {
 		if (isNaN(pagecounter)){
 			pagecounter=1;
 		}
-		this.log("value:"+value+" pagecounter:"+pagecounter);
+		if (this.name.includes("Down 2")){ //provides an optional work around for to/too/2
+			pagecounter=2;
+		}
+		if (this.name.includes("Down 4")){ //provides an optional work around for for/4
+			pagecounter=4;
+		}
+		//this.log("setOn:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 0; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -2209,10 +2237,13 @@ function SonyPageUpTV(log, config) {
 SonyPageUpTV.prototype.setBrightness = function(value, callback) {   
 		//var pagecounter = parseInt(this.pagecount);
 		var pagecounter = parseInt(value);
-		if (isNaN(pagecounter)){
-			pagecounter=1;
+		if (this.name.includes("Up 2")){ //provides an optional work around for to/too/2
+			pagecounter=2;
 		}
-		this.log("value:"+value+" pagecounter:"+pagecounter);
+		if (this.name.includes("Up 4")){ //provides an optional work around for for/4
+			pagecounter=4;
+		}
+		this.log("setBrightness:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 1; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -2230,9 +2261,15 @@ SonyPageUpTV.prototype.setOn = function(value, callback) {
 		//var pagecounter = parseInt(this.pagecount);
 		var pagecounter = parseInt(value);
 		if (isNaN(pagecounter)){
-			pagecounter=1;
+			pagecounter=1
 		}
-		this.log("value:"+value+" pagecounter:"+pagecounter);
+		if (this.name.includes("Up 2")){ //provides an optional work around for to/too/2
+			pagecounter=2;
+		}
+		if (this.name.includes("Up 4")){ //provides an optional work around for for/4
+			pagecounter=4;
+		}
+		//this.log("setOn:"+value+" pagecounter:"+pagecounter);
 		var delay = parseInt(this.delay);
 		for (i = 0; i < pagecounter; i++) { 
 			senddelay = (i*delay);
@@ -2574,21 +2611,21 @@ SonyHDMI1TV.prototype.getOn = function(callback) {
         }, function(err, response, body) {
             if (!err && response.statusCode == 200) {
 				if (response.body.includes('HDMI 1')){
-					this.log("getOn: HDMI1:True");
+					//this.log("getOn: HDMI1:True");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(true);
 					this.isOn = true;
 					callback(null, true);
 				}
 				else if (response.body.includes('title')){
-					this.log("getOn: HDMI1:False");
+					//this.log("getOn: HDMI1:False");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
 					callback(null, false);
 				}
                 else {
-					this.log("getOn: Standby");
+					//this.log("getOn: Standby");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
@@ -2756,21 +2793,21 @@ SonyHDMI2TV.prototype.getOn = function(callback) {
         }, function(err, response, body) {
             if (!err && response.statusCode == 200) {
 				if (response.body.includes('HDMI 2')){
-					this.log("getOn: HDMI2:True");
+					//this.log("getOn: HDMI2:True");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(true);
 					this.isOn = true;
 					callback(null, true);
 				}
 				else if (response.body.includes('title')){
-					this.log("getOn: HDMI2:False");
+					//this.log("getOn: HDMI2:False");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
 					callback(null, false);
 				}
                 else {
-					this.log("getOn: Standby");
+					//this.log("getOn: Standby");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
@@ -2945,21 +2982,21 @@ SonyHDMI3TV.prototype.getOn = function(callback) {
         }, function(err, response, body) {
             if (!err && response.statusCode == 200) {
 				if (response.body.includes('HDMI 3')){
-					this.log("getOn: HDMI3:True");
+					//this.log("getOn: HDMI3:True");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(true);
 					this.isOn = true;
 					callback(null, true);
 				}
 				else if (response.body.includes('title')){
-					this.log("getOn: HDMI3:False");
+					//this.log("getOn: HDMI3:False");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
 					callback(null, false);
 				}
                 else {
-					this.log("getOn: Standby");
+					//this.log("getOn: Standby");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
@@ -3127,21 +3164,21 @@ SonyHDMI4TV.prototype.getOn = function(callback) {
         }, function(err, response, body) {
             if (!err && response.statusCode == 200) {
 				if (response.body.includes('HDMI 4')){
-					this.log("getOn: HDMI4:True");
+					//this.log("getOn: HDMI4:True");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(true);
 					this.isOn = true;
 					callback(null, true);
 				}
 				else if (response.body.includes('title')){
-					this.log("getOn: HDMI4:False");
+					//this.log("getOn: HDMI4:False");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
 					callback(null, false);
 				}
                 else {
-					this.log("getOn: Standby");
+					//this.log("getOn: Standby");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
@@ -3309,21 +3346,21 @@ SonyVideo1TV.prototype.getOn = function(callback) {
         }, function(err, response, body) {
             if (!err && response.statusCode == 200) {
 				if (response.body.includes('Video 1')){
-					this.log("getOn: VIDEO1:True");
+					//this.log("getOn: VIDEO1:True");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(true);
 					this.isOn = true;
 					callback(null, true);
 				}
 				else if (response.body.includes('title')){
-					this.log("getOn: VIDEO1:False");
+					//this.log("getOn: VIDEO1:False");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
 					callback(null, false);
 				}
                 else {
-					this.log("getOn: Standby");
+					//this.log("getOn: Standby");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
@@ -3491,21 +3528,21 @@ SonyVideo2TV.prototype.getOn = function(callback) {
         }, function(err, response, body) {
             if (!err && response.statusCode == 200) {
 				if (response.body.includes('Video 2')){
-					this.log("getOn: VIDEO2:True");
+					//this.log("getOn: VIDEO2:True");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(true);
 					this.isOn = true;
 					callback(null, true);
 				}
 				else if (response.body.includes('title')){
-					this.log("getOn: VIDEO2:False");
+					//this.log("getOn: VIDEO2:False");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
 					callback(null, false);
 				}
                 else {
-					this.log("getOn: Standby");
+					//this.log("getOn: Standby");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
@@ -3712,20 +3749,74 @@ SonyPowerOffOnlyTV.prototype.setOn = function(value, callback) {
                 callback(err || new Error(stateError));
             }
         }.bind(this));
+		
+		// Back
+		postData = startXML + Back + endXML; 
+		request = require("request");		
+        request.post({
+            url: protocol + this.ipaddress + IRCCURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+                //callback(); // success
+            } else {
+                this.log(logError, err, body);
+                callback(err || new Error(stateError));
+            }
+        }.bind(this));		
 
 		this.timer = setTimeout(function() {
 			this.runTimer();
 		}.bind(this), 1000);		
 		
 		this.timer = setTimeout(function() {
-			this.runTimerSystemOff();
+			this.runTimerBack();
+		}.bind(this), 1500);
+		
+		this.timer = setTimeout(function() {
+			this.runTimerBack();
 		}.bind(this), 2000);
 		
 		this.timer = setTimeout(function() {
+			this.runTimerBack();
+		}.bind(this), 2500);
+		
+		this.timer = setTimeout(function() {
+			this.runTimerSystemOff();
+		}.bind(this), 3000);
+		
+		this.timer = setTimeout(function() {
 			this.runTimerPowerOff();
-		}.bind(this), 3000);		
+		}.bind(this), 4000);		
 		callback();
 		
+}
+SonyPowerOffOnlyTV.prototype.runTimerBack = function ()
+{
+		this.log("Back");
+		postData = startJSON + Back + endJSON; 
+        request.post({
+            url: protocol + this.ipaddress + systemURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+				'SOAPAction': SOAPActionVal,
+				'Content-type': ContentTypeVal
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+				//this.log("Dude Netflix");
+                //callback(); // success
+            } else {
+                this.log(logError, err, body);
+                //callback(err || new Error(stateError));
+            }
+        }.bind(this));			
 }
 SonyPowerOffOnlyTV.prototype.runTimerSystemOff = function ()
 {
@@ -4741,14 +4832,14 @@ SonyAllPowerOnTV.prototype.getOn = function(callback) {
         }, function(err, response, body) {
             if (!err && response.statusCode == 200) {
 				if (response.body.includes("active")){
-					this.log("getOn: Active");
+					//this.log("getOn: Active");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(true);
 					this.isOn = true;
 					callback(null, true);
 				}
 				else if (response.body.includes("standby")){
-					this.log("getOn: Standby");
+					//this.log("getOn: Standby");
 					//this.log(response.body);
 					this.service.getCharacteristic(Characteristic.On).updateValue(false);
 					this.isOn = false;
@@ -4837,8 +4928,16 @@ function SonyChannelTuneTV(log, config) {  // only turns on
     this.service = new Service.Switch(this.name);
     this.service
         .getCharacteristic(Characteristic.On)
+		.on('get', this.getOn.bind(this))
         .on('set', this.setOn.bind(this));
-	//this.updateTimer();
+
+	this.polldelay = parseInt(config["polldelay"]);
+	if (parseInt(this.polldelay)>10000){
+		this.timer = setTimeout(function() {
+			this.statusCheck();
+		}.bind(this), 10000);
+	}	
+		
 }
 SonyChannelTuneTV.prototype.setOn = function(value, callback) {    //Tune to specified channel
 
@@ -4968,9 +5067,9 @@ SonyChannelTuneTV.prototype.setOn = function(value, callback) {    //Tune to spe
 					this.log("Well that ain't right. I'm ignoring this portion:","'"+this.channel[i]+"' of ",this.channel);
 			}
 		}
-		this.timer = setTimeout(function() {
-			this.runTimerDpadCenter();
-		}.bind(this), dpaddelay);	
+//		this.timer = setTimeout(function() {
+//			this.runTimerDpadCenter();
+//		}.bind(this), dpaddelay);	
 		callback(); // success
 }
 SonyChannelTuneTV.prototype.runTimer0 = function() {
@@ -5237,7 +5336,92 @@ SonyChannelTuneTV.prototype.runTimerDpadCenter = function() {
 			}
 		}.bind(this));	//*/
 }
+SonyChannelTuneTV.prototype.getOn = function(callback) {
+		//this.log("getOn");  //
+		//*
+        var postData = InputStatus;
+        request.post({
+            url: protocol + this.ipaddress + avContentURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+				if (response.body.includes(this.channel)){
+					//this.log("getOn: "+this.channel+":True");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(true);
+					this.isOn = true;
+					callback(null, true);
+				}
+				else if (response.body.includes('title')){
+					//this.log("getOn: "+this.channel+":False");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(false);
+					this.isOn = false;
+					callback(null, false);
+				}
+                else {
+					//this.log("getOn: Standby");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(false);
+					this.isOn = false;
+					callback(null, false);
+				}
+            } else {
+                this.log(logError, err, body);
+				this.log(response.statusCode.toString(), err, response.body);
+                callback(err, false);
+            }
+        }.bind(this)); //*/
+}
+SonyChannelTuneTV.prototype.statusCheck = function() {
+//*		//this.log("statusCheck");
+        var postData = InputStatus;
+        request.post({
+            url: protocol + this.ipaddress + avContentURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+				if (response.body.includes(this.channel)){
+					this.log("statusCheck: "+this.channel+":True");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(true);
+					this.isOn = true;
+					//callback(null, true);
+				}
+				else if (response.body.includes('title')){
+					this.log("statusCheck: "+this.channel+":False");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(false);
+					this.isOn = false;
+					//callback(null, false);
+				}
+                else {
+					this.log("statusCheck: Standby");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(false);
+					this.isOn = false;
+					//callback(null, false);
+				}
+            } else {
+                this.log(logError, err, body);
+				this.log(response.statusCode.toString(), err, response.body);
+                //callback(err, false);
+            }
+        }.bind(this));
+		this.timer = setTimeout(function() {
+			//this.log("Check again in "+this.polldelay);
+			this.statusCheck();
+		}.bind(this), this.polldelay); //*/
+}
 //------------------------------------------------------------------------------------------------
+
+
 
 //------------------------------------------------------------------------------------------------
 // Send the TV Channels command
@@ -5252,7 +5436,16 @@ function SonyChannelsTV(log, config) {
 	this.timer;
     this.service
         .getCharacteristic(Characteristic.On)
+        .on('get', this.getOn.bind(this))
         .on('set', this.setOn.bind(this));
+		
+	this.polldelay = parseInt(config["polldelay"]);
+	if (parseInt(this.polldelay)>10000){
+		this.timer = setTimeout(function() {
+			this.statusCheck();
+		}.bind(this), 10000);
+	}	
+		
 }
 SonyChannelsTV.prototype.setOn = function(value, callback) {    
 		var postData = startXML + Tv + endXML; 
@@ -5275,6 +5468,88 @@ SonyChannelsTV.prototype.setOn = function(value, callback) {
 		this.timer = setTimeout(function() {
 			this.runTimer();
 		}.bind(this), 1000);		
+}
+SonyChannelsTV.prototype.getOn = function(callback) {
+		//this.log("getOn");
+        var postData = InputStatus;
+        request.post({
+            url: protocol + this.ipaddress + avContentURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+				if (response.body.includes('HDMI')){
+					//this.log("getOn: Channels:False");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(false);
+					this.isOn = false;
+					callback(null, false);
+				}
+				else if (response.body.includes('dispNum=')){
+					//this.log("getOn: Channels:True");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(true);
+					this.isOn = true;
+					callback(null, true);
+				}
+                else {
+					//this.log("getOn: Standby");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(false);
+					this.isOn = false;
+					callback(null, false);
+				}
+            } else {
+                this.log(logError, err, body);
+				this.log(response.statusCode.toString(), err, response.body);
+                callback(err, false);
+            }
+        }.bind(this));
+}
+SonyChannelsTV.prototype.statusCheck = function() {
+		//this.log("statusCheck");
+        var postData = InputStatus;
+        request.post({
+            url: protocol + this.ipaddress + avContentURL,
+            headers: {
+                'X-Auth-PSK': this.psk,
+            },
+            form: postData
+        }, function(err, response, body) {
+            if (!err && response.statusCode == 200) {
+				if (response.body.includes('HDMI')){
+					this.log("statusCheck: Channels:False");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(false);
+					this.isOn = false;
+					//callback(null, false);
+				}
+				else if (response.body.includes('dispNum=')){
+					this.log("statusCheck: Channels:True");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(true);
+					this.isOn = true;
+					//callback(null, true);
+				}
+                else {
+					this.log("statusCheck: Standby");
+					//this.log(response.body);
+					this.service.getCharacteristic(Characteristic.On).updateValue(false);
+					this.isOn = false;
+					//callback(null, false);
+				}
+            } else {
+                this.log(logError, err, body);
+				this.log(response.statusCode.toString(), err, response.body);
+                //callback(err, false);
+            }
+        }.bind(this));
+		this.timer = setTimeout(function() {
+			//this.log("Check again in "+this.polldelay);
+			this.statusCheck();
+		}.bind(this), this.polldelay);
 }
 SonyChannelsTV.prototype.runTimer = function() {
             //this.log("turn the button back off");
