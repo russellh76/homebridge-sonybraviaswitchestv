@@ -8,13 +8,130 @@ var startXML = '<?xml version="1.0"?><s:Envelope xmlns:s="http://schemas.xmlsoap
 var endXML = '</IRCCCode></u:X_SendIRCC></s:Body></s:Envelope>';
 var startJSON = '{"method":"setPowerStatus","params":[{"status":'
 var endJSON = '}],"id":1,"version":"1.0"}';
+var startLEDJSON = '{"method": "setLEDIndicatorStatus","id": 53,"params": [{"mode": "Demo","status": "';
+var endLEDJSON = '"}],"version": "1.1"}';
 var startAudioJSON = '{"method":"setAudioVolume","id":98,"params":[{"volume": "'
 var endAudioJSON = '","ui": "on","target": "speaker"}],"version": "1.2"}';
 var AudioStatus = '{"method":"getVolumeInformation","id":33,"params":[],"version": "1.0"}';
 var InputStatus = '{"method":"getPlayingContentInfo","id":103,"params":[],"version": "1.0"}';
 var PowerStatus = '{"method":"getPowerStatus","params":[],"id":1,"version":"1.0"}';
 var xhttp = new XMLHttpRequest();
+    
+var scrollBeforeY = 0;
+var scrollBeforeX = 0;
 
+window.addEventListener('scroll',function(e){
+    const scrolledY = window.scrollY;
+    const scrolledX = window.scrollX; // right and left scroll
+
+    if(scrollBeforeY > scrolledY){
+        //SonyIRCC('AAAAAgAAAJcAAABPAw==','Scroll:CursorUp');
+        console.log("ScrollUP");
+        scrollBeforeY = scrolledY;
+        //window.scrollTo(0, 0); 
+        //Desired action
+    }else if(scrollBeforeY < scrolledY){
+        //SonyIRCC('AAAAAgAAAJcAAABQAw==','Scroll:CursorDown');
+        console.log("ScrollDOWN");
+        scrollBeforeY = scrolledY;
+        //window.scrollTo(0, 0); 
+        //Desired action
+    }else if(scrollBeforeX < scrolledX){
+        //SonyIRCC('AAAAAgAAAJcAAABOAw==','Scroll:CursorRight');
+        console.log("ScrollRIGHT");
+        scrollBeforeX = scrolledX;
+        //Desired action
+    }else if(scrollBeforeX > scrolledX){
+        //SonyIRCC('AAAAAgAAAJcAAABNAw==','Scroll:CursorLeft');
+        console.log("ScrollLEFT");
+        scrollBeforeX = scrolledX;
+        //Desired action
+    }
+    //window.scrollTo(0, 0); 
+})
+    
+function arrowKeyDown(e) {
+    e = e || window.event;
+    if (e.keyCode == '38') { //Up arrow
+        e.preventDefault();   //stop bubble, stop scroll
+        SonyIRCC('AAAAAgAAAJcAAABPAw==','KeyDown:CursorUp');
+    }
+    else if (e.keyCode == '40') {  //Down arrow
+        SonyIRCC('AAAAAgAAAJcAAABQAw==','KeyDown:CursorDown');
+        e.preventDefault();   //stop bubble, stop scroll
+    }
+    else if (e.keyCode == '37') {  //Left arrow
+        SonyIRCC('AAAAAgAAAJcAAABNAw==','KeyDown:CursorLeft');
+    }
+    else if (e.keyCode == '39') {  //Right arrow
+        SonyIRCC('AAAAAgAAAJcAAABOAw==','KeyDown:CursorRight');
+    }
+    else if (e.keyCode == '32') {  //Spacebar
+        SonyIRCC('AAAAAgAAAJcAAAAaAw==','KeyDown:spacebarPlay');
+        e.preventDefault();   //stop bubble, stop scroll
+    }    
+    else if (e.keyCode == '13') {  //Enter
+        SonyIRCC('AAAAAgAAAJcAAABKAw==','KeyDown:DpadCenter');
+    }        
+    else if (e.keyCode == '27') {  //Escape
+        SonyIRCC('AAAAAQAAAAEAAABjAw==','KeyDown:Back');
+    }        
+    else if (e.keyCode == '85') {  //Letter U
+        SonyIRCC('AAAAAQAAAAEAAAASAw==','Keydown:U:VolumeUp');
+    }            
+    else if (e.keyCode == '68') { //Letter D
+        SonyIRCC('AAAAAQAAAAEAAAATAw==','Keydown:D:VolumeDown');
+    }
+    else if (e.keyCode == '77') { //Letter M
+        SonyIRCC('AAAAAQAAAAEAAAAUAw==','Keydown:M:Mute');
+    }
+    else if (e.keyCode == '80') { //Letter P
+        SonyIRCC('AAAAAQAAAAEAAAAVAw==','Keydown:P:TvPower');
+    }    
+    else if (e.keyCode == '49') { //Letter 1
+        SonyIRCC('AAAAAgAAABoAAABaAw==','Keydown:1:HDMI1');
+    }  
+    else if (e.keyCode == '50') { //Letter 2
+        SonyIRCC('AAAAAgAAABoAAABbAw==','Keydown:2:HDMI1');
+    }  
+    else if (e.keyCode == '51') { //Letter 3
+        SonyIRCC('AAAAAgAAABoAAABcAw==','Keydown:3:HDMI1');
+    }  
+    else if (e.keyCode == '52') { //Letter 4
+        SonyIRCC('AAAAAgAAABoAAABdAw==','Keydown:4:HDMI1');
+    }      
+    else if (e.keyCode == '73') { //Letter I
+        SonyIRCC('AAAAAQAAAAEAAAAlAw==','Keydown:I:Input');
+    }     
+    else if (e.keyCode == '79') { //Letter O
+        SonyIRCC('AAAAAQAAAAEAAAA+Aw==','Keydown:O:PictureOff');
+    } 
+    else if (e.keyCode == '83') { //Letter O
+        SonyIRCC('AAAAAQAAAAEAAAA2Aw==','Keydown:S:SleepTimer');
+    } 
+    else if (e.keyCode == '81RUSSELL') { //Letter Q // placeholder
+        var delay=333;
+        commandCount=commandCount+1;
+        setTimeout(SonyIRCC,delay*commandCount,'AAAAAQAAAAEAAAASAw==','Keydown:U:VolumeUp:'+commandCount);
+        commandCount=commandCount-1;
+    }     
+    else if (e.keyCode == '88') { //Letter X
+        SonyIRCC10('AAAAAQAAAAEAAAASAw==','Keydown:X:VolumeUp');
+    } 
+    else if (e.keyCode == '90') { //Letter Z
+        SonyIRCC10('AAAAAQAAAAEAAAATAw==','Keydown:Z:VolumeDown');
+    } 
+    else if (e.keyCode == '82') { //Letter R
+        location.reload();
+    }     
+    else {
+        // uncomment the below to save time determining keycodes
+        document.getElementById("log").innerHTML = new Date() + "&nbsp;:&nbsp;<b>" + "Ignored keypress " + "</b>&nbsp;<i>(keyCode: " + e.keyCode + ")</i></br>" + document.getElementById("log").innerHTML;
+    }
+}    
+    
+document.onkeydown = arrowKeyDown;    
+    
 function SonyAudio(message,label) {
   xhttp.open("POST", "http://" + document.getElementById("IP").value + "/sony/audio", true);
   xhttp.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
@@ -104,7 +221,6 @@ function SonyStatus() {
   xhttp2.setRequestHeader("X-Auth-PSK", document.getElementById("PSK").value);
   xhttp2.send(InputStatus);
 
-
   var xhttp3 = new XMLHttpRequest();
   xhttp3.onload = function () {
   //alert(xhttp3.responseText);
@@ -139,34 +255,36 @@ function SonyStatus() {
 
 }
 function SonyIRCC10(message,label) {
+    var delay=333;
 	SonyIRCC(message,label);
-	SonyIRCC(message,label);
-	SonyIRCC(message,label);
-	SonyIRCC(message,label);
-	SonyIRCC(message,label);
-	SonyIRCC(message,label);
-	SonyIRCC(message,label);
-	SonyIRCC(message,label);
-	SonyIRCC(message,label);
-	SonyIRCC(message,label);
+	setTimeout(SonyIRCC,delay*1,message,label);
+	setTimeout(SonyIRCC,delay*2,message,label);
+	setTimeout(SonyIRCC,delay*3,message,label);
+	setTimeout(SonyIRCC,delay*4,message,label);
+	setTimeout(SonyIRCC,delay*5,message,label);
+	setTimeout(SonyIRCC,delay*6,message,label);
+	setTimeout(SonyIRCC,delay*7,message,label);
+	setTimeout(SonyIRCC,delay*8,message,label);
+	setTimeout(SonyIRCC,delay*9,message,label);
 }
 function SonyIRCC100(message,label) {
+    var delay=333;
 	SonyIRCC10(message,label);
-	SonyIRCC10(message,label);
-	SonyIRCC10(message,label);
-	SonyIRCC10(message,label);
-	SonyIRCC10(message,label);
-	SonyIRCC10(message,label);
-	SonyIRCC10(message,label);
-	SonyIRCC10(message,label);
-	SonyIRCC10(message,label);
-	SonyIRCC10(message,label);
+	setTimeout(SonyIRCC,delay*1,message,label);
+	setTimeout(SonyIRCC,delay*2,message,label);
+	setTimeout(SonyIRCC,delay*3,message,label);
+	setTimeout(SonyIRCC,delay*4,message,label);
+	setTimeout(SonyIRCC,delay*5,message,label);
+	setTimeout(SonyIRCC,delay*6,message,label);
+	setTimeout(SonyIRCC,delay*7,message,label);
+	setTimeout(SonyIRCC,delay*8,message,label);
+	setTimeout(SonyIRCC,delay*9,message,label);
 }
 </script>
 <body onload="SonyStatus();">
 <b>&nbsp;&nbsp;XBR-65X810c sony/system and sony/IRCC HTTP(PSK) commands</b>
 </br>
-&nbsp;&nbsp;PSK:&nbsp;<input type=text id=PSK value=0000>&nbsp;&nbsp;&nbsp;TV IP:&nbsp;<input type=text id=IP value=192.168.1.238>&nbsp;<div id="TVStatus">TV Status:</div>
+&nbsp;&nbsp;PSK:&nbsp;<input type=text id=PSK value=0000>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TV IP:&nbsp;<input type=text id=IP value=192.168.1.238>&nbsp;<div id="TVStatus">TV Status:</div>
 <div id="InputStatus">&nbsp;&nbsp;Input:</div>
 <div id="AudioStatus">&nbsp;&nbsp;Volume:
 <select id="volumecontrol" onchange="setvolume();">
@@ -273,32 +391,56 @@ function SonyIRCC100(message,label) {
   <option value="99">99</option>
   <option value="100">100</option>
 </select></div>
-<div><input type=text  style="width:205px" id=TestString><button style="width:125px" value="1" onclick="SonyIRCC(TestString.value,TestString.value);">Test IRCC</button></div>
+<div><input type=text  style="width:205px" id=TestString>&nbsp;<button style="width:125px" value="1" onclick="SonyIRCC(TestString.value,TestString.value);">Test IRCC</button></div>
+<hr>
+<b>Keyboard Shortcuts</b></br>
+<table><tr>
+<td>Spacebar: Pause/Play&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>Up Arrow: Up&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>Down Arrow: Down&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>Left Arrow: Left&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr><tr>
+<td>Right Arrow: Right&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>Escape: Back&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>U: Volume Up&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>D: Volume Down&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr><tr>
+<td>M: Mute&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>P: Power&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>I: Input&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>1: HDMI1-AppleTV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr><tr>
+<td>2: HDMI2-Roku&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>3: HDMI3-RaspberryPi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>4: HDMI4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>X: Volume Up 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr><tr>
+<td>Z: Volume Down 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>O: Picture Off&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>S: Sleep Timer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>R: Reload Page&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+</table>
 <hr>
 <table>
 <tr>
-<td><button style="background-color:lightgreen" type=button style="width:125px" value="TvPower" onclick="SonyIRCC('AAAAAQAAAAEAAAAVAw==','TvPower');">TvPower <i class="fa fa-power-off"></i></button></td>
+<td><button style="width:135px;background-color:lightgreen" value="TvPower" onclick="SonyIRCC('AAAAAQAAAAEAAAAVAw==','TvPower');">Tv Power <i class="fa fa-power-off"></i></button></td>
 </tr><tr>
-<td><button style="width:125px" value="AppleTV (hdmi1)" onclick="SonyIRCC('AAAAAgAAABoAAABaAw==','AppleTV(hdmi1)');">AppleTV(hdmi1) <i class="fab fa-apple"></i></button></td>
-<td><button style="width:125px" value="Roku (hdmi2)" onclick="SonyIRCC('AAAAAgAAABoAAABbAw==','Roku(hdmi2)');">Roku(hdmi2) <i class="fab fa-roku"></i></button></td>
-<td><button style="width:125px" value="Roku (hdmi2)" onclick="SonyIRCC('AAAAAgAAABoAAABcAw==','RaspberryPi(hdmi3)');">RaspPi(hdmi3) <i class="fab fa-raspberry-pi"></i></button></td>
-<td><button style="width:125px" value="Back" onclick="SonyIRCC('AAAAAQAAAAEAAABjAw==','Back');">Back <i class="fa fa-step-backward"></i></button></td>
+<td><button style="width:135px" value="AppleTV (hdmi1)" onclick="SonyIRCC('AAAAAgAAABoAAABaAw==','AppleTV(hdmi1)');">AppleTV(hdmi1) <i class="fab fa-apple"></i></button></td>
+<td><button style="width:135px" value="Roku (hdmi2)" onclick="SonyIRCC('AAAAAgAAABoAAABbAw==','Roku(hdmi2)');">Roku(hdmi2) <i class="fab fa-roku"></i></button></td>
+<td><button style="width:135px" value="Roku (hdmi2)" onclick="SonyIRCC('AAAAAgAAABoAAABcAw==','RaspberryPi(hdmi3)');">RaspPi(hdmi3) <i class="fab fa-raspberry-pi"></i></button></td>
+<td><button style="width:135px" value="Back" onclick="SonyIRCC('AAAAAQAAAAEAAABjAw==','Back');">Back <i class="fa fa-step-backward"></i></button></td>
 </tr><tr>
-<td><button style="width:125px" value="VolumeUp &uarr;" onclick="SonyIRCC('AAAAAQAAAAEAAAASAw==','VolumeUp');">VolumeUp <i class="fa fa-volume-up"></i></button></td>
-<td><button style="width:125px" value="VolumeDown &darr;" onclick="SonyIRCC('AAAAAQAAAAEAAAATAw==','VolumeDown');">VolumeDown <i class="fa fa-volume-down"></i></button></td>
-<td><button style="width:125px" value="Mute" onclick="SonyIRCC('AAAAAQAAAAEAAAAUAw==','Mute');">Mute <i class="fa fa-volume-off"></i></button></td>
-<td><button style="width:125px" value="Channels" onclick="SonyIRCC('AAAAAQAAAAEAAAAkAw==','Channels');">Channels <i class="fa fa-tv"></i></button></td>
+<td><button style="width:135px" value="VolumeUp &uarr;" onclick="SonyIRCC('AAAAAQAAAAEAAAASAw==','VolumeUp');">VolumeUp <i class="fa fa-volume-up"></i></button></td>
+<td><button style="width:135px" value="VolumeDown &darr;" onclick="SonyIRCC('AAAAAQAAAAEAAAATAw==','VolumeDown');">VolumeDown <i class="fa fa-volume-down"></i></button></td>
+<td><button style="width:135px" value="Mute" onclick="SonyIRCC('AAAAAQAAAAEAAAAUAw==','Mute');">Mute <i class="fa fa-volume-off"></i></button></td>
+<td><button style="width:135px" value="Channels" onclick="SonyIRCC('AAAAAQAAAAEAAAAkAw==','Channels');">Channels <i class="fa fa-tv"></i></button></td>
 </tr><tr>
-<td><button style="width:125px" value="DpadCenter" onclick="SonyIRCC('AAAAAgAAAJcAAABKAw==','DpadCenter');">DpadCenter <i class="fas fa-sign-in-alt"></i></button></td>
-<td><button style="width:125px" onclick="SonyIRCC('AAAAAgAAAJcAAAAZAw==','Pause');">Pause <i class="fa fa-pause"></i></button></td>
-<td><button style="width:125px" value="Play &#9658;" onclick="SonyIRCC('AAAAAgAAAJcAAAAaAw==','Play');">Play <i class="fa fa-play"></i></button></td>
-<td><button style="width:125px" value="Rewind" onclick="SonyIRCC('AAAAAgAAAJcAAAAbAw==','Rewind');">Rewind <i class="fa fa-backward"></i></button></td>
+<td><button style="width:135px" value="DpadCenter" onclick="SonyIRCC('AAAAAgAAAJcAAABKAw==','DpadCenter');">DpadCenter <i class="fas fa-sign-in-alt"></i></button></td>
+<td><button style="width:135px" onclick="SonyIRCC('AAAAAgAAAJcAAAAZAw==','Pause');">Pause <i class="fa fa-pause"></i></button></td>
+<td><button style="width:135px" value="Play &#9658;" onclick="SonyIRCC('AAAAAgAAAJcAAAAaAw==','Play');">Play <i class="fa fa-play"></i></button></td>
+<td><button style="width:135px" value="Rewind" onclick="SonyIRCC('AAAAAgAAAJcAAAAbAw==','Rewind');">Rewind <i class="fa fa-backward"></i></button></td>
 </tr><tr>
 </tr><tr>
-<td><button style="width:125px" value="&uarr; Up" onclick="SonyIRCC('AAAAAgAAAJcAAABPAw==','CursorUp');">Up <i class="fa fa-arrow-up"></i></button></td>
-<td><button style="width:125px" value="&larr; Left" onclick="SonyIRCC('AAAAAgAAAJcAAABNAw==','CursorLeft');">Left <i class="fa fa-arrow-left"></i></button></td>
-<td><button style="width:125px" value="Right &rarr;" onclick="SonyIRCC('AAAAAgAAAJcAAABOAw==','CursorRight');">Right <i class="fa fa-arrow-right"></i></button></td>
-<td><button style="width:125px" value="Down &darr;" onclick="SonyIRCC('AAAAAgAAAJcAAABQAw==','CursorDown');">Down <i class="fa fa-arrow-down"></i></button></td>
+<td><button style="width:135px" value="&uarr; Up" onclick="SonyIRCC('AAAAAgAAAJcAAABPAw==','CursorUp');">Up <i class="fa fa-arrow-up"></i></button></td>
+<td><button style="width:135px" value="&larr; Left" onclick="SonyIRCC('AAAAAgAAAJcAAABNAw==','CursorLeft');">Left <i class="fa fa-arrow-left"></i></button></td>
+<td><button style="width:135px" value="Right &rarr;" onclick="SonyIRCC('AAAAAgAAAJcAAABOAw==','CursorRight');">Right <i class="fa fa-arrow-right"></i></button></td>
+<td><button style="width:135px" value="Down &darr;" onclick="SonyIRCC('AAAAAgAAAJcAAABQAw==','CursorDown');">Down <i class="fa fa-arrow-down"></i></button></td>
 </tr><tr>
 </tr><tr>
 </table>
