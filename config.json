@@ -1,12 +1,126 @@
 {
-"bridge": {
-"name": "SonyBraviaSwitchesTV",
-"username": "CA:22:3D:E3:CE:30",
-"port": 51827,
-"pin": "111-11-111"
-},
-"description": "config.json for DEV purposes",
+	"bridge": {
+	"name": "DSE_HB004",
+	"username": "CA:22:3D:E3:CE:32",
+	"port": 51827,
+	"pin": "444-44-444"
+  },
+  "COMMENTEDplatforms": [
+	{
+		 "platform":"SonyBravia", 
+		 "name":"Sony",
+		 "ipadress":"192.168.1.238",
+		 "port":80,
+		 "psk":"0000",
+		 "interval": 5,
+		 "maxVolume":100,
+		 "extraInputs":true,
+		 "volumeEnabled": true,
+		 "appsEnabled": true,
+		 "channelsEnabled":false,
+		 "inputsEnabled":true,
+		 "detectCEC":true,
+		 "offState": "HOME",
+		 "remoteControl":true,
+		 "controlMode":"ADVANCED",
+		 "homeapp":"com.sony.dtv.eu.siptv.video.eu.siptv.atv.MainActivity",
+		 "favChannel":"tv:dvbt?trip=1.1051.10304&srvName=SWR RP HD"
+	}
+  ],
+  "platforms": [
+	{
+        "platform": "Nest",
+        "clientId": "b3a2ec26-7b04-48d2-a283-3dff654110c2",
+        "clientSecret": "0pJXcbFSilm3gLgugTlXqy7U8",
+        "code": "ZUACQX7W",
+		"token":"c.xjnTJWdJZVziCnQXL4WO7TUseESpQ9Wdq4auYkF7gulaPZy5monHiBqJeuMygmJSyf5vsMEkIv2TeLrbLn8T5NgNCWWMmu1gAEZrnkZiuG7YTxLqTo36Ip6lPW9HShR4q9hk2jj5U8YYE5bn"
+	}
+   ],
   "accessories": [  
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Arrive Home",
+		 "disableSensor": false,
+		 "delay": 2000
+    },
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Leave Home",
+		 "disableSensor": false,
+		 "delay": 2000
+    },	
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Coffee 2 Hour",
+		 "disableSensor": false,
+		 "delay": 7200000
+    },
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Coffee 10",
+		 "disableSensor": false,
+		 "delay": 600000
+    },
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Hot Water",
+		 "disableSensor": false,
+		 "delay": 1200000
+    },		
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Reboot Homebridge",
+		 "disableSensor": false,
+		 "delay": 5000
+    },	
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Close Secure Door",
+		 "disableSensor": false,
+		 "delay": 500
+    },
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Comfort",
+		 "disableSensor": false,
+		 "delay": 5000
+    },
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Open Secure Door",
+		 "disableSensor": false,
+		 "delay": 500
+    },	
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Master lamp",
+		 "disableSensor": false,
+		 "delay": 7200000
+    },	
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Master lamp 5",
+		 "disableSensor": false,
+		 "delay": 300000
+    },	
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Master lamp 10",
+		 "disableSensor": false,
+		 "delay": 600000
+    },	
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Master lamp 1",
+		 "disableSensor": false,
+		 "delay": 60000
+    },	
+    {
+		 "accessory": "DelaySwitch",
+		 "name": "Kitchen Lights",
+		 "disableSensor": false,
+		 "delay": 7200000
+    },	
     {
       "accessory": "homebridge-crash",
       "name": "Crash Homebridge"
@@ -51,6 +165,22 @@
 	  "delay": "300"
     },
     {
+      "accessory": "homebridge-sonypageuptv",
+      "name": "Bravia Up 2",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypageuptv",
+      "name": "Bravia Up 4",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
       "accessory": "homebridge-sonypagelefttv",
       "name": "Bravia Left",
       "ipaddress": "192.168.1.238",
@@ -58,6 +188,22 @@
 	  "pagecount": "1",
 	  "delay": "300"
     },	
+    {
+      "accessory": "homebridge-sonypagelefttv",
+      "name": "Bravia Left 2",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagelefttv",
+      "name": "Bravia Left 4",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
     {
       "accessory": "homebridge-sonypagerighttv",
       "name": "Bravia Right",
@@ -67,8 +213,40 @@
 	  "delay": "300"
     },
     {
+      "accessory": "homebridge-sonypagerighttv",
+      "name": "Bravia Right 2",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagerighttv",
+      "name": "Bravia Right 4",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
       "accessory": "homebridge-sonypagedowntv",
       "name": "Bravia Down",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedowntv",
+      "name": "Bravia Down 2",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000",
+	  "pagecount": "1",
+	  "delay": "300"
+    },
+    {
+      "accessory": "homebridge-sonypagedowntv",
+      "name": "Bravia Down 4",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
 	  "pagecount": "1",
@@ -498,10 +676,16 @@
     },
     {
       "accessory": "homebridge-sonyhdmi3tv",
-      "name": "Bravia Raspberry",
+      "name": "Bravia Raspberry Pi",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000"
     },		
+    {
+      "accessory": "homebridge-sonyhdmi3tv",
+      "name": "Bravia Pi",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000"
+    },	
     {
       "accessory": "homebridge-sonyhdmi4tv",
       "name": "Bravia 4",
@@ -637,10 +821,17 @@
       "presharedkey": "0000"
     },	
     {
+      "accessory": "homebridge-sonypoweroffonlytv",
+      "name": "Bravia S-P-POFF",
+      "ipaddress": "192.168.1.238",
+      "presharedkey": "0000"
+    },
+    {
       "accessory": "homebridge-sonychannelstv",
       "name": "Bravia Channels",
       "ipaddress": "192.168.1.238",
-      "presharedkey": "0000"
+      "presharedkey": "0000",
+	  "polldelay": "3"
     },		
     {
       "accessory": "homebridge-sonychanneltunetv",
@@ -654,7 +845,8 @@
       "name": "Bravia Fox",
       "ipaddress": "192.168.1.238",
       "presharedkey": "0000",
-	  "channel": "5.1"
+	  "channel": "5.1",
+	  "polldelay": "3"
     },	
     {
       "accessory": "homebridge-sonychanneltunetv",
